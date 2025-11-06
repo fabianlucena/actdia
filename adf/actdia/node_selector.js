@@ -55,7 +55,7 @@ export default function nodeSelector(actdiaInstance) {
 
 async function loadCategory({ path, previousBreadcrumbs = [], namespace = '' }) {
   const categoriesData = (await import(`${path}/categories.js`)).default;
-  await loadLocale(path);
+  await loadLocale(path, ...categoriesData.locale);
 
   breadcrumbs = [
     ...previousBreadcrumbs,

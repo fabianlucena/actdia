@@ -4,8 +4,8 @@ import Element from './element.js';
 import Item from './item.js';
 import Node from './node.js';
 import Connection from './connection.js';
-import { deletePropertyByPath, getValueByPath, setValueByPath, encodeHTML, getNumber, isNumber } from './utils.js';
-import { _, loadLocale } from './locale.js';
+import { deletePropertyByPath, getValueByPath, setValueByPath, encodeHTML, getNumber, isNumber, getPath } from './utils.js';
+import { _, loadLocale, getLocales, loadLocales } from './locale.js';
 import { transformPathD } from './path2d.js';
 import nodeSelector from './node_selector.js';
 import { createNotificationContainer, pushNotification } from './notistack.js';
@@ -13,7 +13,7 @@ import { DIRECTIONS } from './connector-generic.js';
 import SON from './son.js';
 
 window.addEventListener('DOMContentLoaded', async () => {
-  await loadLocale();
+  await loadLocale('.', 'es');
   ActDia.autoCreate();
 });
 
@@ -591,14 +591,29 @@ export default class ActDia {
 
   getData(items) {
     items ??= this.#items;
+
+    let imports = [...new Set(items.map(item => item.constructor.name))]
+      .filter(name => name !== 'Item')
+      .map(name => Item.getElementClassInfo(name)?.url).sort();
+
+    const allLocales = getLocales();
+    let locales = {};
+    const allPaths = imports.map(getPath);
+    for (const url in allLocales) {
+      if (!allPaths.includes(url))
+        continue;
+
+      locales[url] = allLocales[url];
+    }
+    
     const data = {
       actdia: {
         version: '0.1.0',
       },
 
-      imports: [...new Set(items.map(item => item.constructor.name))]
-        .filter(name => name !== 'Item')
-        .map(name => Item.getElementClassInfo(name)?.url).sort(),
+      imports,
+
+      locales,
 
       nodes: items
         .filter(node => isNode(node))
@@ -705,6 +720,8 @@ export default class ActDia {
 
   async load(data, options = {}) {
     await Item.importAsync(...data.imports.filter(u => u));
+    await loadLocales(data.locales);
+
     this.#items = [];
     this.nodesLayerSVG.innerHTML = '';
     this.connectionsLayerSVG.innerHTML = '';
@@ -2625,6 +2642,22 @@ export default class ActDia {
         fieldHtml += `<option value="${value}" ${value == value ? 'selected' : ''}${style}>${label}</option>`;
       });
       fieldHtml += `</select>`;
+    } else if (tag === 'list' || type === 'list') {
+      fieldHtml += `<ul>
+        ${(Array.isArray(value) ? value : []).map((item, index) => `
+          <li>
+            <input
+              type="text"
+              id="${field.id}_item_${index}"
+              name="${field.name}_item_${index}"
+              value="${item || ''}"
+              ${field.readOnly ? 'readonly' : ''}
+              ${field.disabled ? 'disabled="disabled"' : ''} 
+            >
+          </li>
+        `).join('')}
+        </ul>`;
+
     } else {
       fieldHtml += `<${tag}
           id="${field.id}"

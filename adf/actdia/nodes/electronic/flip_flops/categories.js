@@ -1,5 +1,6 @@
 export default {
   _label: 'Flip-flops',
+  locale: ['es'],
   nodesClasses: [
     'srff.js',
     'srff_l.js',

@@ -1,5 +1,6 @@
 export default {
   _label: 'BCD',
+  locale: ['es'],
   nodesClasses: [
     'bcd_counter.js',
     'seven-segment_display.js',

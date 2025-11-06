@@ -1,5 +1,6 @@
 export default {
   _label: 'Logic gates',
+  locale: ['es'],
   nodesClasses: [
     'buffer.js',
     'and.js',

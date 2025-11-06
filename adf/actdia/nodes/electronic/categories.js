@@ -1,5 +1,6 @@
 export default {
   _label: 'Electronic',
+  locale: ['es'],
   nodesClasses: [
     'led.js',
     'rgb_led.js',

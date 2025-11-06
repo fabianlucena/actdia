@@ -135,3 +135,7 @@ export function getNumber(tryNumber, defaultValue = 0) {
 export function isNumber(value) {
   return !isNaN(value) && !isNaN(parseFloat(value));
 }
+
+export function getPath(urlString) {
+  return urlString.replace(/\/[^\/]*$/, '');
+}

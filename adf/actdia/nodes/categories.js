@@ -1,5 +1,6 @@
 export default {
   _label: 'Basic',
+  locale: ['es'],
   nodesClasses: [
     'bus.js',
     'h_switch.js',
