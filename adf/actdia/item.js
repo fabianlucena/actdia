@@ -36,11 +36,6 @@ export default class Item extends Element {
     ];
   }
 
-  constructor(options) {
-    super(...arguments);
-    this.init(...arguments);
-  }
-
   init(options) {
     super.init(...arguments);
     this.id ??= crypto.randomUUID();
@@ -55,6 +50,7 @@ export default class Item extends Element {
     const data = {
       elementClass,
       id: this.id,
+      url: this.getElementClassUrl(),
     };
 
     const defaultItem = this.getDefaultObject();

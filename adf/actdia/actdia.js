@@ -592,9 +592,19 @@ export default class ActDia {
   getData(items) {
     items ??= this.#items;
 
-    let imports = [...new Set(items.map(item => item.constructor.name))]
-      .filter(name => name !== 'Item')
-      .map(name => Item.getElementClassInfo(name)?.url).sort();
+    const nodes = items
+      .filter(node => isNode(node))
+      .map(node => node.getData());
+
+    const connections = items
+      .filter(item => isConnection(item))  
+      .map(connection => connection.getData());
+
+    const imports = [...new Set([
+        ...nodes.map(item => item.url),
+        ...connections.map(item => item.url),
+      ].filter(u => u))]
+      .sort();
 
     const allLocales = getLocales();
     let locales = {};
@@ -610,19 +620,11 @@ export default class ActDia {
       actdia: {
         version: '0.1.0',
       },
-
       imports,
-
       locales,
-
-      nodes: items
-        .filter(node => isNode(node))
-        .map(node => node.getData()),
-
-      connections: items
-        .filter(item => isConnection(item))  
-        .map(connection => connection.getData()),
-      };
+      nodes,
+      connections,
+    };
 
     return data;
   }

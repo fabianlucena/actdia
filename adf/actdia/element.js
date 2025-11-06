@@ -102,6 +102,10 @@ export default class Element {
     return classInfo.defaultItem;
   }
 
+  constructor(options) {
+    this.init(...arguments);
+  }
+
   init(options) {
     Object.assign(this, ...arguments);
   }
