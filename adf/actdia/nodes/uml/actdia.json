@@ -1,0 +1,22 @@
+{
+  "actdia": {
+    "version": "0.1.0"
+  },
+  "imports": [
+    "./nodes/uml/actor.js"
+  ],
+  "nodes": [
+    {
+      "elementClass": "Actor",
+      "id": "59b39848-8163-4a54-85b4-d7f52e58439a",
+      "x": 20,
+      "y": 14,
+      "connectors": [
+        {
+          "id": "83b436c1-82fd-4f83-b077-106803ea80f3"
+        }
+      ]
+    }
+  ],
+  "connections": []
+}

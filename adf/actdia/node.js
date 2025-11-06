@@ -1,0 +1,182 @@
+import Item from './item.js';
+import Connector from './connector.js';
+import { isEqual } from './utils.js';
+
+export default class Node extends Item {
+  shape = {
+    shapes: [
+    {
+      x: 1,
+      shape: 'rect',
+      width: 9,
+      height: 4,
+      rx: .8,
+      ry: .8,
+    },
+    {
+      shape: 'path',
+      d: `
+        M0  2 L1  2 
+        M10 2 L11 2`,
+    },
+    ],
+  };
+
+  box = {
+    x: 0,
+    y: 0,
+    width: 11,
+    height: 4,
+  };
+
+  connectors = [
+    { type: 'in', x: 0, y: 2, direction: 'left' },
+    { type: 'out', x: 11, y: 2, direction: 'right' },
+  ];
+
+  init(options) {
+    super.init();
+
+    let connectorsData = [];
+    for (let i = 0; i < arguments.length; i++) {
+      if (!arguments[i])
+        continue;
+      
+      const { connectors, ...arg } = arguments[i];
+      if (connectors?.length) {
+        connectorsData.push(...connectors);
+      }
+      Object.assign(this, arg);
+    }
+
+    this.connectors?.forEach((connector, index) => {
+      if (!(connector instanceof Connector)) {
+        this.connectors[index] = this.getNewConnector({ ...connector, index });
+      }
+    });
+
+    connectorsData.forEach((data, index) => {
+      while (index >= this.connectors.length) {
+        this.addConnector();
+      }
+      
+      const connector = this.connectors[index] || {};
+      Object.assign(connector, data);
+
+      this.connectors[index].item = this;
+      this.connectors[index].index = index;
+    });
+  }
+
+  getNewConnector(connector) {
+    const index = connector?.index ?? this.length ?? this.connectors.length;
+    const newConnector = Connector.create(
+      this.defaultConnector,
+      {
+        index,
+        item: this,
+      },
+      ...arguments,
+    );
+
+    return newConnector;
+  }
+  
+  addConnector(connector) {
+    const newConnector = this.getNewConnector(connector);
+    this.connectors.push(newConnector);
+    this.update();
+  }
+  
+  addInput(input) {
+    input.type ??= 'in';
+    this.addConnector(input);
+  }
+
+  removeLastInput() {
+    for (let i = this.connectors.length - 1; i >= 0; i--) {
+      const connector = this.connectors[i];
+      if (connector.type === 'in') {
+        this.connectors.splice(i, 1);
+        this.update();
+        break;
+      }
+    }
+  }
+
+  addOutput(output) {
+    output.type ??= 'out';
+    this.addConnector(output);
+  }
+
+  getConnectorFromId(id) {
+    return this.connectors.find(connector => connector.id === id);
+  }
+
+  getDefaultConnectorsData() {
+    const classInfo = this.getElementClassInfo();
+    if (!classInfo.defaultConnectorsData) {
+      const defaultItem = this.getDefaultObject()
+      classInfo.defaultConnectorsData = defaultItem.connectors;
+    }
+
+    return classInfo.defaultConnectorsData;
+  }
+
+  getConnectorsData() {
+    if (!this.connectors.length)
+      return;
+
+    const defaultConnectorsData = this.getDefaultConnectorsData();
+
+    const connectors = this.connectors.map(connector => {
+      const { id, connections, item, index, ...currentData } = connector;
+      let defaultConnector = defaultConnectorsData?.[index];
+      if (!defaultConnector) {
+        const { id, connections, item, index, ...data } =
+          this.getNewConnector(connector) ?? {};
+
+        defaultConnector = data;
+      }
+
+      let data = { id };
+      
+      for (const key in currentData) {
+        if (!defaultConnector || !isEqual(currentData[key], defaultConnector[key])) {
+          data[key] = currentData[key];
+        }
+      }
+
+      return data;
+    });
+
+    return connectors;
+  }
+
+  getData(options = {}) {
+    const data = super.getData({
+      skip: [
+        ...(options?.skip || []),
+        'connectors', 'actdia', 'items', 'skipProperties', 'defaultConnector',
+        ...(this.skipProperties || [])
+      ],
+      ...options,
+    });
+
+    const connectors = this.getConnectorsData();
+    if (connectors?.length)
+      data.connectors = connectors;
+    
+    return data;
+  }
+
+  statusUpdated(options) {
+    this.propagate(options);
+  }
+
+  propagate(options = {}) {
+    this.connectors
+      .filter(c => c.type === 'out')
+      .forEach(connector => connector.setStatus(this.status, options));
+  }
+}

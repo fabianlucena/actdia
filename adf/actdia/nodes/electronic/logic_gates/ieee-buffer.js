@@ -1,0 +1,23 @@
+import Buffer from './buffer.js';
+
+export default class IEEEBuffer extends Buffer {
+  static label = 'IEEE Buffer';
+
+  shape = {
+    shapes: [
+      {
+        shape: 'rect',
+        x: 0,
+        width: 2,
+        height: 2,
+      },
+      {
+        shape: 'text',
+        x: 0,
+        width: 2,
+        height: 2,
+        text: '1',
+      },
+    ],
+  };
+}

@@ -1,0 +1,34 @@
+.actdia-node-selector-breadcrumbs {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  background-color: #444444;
+}
+
+.actdia-node-selector-categories {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.actdia-node-selector-classes {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.actdia-node-breadcrumb {
+  padding: .3em .7em;
+  margin: .1em;
+  cursor: pointer;
+}
+
+.actdia-node-breadcrumb:not(:first-child) {
+  border-left: .1em dashed rgba(128, 128, 128, 0.5);
+}
+
+.actdia-node-category {
+  padding: .3em .7em;
+  margin: .1em;
+  background-color: #555555;
+  cursor: pointer;
+  border-radius: .3em;
+}

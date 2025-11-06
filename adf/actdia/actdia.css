@@ -1,0 +1,168 @@
+@import url('./actdia-items.css');
+
+.actdia {
+  background-color: #242424;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.actdia-page {
+  stroke: #525252;
+}
+
+.actdia-item {
+  fill: #313131;
+  stroke: #d6d6d6;
+}
+
+.actdia-tools {
+  position: fixed;
+  right: 1em;
+  top: 1em;
+  min-width: 2em;
+  min-height: 2em;
+  fill: #8a8a8a;
+  stroke: #dbdbdb;
+  border: .1em solid #464646;
+  background-color: #2e2e2e;
+  display: flex;
+  flex-direction: column;
+  gap: .2em;
+}
+
+.actdia-tools .button {
+  width: 1.6em;
+  height: 1.6em;
+  margin: 0;
+  border: .15em solid transparent;
+  border-radius: .2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: .3em;
+}
+
+.actdia-tools .button:not(:first-child) {
+  border-top-color: #464646;
+  border-top-style: dashed;
+}
+
+.actdia-tools .button:hover {
+  background-color: #464646;
+  border-color: #555555;
+  border-style: solid;
+  box-shadow: 0 0 .5em #ffffffaa;
+}
+
+.actdia-item text {
+  fill: #c0c0c0;
+}
+
+.actdia-tool {
+  cursor: pointer;
+  fill: #585858;
+  stroke: #e7e7e7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.actdia-grid {
+  fill: #656565;
+}
+
+.print .actdia-grid {
+  fill: rgba(0, 0, 0, 0);
+}
+
+.actdia-label {
+  position: absolute;
+  display: none;
+  pointer-events: none;
+  background: rgba(54, 54, 54, 0.8);
+  color: white;
+  padding: .3em .5em;
+  font-family: Arial, sans-serif;
+  font-size: .8em;
+  z-index: 10;
+  border: .15em solid #464646;
+  border-radius: .3em;
+}
+
+.actdia-node-class {
+  background-color: #202020;
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid #424141ff;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.actdia-node-class-name {
+  text-align: center;
+  margin-top: 5px;
+  background-color: #464646;
+  width: 100%;
+}
+
+.actdia > .dialog {
+  background: rgba(54, 54, 54, 0.9);
+  border: .25em solid #666666;
+  border-radius: .3em;
+  padding: .5em;
+  font-family: Arial, sans-serif;
+  font-size: .8em;
+  z-index: 10;
+}
+
+.dialog-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .5em;
+}
+
+.dialog-header {
+  font-size: 2em;
+}
+
+.header-close-button {
+  background: #B00000;
+  border: none;
+  border-radius: 100%;
+  width: 1.5em;
+  height: 1.5em;
+  color: white;
+  font-size: 1.5em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-form {
+  display: grid;
+  grid-template-columns: 1fr minmax(20em, auto);
+  gap: .5em;
+}
+
+.dialog-content > label {
+  text-align: right;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: .5em;
+}
+
+.dialog-content .dialog-field {
+  display: flex;
+}
+
+.dialog-content .dialog-field > * {
+  flex: 1;
+}
