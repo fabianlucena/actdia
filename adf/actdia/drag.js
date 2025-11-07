@@ -9,6 +9,9 @@ let draggable = null,
 
 function mouseDownHandler(evt) {
   draggable = evt.target?.closest('.draggable');
+  if (!draggable)
+    return;
+  
   draggable.classList.add('dragging');
   from = { x: evt.clientX, y: evt.clientY };
 
