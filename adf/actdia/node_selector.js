@@ -13,11 +13,11 @@ let classesContainer;
 
 export default function nodeSelector(actdiaInstance) {
   actdia = actdiaInstance;
-  container = actdia.dialogContent;
-  container.innerHTML = '<div class="actdia-node-selector-breadcrumbs" ></div>'
+  actdia.showDialog('<div class="actdia-node-selector-breadcrumbs" ></div>'
     + '<div class="actdia-node-selector-categories" ></div>'
-    + '<div class="actdia-node-selector-classes" ></div>';
-
+    + '<div class="actdia-node-selector-classes" ></div>'
+  );
+  container = actdia.dialog.contentElement;
   breadcrumbsContainer = container.querySelector('.actdia-node-selector-breadcrumbs');
   categoriesContainer = container.querySelector('.actdia-node-selector-categories');
   classesContainer = container.querySelector('.actdia-node-selector-classes');

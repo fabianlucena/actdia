@@ -8,6 +8,8 @@ import { deletePropertyByPath, getValueByPath, setValueByPath, encodeHTML, getNu
 import { _, loadLocale, getLocales, loadLocales } from './locale.js';
 import { transformPathD } from './path2d.js';
 import nodeSelector from './node_selector.js';
+import Dialog from './dialog.js';
+import './drag.js';
 import { createNotificationContainer, pushNotification } from './notistack.js';
 import { DIRECTIONS } from './connector.js';
 import SON from './son.js';
@@ -479,40 +481,7 @@ export default class ActDia {
     window.addEventListener('beforeprint', () => this.svg.classList.add('print'));
     window.addEventListener('afterprint', evt => this.svg.classList.remove('print'));
 
-    this.dialog = document.createElement('form');
-    this.dialog.classList.add('dialog');
-    this.dialog.style.display = 'none';
-    this.dialog.style.position = 'absolute';
-    this.container.appendChild(this.dialog);
-    this.dialog.innerHTML = 
-     `<div class="dialog-header-content">
-        <div class="dialog-header"></div>
-        <button type="button" class="header-close-button">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
-      <div class="dialog-content"></div>
-      <div class="dialog-actions">
-        <button type="submit">${_('Submit')}</button>
-        <button type="button" class="cancel-button">${_('Cancel')}</button>
-        <button type="button" class="close-button">${_('Close')}</button>
-      </div>`;
-    this.dialog.addEventListener('mousedown', evt => this.dialogMouseDownHandler(evt));
-    this.dialog.addEventListener('mouseup', evt => this.dialogMouseUpHandler(evt));
-    this.dialog.addEventListener('submit', evt => this.dialogSubmitHandler(evt));
-    this.dialog.addEventListener('input', evt => this.dialogInputHandler(evt));
-    this.dialog.addEventListener('click', evt => this.dialogClickHandler(evt));
-    this.dialog.addEventListener('keydown', evt => evt.stopPropagation());
-    this.dialog.querySelector('.cancel-button').addEventListener('click', evt => this.dialogCancelHandler(evt));
-    this.dialog.querySelector('.close-button').addEventListener('click', evt => this.dialogCloseHandler(evt));
-    this.dialog.querySelector('.header-close-button').addEventListener('click', evt => this.dialogCloseHandler(evt));
-    this.dialogHeaderContainer = this.dialog.querySelector('.dialog-header-container');
-    this.dialogHeader = this.dialog.querySelector('.dialog-header');
-    this.dialogContent = this.dialog.querySelector('.dialog-content');
-
+    this.dialog = new Dialog({ container: this.container });
     createNotificationContainer();
 
     this.configureTools();
@@ -701,7 +670,7 @@ export default class ActDia {
   view(options) {
     const exportable = this.getExportableItems(options);
     const data = this.getData(exportable);
-    this.showDialog(
+    this.dialog.show(
       '<pre>' + JSON.stringify(data, '', 2) + '</pre>',
       {
         closeButton: true,
@@ -2376,14 +2345,6 @@ export default class ActDia {
     this.deleteSelected();
   }
 
-  dialogMouseDownHandler(evt) {
-    this.startDrag(this.dialog);
-  }
-
-  dialogMouseUpHandler(evt) {
-    this.endDrag();
-  }
-
   setItemFieldValue(item, field, value) {
     if (typeof value === 'undefined') {
       deletePropertyByPath(item, field.name);
@@ -2408,132 +2369,11 @@ export default class ActDia {
   }
 
   showDialog(content, options) {
-    options ??= {};
-
-    if (options.header) {
-      this.dialogHeader.innerHTML = options.header;
-    }
-    
-    this.dialogContent.innerHTML = content;
-
-    if (options.closeButton === false) {
-      this.dialog.querySelector('.close-button').style.display = 'none';
-      this.dialog.querySelector('.header-close-button').style.display = 'none';
-    } else {
-      this.dialog.querySelector('.close-button').style.display = 'inline-block';
-      this.dialog.querySelector('.close-button').innerHTML = 
-        typeof options.closeButton === 'string' ? options.closeButton : _('Close');
-
-      this.dialog.querySelector('.header-close-button').style.display = '';
-    }
-
-    if (options.submitButton === false) {
-      this.dialog.querySelector('button[type="submit"]').style.display = 'none';
-    } else {
-      this.dialog.querySelector('button[type="submit"]').style.display = 'inline-block';
-      this.dialog.querySelector('button[type="submit"]').innerHTML = 
-        typeof options.submitButton === 'string' ? options.submitButton : _('Submit');
-    }
-
-    if (options.cancelButton === false) {
-      this.dialog.querySelector('.cancel-button').style.display = 'none';
-    } else {
-      this.dialog.querySelector('.cancel-button').style.display = 'inline-block';
-      this.dialog.querySelector('.cancel-button').innerHTML = 
-        typeof options.cancelButton === 'string' ? options.cancelButton : _('Cancel');
-    }
-
-    this.dialog.style.display = 'block';
-
-    if (typeof options.x !== 'undefined')
-      this.dialog.style.left = options.x + 'px';
-    else
-      this.dialog.style.left = '0';
-
-    if (typeof options.y !== 'undefined')
-      this.dialog.style.top = options.y + 'px';
-    else
-      this.dialog.style.top = '0';
-
-    if (typeof options.width !== 'undefined')
-      this.dialog.style.width = options.width;
-    else
-      this.dialog.style.width = '';
-
-    this.dialogOptions = options;
+    this.dialog.show(content, options);
   }
 
   closeDialog() {
-    this.dialog.style.display = 'none';
-  }
-
-  dialogCloseHandler(evt) {
-    this.closeDialog();
-  }
-
-  dialogInputHandler(evt) {
-    const name = evt.target.name;
-    let field = this.formDefinition.find(f => f.name === name);
-    let value;
-    if (field) {
-      value = evt.target.type === 'checkbox' ?
-        evt.target.checked :
-        evt.target.value;
-
-      if (field.nullable) {
-        const nullifier = this.dialog.querySelector('#' + field.id.replace('.', '\\.') + '_nullifier');
-        if (nullifier && !nullifier.checked) {
-          nullifier.checked = true;
-        }
-      }
-    } else {
-      field = this.formDefinition.find(f => (f.name + '_nullifier') === name);
-      if (!field) {
-        return;
-      }
-
-      if (evt.target.checked) {
-        var element = this.dialog.querySelector('#' + field.id.replace('.', '\\.'));
-        value = element.type === 'checkbox' ?
-          element.checked :
-          element.value;
-      } else {
-        value = undefined;
-      }
-    }
-
-    this.setItemFieldValue(this.formItem, field, value);
-    this.formItem.update();
-  }
-
-  dialogClickHandler(evt) {
-    return this.dialogOptions?.onClick?.(evt);
-  }
-
-  dialogSubmitHandler(evt) {
-    evt.preventDefault();
-    const formData = new FormData(this.dialog);
-    let value;
-    this.formDefinition?.forEach(field => {
-      if (field.disabled || field.readOnly)
-        return;
-
-      if (field.nullable && formData.get(field.name + '_nullifier') !== 'on') {
-        value = undefined;
-      } else {
-        value = formData.get(field.name);
-      }
-
-      this.setItemFieldValue(this.formItem, field, value);
-    });
-
-    this.dialog.style.display = 'none';
-  }
-
-  dialogCancelHandler(evt) {
-    this.dialog.style.display = 'none';
-    this.formDefinition.forEach(field => 
-      this.setItemFieldValue(this.formItem, field, field.previousValue));
+    this.dialog.close();
   }
 
   showFormForItem(item) {
