@@ -81,6 +81,13 @@ export default class Perceptron extends Node {
     this._weights = value;
   }
 
+  getData() {
+    return {
+      ...super.getData({ skip: ['_weights'] }),
+      weights: this._weights,
+    };
+  }
+
   getNewConnector(connector) {
     return super.getNewConnector({ index: this.inputsCount }, ...arguments);
   }
@@ -99,7 +106,8 @@ export default class Perceptron extends Node {
       input.y = 1 - Math.cos(a);
     }
 
-    this._weights = this._weights.slice(0, inputs.length);
+    this._weights ??= [];
+    this._weights = this._weights?.slice(0, inputs.length);
     if (this._weights.length < inputs.length) {
       for (let i = this._weights.length; i < inputs.length; i++) {
         this._weights.push(Math.random() * 10 - 5);

@@ -155,12 +155,12 @@ export default class Node extends Item {
 
   getData(options = {}) {
     const data = super.getData({
+      ...options,
       skip: [
         ...(options?.skip || []),
         'connectors', 'actdia', 'items', 'skipProperties', 'defaultConnector',
         ...(this.skipProperties || [])
       ],
-      ...options,
     });
 
     const connectors = this.getConnectorsData();
