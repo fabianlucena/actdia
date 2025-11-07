@@ -49,8 +49,8 @@ export default class Item extends Element {
     const elementClass = this.constructor.name;
     const data = {
       elementClass,
-      id: this.id,
       url: this.getElementClassUrl(),
+      id: this.id,
     };
 
     const defaultItem = this.getDefaultObject();

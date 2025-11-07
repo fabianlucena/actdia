@@ -1,6 +1,6 @@
 import Node from './node.js';
 
-export default class Text extends Node {
+export class Text extends Node {
   shape = {
     shapes: [
       {
@@ -90,7 +90,7 @@ export default class Text extends Node {
   set autoSize(value) {
     if (this._autoSize !== value) {
       this._autoSize = value
-      this.updateShape();
+      this.update();
     }
   }
 
@@ -101,7 +101,7 @@ export default class Text extends Node {
   set text(value) {
     if (this.shape.shapes[1].text !== value) {
       this.shape.shapes[1].text = value;
-      this.updateShape();
+      this.update();
     }
   }
 
@@ -112,12 +112,12 @@ export default class Text extends Node {
   set padding(value) {
     if (this._padding !== value) {
       this._padding = value;
-      this.updateShape();
+      this.update();
     }
   }
 
-  updateShape() {
-    this.update();
+  update() {
+    super.update();
 
     if (this.autoSize) {
       const bbox = this.svgShape.children[1].getBBox();

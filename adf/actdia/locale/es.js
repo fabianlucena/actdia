@@ -25,6 +25,7 @@ export default {
   'Line width': 'Ancho de línea',
   'Loading...': 'Cargando...',
   'Name': 'Nombre',
+  'No Connector class registered for type: %s.': 'No hay clase de Conector registrada para el tipo: %s.',
   'No shape defined for connector in item %s.': 'No se ha definido forma para el conector en el ítem %s.',
   'Padding bottom': 'Relleno inferior',
   'Padding left': 'Relleno izquierdo',

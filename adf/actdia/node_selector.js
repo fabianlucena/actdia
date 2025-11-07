@@ -95,13 +95,12 @@ async function update({ path, namespace }) {
   };
 
   const urls = nodesClasses.map(c => `${path}/${c}`);
-  const clasesNames = await Item.importAsync(...urls);
+  const clasesInfo = await Item.importAsync(...urls);
 
-  classesContainer.innerHTML = clasesNames
-    .map(elementClass => {
+  classesContainer.innerHTML = clasesInfo
+    .map(classInfo => {
       const itemOptions = {};
-      const itemInfo = Item.getElementClassInfo(elementClass);
-      const item = Item.create(elementClass);
+      const item = Item.create(classInfo);
 
       itemOptions.sx = Math.min(
         (options.width -  options.padding * 2) / item.box.width,
@@ -114,7 +113,7 @@ async function update({ path, namespace }) {
 
       let html = `<div
           class="actdia-node-class"
-          data-element-class="${elementClass}"
+          data-fqcn="${classInfo.fqcn}"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="${options.width}" height="${options.height}">
             ${actdia.getItemSVG(item, itemOptions)}
@@ -122,7 +121,7 @@ async function update({ path, namespace }) {
           <div
             class="actdia-node-class-name"
           >
-            ${_(itemInfo._label)}
+            ${_(classInfo._label)}
           </div>
         </div>`;
       return html;

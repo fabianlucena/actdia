@@ -1,6 +1,6 @@
-import ConnectorGeneric from './connector-generic.js';
+import Connector from './connector.js';
 
-export default class ConnectorOut extends ConnectorGeneric {
+export default class ConnectorOut extends Connector {
   type = 'out';
   accepts = [ 'in' ];
   multiple = false;

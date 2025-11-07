@@ -139,3 +139,18 @@ export function isNumber(value) {
 export function getPath(urlString) {
   return urlString.replace(/\/[^\/]*$/, '');
 }
+
+export function doesExtend(subClass, superClass) {
+  if (typeof subClass !== 'function' || typeof superClass !== 'function')
+    return false;
+
+  let current = subClass;
+  while (current) {
+    if (current === superClass)
+      return true;
+    
+    current = Object.getPrototypeOf(current);
+  }
+
+  return false;
+}

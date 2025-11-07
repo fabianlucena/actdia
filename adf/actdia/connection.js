@@ -18,7 +18,7 @@ export default class Connection extends Item {
 
     super.init(rest);
 
-    this.updateShape();
+    this.update();
   }
 
   setFrom(from, items) {
@@ -92,7 +92,10 @@ export default class Connection extends Item {
   }
 
   getData() {
+    const elementClass = this.constructor.name;
     return {
+      elementClass,
+      url: this.getElementClassUrl(),
       id: this.id,
       from: {
         connector: this.from.connector.id,
@@ -105,7 +108,7 @@ export default class Connection extends Item {
     };
   }
 
-  updateShape({ mouse } = {}) {
+  update({ mouse } = {}) {
     this.x = 0;
     this.y = 0;
 

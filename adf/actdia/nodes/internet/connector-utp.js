@@ -1,6 +1,6 @@
-import ConnectorGeneric from './connector-generic.js';
+import Connector from '../../connector.js';
 
-export default class ConnectorUtp extends ConnectorGeneric {
+export default class ConnectorUtp extends Connector {
   type = 'utp';
   accepts = [ 'in' ];
   multiple = false;

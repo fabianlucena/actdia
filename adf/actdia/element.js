@@ -1,19 +1,28 @@
+import { getPath } from './utils.js';
 
 const registry = {};
 
 export default class Element {
-  static registerClass(info) {
-    const elementClass = info.elementClass;
-    let namespace = info.classRef.namespace || '';
-    const classInfo = { ...info, namespace };
-    classInfo._label ??= info.classRef._label ?? info.classRef.label ?? elementClass;
+  static registerClass(classInfo) {
+    let elementClass = classInfo.elementClass;
+    classInfo = { ...classInfo };
+    classInfo._label ??= classInfo.classRef._label
+      ?? classInfo.classRef.label
+      ?? classInfo.classRef.type
+      ?? elementClass;
 
-    if (namespace)
-      namespace += '.';
+    if (!classInfo.url) {
+      throw new Error(`Element class ${elementClass} must have a url.`);
+    }
 
-    registry[namespace + elementClass] = classInfo;
+    classInfo.fqcn = classInfo.fqcn ?? classInfo.url + '/' + elementClass;
+    if (registry[classInfo.fqcn]) {
+      console.warn(`Element class ${classInfo.fqcn} is already registered`);
+      console.trace();
+    }
+    registry[classInfo.fqcn] = classInfo;
 
-    return namespace + elementClass;
+    return classInfo;
   }
 
   static getRegisteredClassesInfo() {
@@ -23,22 +32,49 @@ export default class Element {
   static async importAsync(...urls) {
     const result = await Promise.all(urls.map(async url => {
       const module = await import(url);
-      if (typeof module.default === 'function') {
-        const classRef = module.default;
+      const classesRef = Object.values(module);
+      const result = [];
+
+      for (const classRef of classesRef) {
+        if (typeof classRef !== 'function')
+          continue;
+        
         const elementClass = classRef.name;
-        return this.registerClass({
+        const fqcn = url + '/' + elementClass;
+        if (registry[fqcn]) {
+          result.push(registry[fqcn]);
+          continue;
+        }
+        
+        if (classRef.import) {
+          let importUrls = Array.isArray(classRef.import) ?
+            classRef.import : [ classRef.import ];
+
+          for (let importUrl of importUrls) {
+            if (importUrl.startsWith('.'))
+              importUrl = getPath(url) + '/' + importUrl;
+            
+            await this.importAsync(importUrl);
+          }
+        }
+
+        result.push(this.registerClass({
           elementClass,
           classRef,
           url,
-        });
+          fqcn,
+        }));
       }
+
+      return result;
     }));
 
-    return result;
+    return result.flat();
   }
 
   static async importForDataAsync(data) {
-    let classRef = registry[data.elementClass]?.classRef;
+    const fqcn = data.fqcn ?? data.url + '/' + data.elementClass;
+    let classRef = registry[fqcn]?.classRef;
     if (!classRef) {
       if (data.url) {
         await this.importAsync(data.url);
@@ -48,38 +84,26 @@ export default class Element {
     return classRef;
   }
 
-  static getElementClassInfo(elementClass) {
-    let classInfo = registry[elementClass];
+  static getElementClassInfo(fqcn) {
+    let classInfo = registry[fqcn];
     if (classInfo) {
       return classInfo;
     }
-
-    const ref = { elementClass: this };
-
-    classInfo ??= {};
-    registry[elementClass] = classInfo;
-
-    classInfo.elementClass ??= elementClass;
-    classInfo.classRef ??= ref.elementClass;
-
-    return classInfo;
+    
+    return null;
   }
 
-  static getElementClassRef(elementClass) {
-    const classInfo = this.getElementClassInfo(elementClass);
+  static getElementClassRef(fqcn) {
+    const classInfo = this.getElementClassInfo(fqcn);
     return classInfo?.classRef;
   }
 
   static create(data) {
-    if (typeof data === 'string') {
-      data = { elementClass: data };
-    }
-
-    const classRef = data.elementClass ?
-      Element.getElementClassRef(data.elementClass) : Element;
+    data.fqcn ??= data.url + '/' + data.elementClass;
+    const classRef = Element.getElementClassRef(data.fqcn);
 
     if (!classRef) {
-      throw new Error(`Element class ${data.elementClass} not found`);
+      throw new Error(`Element class ${data.fqcn} not found`);
     }
 
     const obj = new classRef();
@@ -93,8 +117,8 @@ export default class Element {
     return Element.create(data);
   }
 
-  static getDefaultObject(elementClass) {
-    const classInfo = this.getElementClassInfo(elementClass);
+  static getDefaultObject(fqcn) {
+    const classInfo = this.getElementClassInfo(fqcn);
     if (!classInfo.defaultItem) {
       classInfo.defaultItem = new classInfo.classRef();
     }
@@ -107,7 +131,18 @@ export default class Element {
   }
 
   init(options) {
-    Object.assign(this, ...arguments);
+    for (let argument of arguments) {
+      for (let key in argument) {
+        if (key === 'classRef')
+          continue;
+        
+        this[key] = argument[key];
+      }
+    }
+  }
+
+  getFQCN() {
+    return this.fqcn ?? (this.url + '/' + this.constructor.name);
   }
 
   getElementClass() {
@@ -119,7 +154,7 @@ export default class Element {
   }
 
   getElementClassInfo() {
-    return Element.getElementClassInfo(this.getElementClass());
+    return Element.getElementClassInfo(this.getFQCN());
   }
 
   getElementClassRef() {
@@ -131,6 +166,6 @@ export default class Element {
   }
 
   getDefaultObject() {
-    return Element.getDefaultObject(this.getElementClass());
+    return Element.getDefaultObject(this.getFQCN());
   }
 }

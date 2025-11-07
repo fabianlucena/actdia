@@ -3,6 +3,9 @@ import Node from '../../node.js';
 export default class InternetRouter extends Node {
   static label = 'Router';
   static description = 'Internet Router Node';
+  static import = [
+    './connector-utp.js',
+  ];
 
   shape = {
     sy: .5,

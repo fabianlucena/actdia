@@ -9,7 +9,7 @@ import { _, loadLocale, getLocales, loadLocales } from './locale.js';
 import { transformPathD } from './path2d.js';
 import nodeSelector from './node_selector.js';
 import { createNotificationContainer, pushNotification } from './notistack.js';
-import { DIRECTIONS } from './connector-generic.js';
+import { DIRECTIONS } from './connector.js';
 import SON from './son.js';
 
 window.addEventListener('DOMContentLoaded', async () => {
@@ -407,9 +407,11 @@ export default class ActDia {
   constructor(options) {
     this.create(options);
 
-    Item.importAsync('./node.js')
-      .then(() => Item.importAsync('./connection.js'))
-      .then(() => Item.importAsync('./text.js'))
+    Element.importAsync('./node.js')
+      .then(() => Element.importAsync('./connection.js'))
+      .then(() => Element.importAsync('./text.js'))
+      .then(() => Element.importAsync('./connector-in.js'))
+      .then(() => Element.importAsync('./connector-out.js'))
       .then(() => {
         if (window.location.hash) {
           const data = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
@@ -602,6 +604,7 @@ export default class ActDia {
 
     const imports = [...new Set([
         ...nodes.map(item => item.url),
+        ...nodes.map(item => item.connectors.map(connector => connector.url)).flat(),
         ...connections.map(item => item.url),
       ].filter(u => u))]
       .sort();
@@ -2044,7 +2047,7 @@ export default class ActDia {
             .filter(i => isConnection(i)
                 && (i.from?.item === item
                 || i.to?.item === item))
-            .forEach(connection => connection.updateShape());
+            .forEach(connection => connection.update());
         } else if (isHTMLElement(item)) {
           this.pushNotification(_('Check this out...'), 'debug');
           item.style.left = dragging.from.x + ix + 'px';
@@ -2058,7 +2061,7 @@ export default class ActDia {
     }
     
     if (this.capturedItem) {
-      this.capturedItem.updateShape({
+      this.capturedItem.update({
         mouse: {
           ...this.mouse,
           x: this.mouse.x / this.style.sx,
@@ -2169,7 +2172,7 @@ export default class ActDia {
       }
 
       this.capturedItem.setTo({ item, connector });
-      this.capturedItem.updateShape();
+      this.capturedItem.update();
       this.capturedItem = null;
 
       this.hideLabel();
@@ -2180,13 +2183,14 @@ export default class ActDia {
     (async () => {
       this.capturedItem = await this.addItem({
         elementClass: 'Connection',
+        url: './connection.js',
         from: {
           item,
           connector,
         },
         to: 'mouse'
       });
-      this.capturedItem.updateShape({
+      this.capturedItem.update({
         mouse: {
           ...this.mouse,
           x: this.mouse.x / this.style.sx,
@@ -2306,10 +2310,10 @@ export default class ActDia {
         closeButton: true,
         onClick: async (evt) => {
           const classDiv = evt.target.closest('.actdia-node-class');
-          const elementClass = classDiv?.dataset?.elementClass;
-          if (elementClass) {
+          const fqcn = classDiv?.dataset?.fqcn;
+          if (fqcn) {
             await this.addItem({
-              elementClass,
+              fqcn,
               x,
               y,
             });
