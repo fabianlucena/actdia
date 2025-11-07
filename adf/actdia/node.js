@@ -98,6 +98,10 @@ export default class Node extends Item {
       const connector = this.connectors[i];
       if (connector.type === 'in') {
         this.connectors.splice(i, 1);
+        if (connector.connections?.length) {
+          this.actdia.deleteItem(...connector.connections);
+        }
+
         this.update();
         break;
       }

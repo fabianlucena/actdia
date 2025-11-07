@@ -72,23 +72,7 @@ export default class Perceptron extends Node {
     }
   }
 
-  _weights = [];
-
-  get weights() {
-    return this._weights || [];
-  }
-
-  set weights(value) {
-    console.trace();
-    this._weights = value;
-  }
-
-  getData() {
-    return {
-      ...super.getData({ skip: ['_weights'] }),
-      weights: this._weights,
-    };
-  }
+  weights = [];
 
   getNewConnector(connector) {
     return super.getNewConnector({ index: this.inputsCount }, ...arguments);
@@ -106,13 +90,16 @@ export default class Perceptron extends Node {
       const input = inputs[i];
       input.x = 1 - Math.sin(a);
       input.y = 1 - Math.cos(a);
+      input.direction = a + Math.PI / 2;
+
+      input.connections?.forEach(conn => conn.update());
     }
 
-    this._weights ??= [];
-    this._weights = this._weights?.slice(0, inputs.length);
-    if (this._weights.length < inputs.length) {
-      for (let i = this._weights.length; i < inputs.length; i++) {
-        this._weights.push(Math.random() * 10 - 5);
+    this.weights ??= [];
+    this.weights = this.weights?.slice(0, inputs.length);
+    if (this.weights.length < inputs.length) {
+      for (let i = this.weights.length; i < inputs.length; i++) {
+        this.weights.push(Math.random() * 10 - 5);
       }
     }
 

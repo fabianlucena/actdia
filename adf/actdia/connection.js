@@ -149,7 +149,7 @@ export default class Connection extends Item {
       dy = ty - fy,
       dd = Math.pow(dx * dx + dy * dy, 1/2) / 3,
       x1 = fx + dd * Math.cos(this.from.connector.direction),
-      y1 = fy + dd * Math.sin(this.from.connector.direction);
+      y1 = fy - dd * Math.sin(this.from.connector.direction);
 
     let d;
     if (isMouse) {
@@ -157,7 +157,7 @@ export default class Connection extends Item {
     } else {
       const
         x2 = tx + dd * Math.cos(this.to.connector.direction),
-        y2 = ty + dd * Math.sin(this.to.connector.direction);
+        y2 = ty - dd * Math.sin(this.to.connector.direction);
       d = `M ${fx} ${fy} C ${x1} ${y1} ${x2} ${y2} ${tx} ${ty}`;
     }
 

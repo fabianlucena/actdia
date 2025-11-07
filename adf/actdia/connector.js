@@ -9,9 +9,9 @@ const PI_3_2 = Math.PI * 3 / 2;
 
 export const DIRECTIONS = {
   RIGHT: PI_0,
-  DOWN: PI_1_2,
+  DOWN: PI_3_2,
   LEFT: PI,
-  UP: PI_3_2,
+  UP: PI_1_2,
 };
 
 export default class Connector extends Element {
@@ -75,10 +75,10 @@ export default class Connector extends Element {
       switch (direction) {
         case 'right': return PI_0;
         case 'bottom':
-        case 'down': return PI_1_2;
+        case 'down': return PI_3_2;
         case 'left': return PI;
         case 'top':
-        case 'up': return PI_3_2;
+        case 'up': return PI_1_2;
       }
     }
 
