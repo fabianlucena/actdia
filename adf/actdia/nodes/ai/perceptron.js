@@ -50,6 +50,7 @@ export default class Perceptron extends Node {
       _label: 'Weights',
       item: {
         type: 'number',
+        step: 'any',
       },
     }
   ];
@@ -78,6 +79,7 @@ export default class Perceptron extends Node {
   }
 
   set weights(value) {
+    console.trace();
     this._weights = value;
   }
 

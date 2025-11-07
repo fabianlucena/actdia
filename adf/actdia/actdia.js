@@ -2650,20 +2650,12 @@ export default class ActDia {
       fieldHtml += `</select>`;
     } else if (tag === 'list' || type === 'list') {
       fieldHtml += `<ul>
-        ${(Array.isArray(value) ? value : []).map((item, index) => `
+        ${(Array.isArray(value) ? value : []).map((_, index) => `
           <li>
-            <input
-              type="text"
-              id="${field.id}_item_${index}"
-              name="${field.name}_item_${index}"
-              value="${item || ''}"
-              ${field.readOnly ? 'readonly' : ''}
-              ${field.disabled ? 'disabled="disabled"' : ''} 
-            >
+            ${this.getFieldHtml({ name: `${field.name}[${index}]`, ...field.item }, item)}
           </li>
         `).join('')}
         </ul>`;
-
     } else {
       fieldHtml += `<${tag}
           id="${field.id}"
@@ -2679,7 +2671,10 @@ export default class ActDia {
         >`;
     }
 
-    return `<label for="${field.id}">${field.label}:</label>
-      <span class="dialog-field">${fieldHtml}</span>`;
+    if (field.label)
+      fieldHtml = `<label for="${field.id}">${field.label}:</label>
+        <span class="dialog-field ${field.className ?? ''}">${fieldHtml}</span>`;
+
+    return fieldHtml;
   }
 }
