@@ -7,8 +7,9 @@ export default class Dialog {
 
     this.element = document.createElement('div');
     this.element.classList.add('dialog', 'draggable');
-    this.element.style.display = 'none';
+    this.element.style.display = 'flex';
     this.element.style.position = 'fixed';
+    this.element.style.flexDirection = 'column';
     this.container.appendChild(this.element);
     this.element.innerHTML = 
       `<div class="header">
@@ -60,14 +61,15 @@ export default class Dialog {
 
     if (typeof content === 'object' && content !== null) {
       options = { ...options, ...content };
-      content = options.content || '';
+      content = options.content;
     }
 
     if (options.header) {
       this.headerTextElement.innerHTML = options.header;
     }
 
-    this.contentElement.innerHTML = content;
+    if (typeof content === 'string')
+      this.contentElement.innerHTML = content;
 
     this.element.className = 'dialog draggable';
     if (options.className) {
@@ -101,7 +103,7 @@ export default class Dialog {
         typeof options.cancelButton === 'string' ? options.cancelButton : _('Cancel');
     }
 
-    this.element.style.display = 'block';
+    this.element.style.display = 'flex';
 
     if (typeof options.width !== 'undefined')
       this.element.style.width = options.width;
