@@ -1,176 +1,167 @@
+import './dialog.css';
 import { _ } from './locale.js';
 
 export default class Dialog {
   constructor({ container }) {
     this.container = container;
 
-    this.element = document.createElement('form');
+    this.element = document.createElement('div');
     this.element.classList.add('dialog', 'draggable');
     this.element.style.display = 'none';
-    this.element.style.position = 'absolute';
+    this.element.style.position = 'fixed';
     this.container.appendChild(this.element);
     this.element.innerHTML = 
-      `<div class="dialog-header-content">
-        <div class="dialog-header"></div>
-        <button type="button" class="header-close-button">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      `<div class="header">
+        <div class="header-text"></div>
+        <button type="button" class="close">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18" height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         </button>
       </div>
-      <div class="dialog-content"></div>
-      <div class="dialog-actions">
-        <button type="submit">${_('Submit')}</button>
-        <button type="button" class="cancel-button">${_('Cancel')}</button>
-        <button type="button" class="close-button">${_('Close')}</button>
+      <div class="content"></div>
+      <div class="footer">
+        <div class="actions">
+          <button type="submit" class="submit">${_('Submit')}</button>
+          <button type="button" class="cancel">${_('Cancel')}</button>
+          <button type="button" class="close">${_('Close')}</button>
+        </div>
       </div>`;
-    this.element.addEventListener('mousedown', evt => this.mouseDownHandler(evt));
-    this.element.addEventListener('mouseup', evt => this.mouseUpHandler(evt));
+
+    this.headerElement = this.element.querySelector('.header');
+    this.headerTextElement = this.element.querySelector('.header-text');
+    this.contentElement = this.element.querySelector('.content');
+    this.footerElement = this.element.querySelector('.footer');
+
+    this.headerCloseButton = this.headerElement.querySelector('.close');
+    this.closeButton = this.footerElement.querySelector('.close');
+    this.cancelButton = this.footerElement.querySelector('.cancel');
+    this.submitButton = this.footerElement.querySelector('.submit');
+
     this.element.addEventListener('submit', evt => this.submitHandler(evt));
-    this.element.addEventListener('input', evt => this.inputHandler(evt));
-    this.element.addEventListener('click', evt => this.clickHandler(evt));
     this.element.addEventListener('keydown', evt => evt.stopPropagation());
-    this.element.querySelector('.cancel-button').addEventListener('click', evt => this.cancelHandler(evt));
-    this.element.querySelector('.close-button').addEventListener('click', evt => this.closeHandler(evt));
-    this.element.querySelector('.header-close-button').addEventListener('click', evt => this.closeHandler(evt));
-    this.headerElementContainer = this.element.querySelector('.dialog-header-container');
-    this.headerElement = this.element.querySelector('.dialog-header');
-    this.contentElement = this.element.querySelector('.dialog-content');
+    this.cancelButton.addEventListener('click', evt => this.cancelHandler(evt));
+    this.headerCloseButton.addEventListener('click', evt => this.closeHandler(evt));
+    this.closeButton.addEventListener('click', evt => this.closeHandler(evt));
   }
 
   show(content, options) {
     options ??= {};
 
+    if (typeof content === 'object' && content !== null) {
+      options = { ...options, ...content };
+      content = options.content || '';
+    }
+
     if (options.header) {
-      this.headerElement.innerHTML = options.header;
+      this.headerTextElement.innerHTML = options.header;
     }
 
     this.contentElement.innerHTML = content;
 
+    this.element.className = 'dialog draggable';
+    if (options.className) {
+      this.element.classList.add(options.className);
+    }
+
     if (options.closeButton === false) {
-      this.element.querySelector('.close-button').style.display = 'none';
-      this.element.querySelector('.header-close-button').style.display = 'none';
+      this.closeButton.style.display = 'none';
+      this.headerCloseButton.style.display = 'none';
     } else {
-      this.element.querySelector('.close-button').style.display = 'inline-block';
-      this.element.querySelector('.close-button').innerHTML = 
+      this.closeButton.style.display = 'inline-block';
+      this.closeButton.innerHTML = 
         typeof options.closeButton === 'string' ? options.closeButton : _('Close');
 
-      this.element.querySelector('.header-close-button').style.display = '';
+      this.headerCloseButton.style.display = '';
     }
 
     if (options.submitButton === false) {
-      this.element.querySelector('button[type="submit"]').style.display = 'none';
+      this.submitButton.style.display = 'none';
     } else {
-      this.element.querySelector('button[type="submit"]').style.display = 'inline-block';
-      this.element.querySelector('button[type="submit"]').innerHTML = 
+      this.submitButton.style.display = 'inline-block';
+      this.submitButton.innerHTML = 
         typeof options.submitButton === 'string' ? options.submitButton : _('Submit');
     }
 
     if (options.cancelButton === false) {
-      this.element.querySelector('.cancel-button').style.display = 'none';
+      this.cancelButton.style.display = 'none';
     } else {
-      this.element.querySelector('.cancel-button').style.display = 'inline-block';
-      this.element.querySelector('.cancel-button').innerHTML = 
+      this.cancelButton.style.display = 'inline-block';
+      this.cancelButton.innerHTML = 
         typeof options.cancelButton === 'string' ? options.cancelButton : _('Cancel');
     }
 
     this.element.style.display = 'block';
 
+    if (typeof options.width !== 'undefined')
+      this.element.style.width = options.width;
+    else {
+      this.element.style.width = '';
+      const maxWidth = document.body.clientWidth * .8;
+      if (this.element.offsetWidth > maxWidth)
+        this.element.style.width = maxWidth + 'px';
+    }
+
+    if (typeof options.height !== 'undefined')
+      this.element.style.height = options.height;
+    else {
+      this.element.style.height = '';
+      const maxHeight = document.body.clientHeight * .8;
+      if (this.element.offsetHeight > maxHeight)
+        this.element.style.height = maxHeight + 'px';
+    }
+
     if (typeof options.x !== 'undefined')
       this.element.style.left = options.x + 'px';
     else
-      this.element.style.left = '0';
+      this.element.style.left = (document.body.clientWidth - this.element.offsetWidth) / 2 + 'px';
 
     if (typeof options.y !== 'undefined')
       this.element.style.top = options.y + 'px';
     else
-      this.element.style.top = '0';
-
-    if (typeof options.width !== 'undefined')
-      this.element.style.width = options.width;
-    else
-      this.element.style.width = '';
+      this.element.style.top = (document.body.clientHeight - this.element.offsetHeight) / 2 + 'px';
 
     this.onClick = options.onClick;
   }
 
+  showError(content, options) {
+    this.show(
+      content,
+      {
+        className: 'error',
+        header: _('Error'),
+        submitButton: false,
+        cancelButton: false,
+      }
+    );
+  }
+  
   close() {
     this.element.style.display = 'none';
   }
 
   closeHandler(evt) {
+    evt.preventDefault();
     this.close();
-  }
-
-  inputHandler(evt) {
-    const name = evt.target.name;
-    let field = this.formDefinition.find(f => f.name === name);
-    let value;
-    if (field) {
-      value = evt.target.type === 'checkbox' ?
-        evt.target.checked :
-        evt.target.value;
-
-      if (field.nullable) {
-        const nullifier = this.element.querySelector('#' + field.id.replace('.', '\\.') + '_nullifier');
-        if (nullifier && !nullifier.checked) {
-          nullifier.checked = true;
-        }
-      }
-    } else {
-      field = this.formDefinition.find(f => (f.name + '_nullifier') === name);
-      if (!field) {
-        return;
-      }
-
-      if (evt.target.checked) {
-        var element = this.element.querySelector('#' + field.id.replace('.', '\\.'));
-        value = element.type === 'checkbox' ?
-          element.checked :
-          element.value;
-      } else {
-        value = undefined;
-      }
-    }
-
-    this.setItemFieldValue(this.formItem, field, value);
-    this.formItem.update();
-  }
-
-  clickHandler(evt) {
-    return this.onClick?.(evt);
   }
 
   submitHandler(evt) {
     evt.preventDefault();
-    const formData = new FormData(this.element);
-    let value;
-    this.formDefinition?.forEach(field => {
-      if (field.disabled || field.readOnly)
-        return;
-
-      if (field.nullable && formData.get(field.name + '_nullifier') !== 'on') {
-        value = undefined;
-      } else {
-        value = formData.get(field.name);
-      }
-
-      this.setItemFieldValue(this.formItem, field, value);
-    });
-
-    this.element.style.display = 'none';
+    this.close();
   }
 
   cancelHandler(evt) {
-    this.element.style.display = 'none';
-    this.formDefinition.forEach(field =>
-      this.setItemFieldValue(this.formItem, field, field.previousValue));
-  }
-
-  mouseDownHandler(evt) {
-  }
-
-  mouseUpHandler(evt) {
+    evt.preventDefault();
+    this.close();
   }
 }

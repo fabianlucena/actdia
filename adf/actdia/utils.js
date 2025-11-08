@@ -1,3 +1,7 @@
+export function isHTMLElement(item) {
+  return item instanceof HTMLElement;
+}
+
 export function isEqual(a, b, options = { maxDeep: 10, skip: [], path: '' }) {
   const result = _isEqual(a, b, options);
   return result;

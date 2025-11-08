@@ -1,0 +1,167 @@
+import './form.css';
+import { _ } from './locale.js';
+import Dialog from './dialog.js';
+
+export default class Form extends Dialog {
+  constructor({ container }) {
+    super(...arguments)
+    this.contentElement.addEventListener('input', evt => this.inputHandler(evt));
+  }
+
+  show(options) {
+    if (!this.formDefinition) {
+      this.showError(_('No form definition available.'));
+      return;
+    }
+
+    const html = this.formDefinition
+      .map(field => this.getFieldHtml(field))
+      .join('');
+
+    super.show({
+      header: options.header || _('Form'),
+      content: `<form class="form">${html}</form>`,
+      ...options,
+      submitButton: _('Save'),
+      closeButton: false,
+    });
+  }
+
+  getValue(field) {
+  }
+
+  setValue(field, value) {
+  }
+
+  getFieldHtml(field) {
+    if (!field.label && field._label)
+      field.label = _(field._label);
+
+    field.id ??= field.name ?? crypto.randomUUID();
+    field.previousValue = this.getValue(field);
+
+    let fieldHtml = '';
+
+    if (field.nullable)
+      fieldHtml = `<input type="checkbox" id="${field.id}_nullifier" name="${field.name}_nullifier" ${this.getValue(field) ? 'checked' : ''} style="flex: 0">`;
+
+    const tag = field.tag?.toLowerCase() || 'input',
+      type = field.type?.toLowerCase() || 'text',
+      value = this.getValue(field);
+
+    if (tag === 'textarea' || type === 'textarea') {
+      fieldHtml += `<textarea
+          id="${field.id}"
+          name="${field.name}"
+          ${field.readOnly ? 'readonly' : ''}
+          ${field.disabled ? 'disabled="disabled"' : ''} 
+        >${value || ''}</textarea>`;
+    } else if (tag === 'select' || type === 'select') {
+      fieldHtml += `<select
+          id="${field.id}"
+          name="${field.name}"
+          ${field.readOnly ? 'readonly' : ''}
+          ${field.disabled ? 'disabled="disabled"' : ''} 
+        >`;
+      field.options?.forEach(option => {
+        let value, label, style;
+        if (typeof option === 'object') {
+          value = option.value;
+          label = option.label;
+          style = option.style? ` style="${option.style}"` : '';
+        } else {
+          value = option;
+          label = option;
+        }
+
+        fieldHtml += `<option value="${value}" ${value == value ? 'selected' : ''}${style}>${label}</option>`;
+      });
+      fieldHtml += `</select>`;
+    } else if (tag === 'list' || type === 'list') {
+      fieldHtml += `<ul>
+        ${(Array.isArray(value) ? value : []).map((_, index) => `
+          <li>
+            ${this.getFieldHtml({ name: `${field.name}[${index}]`, ...field.item })}
+          </li>
+        `).join('')}
+        </ul>`;
+    } else {
+      fieldHtml += `<${tag}
+          id="${field.id}"
+          name="${field.name}"
+          type="${type || 'text'}"
+          ${(type === 'checkbox' && value) ? 'checked="checked"' : ''}
+          ${typeof field.min !== 'undefined' ? `min="${field.min}"` : ''}
+          ${typeof field.max !== 'undefined' ? `max="${field.max}"` : ''}
+          ${typeof field.step !== 'undefined' ? `step="${field.step}"` : ''}
+          ${field.readOnly ? 'readonly' : ''}
+          ${field.disabled ? 'disabled="disabled"' : ''} 
+          value="${value || ''}"
+        >`;
+    }
+
+    if (field.label)
+      fieldHtml = `<label for="${field.id}">${field.label}:</label>
+        <span class="field ${field.className ?? ''}">${fieldHtml}</span>`;
+
+    return fieldHtml;
+  }
+
+  inputHandler(evt) {
+    const name = evt.target.name;
+    let field = this.formDefinition.find(f => f.name === name);
+    let value;
+    if (field) {
+      value = evt.target.type === 'checkbox' ?
+        evt.target.checked :
+        evt.target.value;
+
+      if (field.nullable) {
+        const nullifier = this.element.querySelector('#' + field.id.replace('.', '\\.') + '_nullifier');
+        if (nullifier && !nullifier.checked) {
+          nullifier.checked = true;
+        }
+      }
+    } else {
+      field = this.formDefinition.find(f => (f.name + '_nullifier') === name);
+      if (!field) {
+        return;
+      }
+
+      if (evt.target.checked) {
+        var element = this.element.querySelector('#' + field.id.replace('.', '\\.'));
+        value = element.type === 'checkbox' ?
+          element.checked :
+          element.value;
+      } else {
+        value = undefined;
+      }
+    }
+
+    this.setValue(field, value);
+  }
+
+  submitHandler(evt) {
+    const formData = new FormData(this.element);
+    let value;
+    this.formDefinition?.forEach(field => {
+      if (field.disabled || field.readOnly)
+        return;
+
+      if (field.nullable && formData.get(field.name + '_nullifier') !== 'on') {
+        value = undefined;
+      } else {
+        value = formData.get(field.name);
+      }
+
+      this.setValue(field, value);
+    });
+
+    super.submitHandler(evt);
+  }
+
+  cancelHandler(evt) {
+    this.formDefinition.forEach(field =>
+      this.setValue(field, field.previousValue));
+  }
+}

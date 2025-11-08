@@ -1,39 +1,32 @@
 import actdiaItemsCss from './actdia-items.css?raw';
 import './actdia.css';
 import Element from './element.js';
-import Item from './item.js';
-import Node from './node.js';
-import Connection from './connection.js';
-import { deletePropertyByPath, getValueByPath, setValueByPath, encodeHTML, getNumber, isNumber, getPath } from './utils.js';
+import Item, { isItem } from './item.js';
+import { isNode } from './node.js';
+import { isConnection } from './connection.js';
+import {
+  deletePropertyByPath,
+  setValueByPath,
+  encodeHTML,
+  getNumber,
+  isNumber,
+  getPath,
+  isHTMLElement,
+} from './utils.js';
 import { _, loadLocale, getLocales, loadLocales } from './locale.js';
 import { transformPathD } from './path2d.js';
 import nodeSelector from './node_selector.js';
 import Dialog from './dialog.js';
+import NodeForm from './node_form.js';
 import './drag.js';
 import { createNotificationContainer, pushNotification } from './notistack.js';
 import { DIRECTIONS } from './connector.js';
-import SON from './son.js';
+import './son.js';
 
 window.addEventListener('DOMContentLoaded', async () => {
   await loadLocale('.', 'es');
   ActDia.autoCreate();
 });
-
-function isItem(item) {
-  return item instanceof Item || item.constructor.name === 'Item';
-}
-
-function isNode(item) {
-  return item instanceof Node || item.constructor.name === 'Node';
-}
-
-function isConnection(item) {
-  return item instanceof Connection || item.constructor.name === 'Connection';
-}
-
-function isHTMLElement(item) {
-  return item instanceof HTMLElement;
-}
 
 export default class ActDia {
   static autoCreated;
@@ -482,6 +475,7 @@ export default class ActDia {
     window.addEventListener('afterprint', evt => this.svg.classList.remove('print'));
 
     this.dialog = new Dialog({ container: this.container });
+    this.nodeForm = new NodeForm({ container: this.container });
     createNotificationContainer();
 
     this.configureTools();
@@ -2183,8 +2177,8 @@ export default class ActDia {
         if (evt.defaultPrevented)
           return;
       }
-      
-      this.showFormForItem(item);
+
+      this.nodeForm.showForNode(item, { x: this.mouse.x, y: this.mouse.y });
       return;
     }
 
@@ -2345,176 +2339,11 @@ export default class ActDia {
     this.deleteSelected();
   }
 
-  setItemFieldValue(item, field, value) {
-    if (typeof value === 'undefined') {
-      deletePropertyByPath(item, field.name);
-      return;
-    }
-
-    if (field.type === 'number') {
-      setValueByPath(item, field.name, value ? parseFloat(value) : null);
-      return;
-    }
-    
-    if (field.type === 'text' && field.name === 'style.dash') {
-      value = value? value
-        .split(/[, ]/)
-        .map(v => parseFloat(v.trim()))
-        .filter(v => !isNaN(v)) : [];
-
-      setValueByPath(item, field.name, value);
-    }
-
-    setValueByPath(item, field.name, value);
-  }
-
   showDialog(content, options) {
     this.dialog.show(content, options);
   }
 
   closeDialog() {
     this.dialog.close();
-  }
-
-  showFormForItem(item) {
-    if (!item) {
-      this.dialog.style.display = 'none';
-      return;
-    }
-
-    if (!isNode(item)) {
-      this.dialog.style.display = 'none';
-      return;
-    }
-
-    this.formItem = item;
-    this.formDefinition = JSON.parse(JSON.stringify([
-      {
-        name: 'id',
-        _label: 'ID',
-        disabled: true,
-      },
-      {
-        name: 'name',
-        _label: 'Name',
-      },
-      {
-        name: 'description',
-        _label: 'Description',
-      },
-      {
-        name: 'style.fill',
-        type: 'color',
-        _label: 'Fill color',
-        nullable: true,
-      },
-      {
-        name: 'style.stroke',
-        type: 'color',
-        _label: 'Stroke color',
-        nullable: true,
-      },
-      {
-        name: 'style.strokeWidth',
-        type: 'number',
-        _label: 'Line width',
-        nullable: true,
-      },
-      {
-        name: 'style.dash',
-        type: 'text',
-        _label: 'Dash',
-        nullable: true,
-      },
-      ...item.formDefinition || []
-    ]));
-
-    const html = this.formDefinition
-      .map(field => this.getFieldHtml(field, item))
-      .join('');
-
-    this.showDialog(
-      `<div class="dialog-form">${html}</div>`,
-      {
-        x: this.mouse.x + 10,
-        y: this.mouse.y + 10,
-        submitButton: _('Save'),
-        closeButton: false,
-      }
-    );
-  }
-
-  getFieldHtml(field, item) {
-    if (!field.label && field._label)
-      field.label = _(field._label);
-
-    field.id ??= field.name ?? crypto.randomUUID();
-    field.previousValue = getValueByPath(item, field.name);
-
-    let fieldHtml = '';
-
-    if (field.nullable)
-      fieldHtml = `<input type="checkbox" id="${field.id}_nullifier" name="${field.name}_nullifier" ${getValueByPath(item, field.name) ? 'checked' : ''} style="flex: 0">`;
-
-    const tag = field.tag?.toLowerCase() || 'input',
-      type = field.type?.toLowerCase() || 'text',
-      value = getValueByPath(item, field.name);
-
-    if (tag === 'textarea' || type === 'textarea') {
-      fieldHtml += `<textarea
-          id="${field.id}"
-          name="${field.name}"
-          ${field.readOnly ? 'readonly' : ''}
-          ${field.disabled ? 'disabled="disabled"' : ''} 
-        >${value || ''}</textarea>`;
-    } else if (tag === 'select' || type === 'select') {
-      fieldHtml += `<select
-          id="${field.id}"
-          name="${field.name}"
-          ${field.readOnly ? 'readonly' : ''}
-          ${field.disabled ? 'disabled="disabled"' : ''} 
-        >`;
-      field.options?.forEach(option => {
-        let value, label, style;
-        if (typeof option === 'object') {
-          value = option.value;
-          label = option.label;
-          style = option.style? ` style="${option.style}"` : '';
-        } else {
-          value = option;
-          label = option;
-        }
-
-        fieldHtml += `<option value="${value}" ${value == value ? 'selected' : ''}${style}>${label}</option>`;
-      });
-      fieldHtml += `</select>`;
-    } else if (tag === 'list' || type === 'list') {
-      fieldHtml += `<ul>
-        ${(Array.isArray(value) ? value : []).map((_, index) => `
-          <li>
-            ${this.getFieldHtml({ name: `${field.name}[${index}]`, ...field.item }, item)}
-          </li>
-        `).join('')}
-        </ul>`;
-    } else {
-      fieldHtml += `<${tag}
-          id="${field.id}"
-          name="${field.name}"
-          type="${type || 'text'}"
-          ${(type === 'checkbox' && value) ? 'checked="checked"' : ''}
-          ${typeof field.min !== 'undefined' ? `min="${field.min}"` : ''}
-          ${typeof field.max !== 'undefined' ? `max="${field.max}"` : ''}
-          ${typeof field.step !== 'undefined' ? `step="${field.step}"` : ''}
-          ${field.readOnly ? 'readonly' : ''}
-          ${field.disabled ? 'disabled="disabled"' : ''} 
-          value="${value || ''}"
-        >`;
-    }
-
-    if (field.label)
-      fieldHtml = `<label for="${field.id}">${field.label}:</label>
-        <span class="dialog-field ${field.className ?? ''}">${fieldHtml}</span>`;
-
-    return fieldHtml;
   }
 }
