@@ -669,7 +669,7 @@ export default class ActDia {
       '<pre>' + JSON.stringify(data, '', 2) + '</pre>',
       {
         closeButton: true,
-        submitButton: false,
+        okButton: false,
         cancelButton: false,
       }
     );

@@ -24,7 +24,7 @@ export default class Form extends Dialog {
       header: options.header || _('Form'),
       content: `<form class="form">${html}</form>`,
       ...options,
-      submitButton: _('Save'),
+      okButton: _('Save'),
       closeButton: false,
     });
   }
@@ -174,8 +174,8 @@ export default class Form extends Dialog {
     this.setValue(field, value);
   }
 
-  submitHandler(evt) {
-    const formData = new FormData(this.element);
+  okHandler(evt) {
+    const formData = new FormData(this.element.querySelector('form'));
     let value;
     this.formDefinition?.forEach(field => {
       if (field.disabled || field.readOnly)
@@ -190,11 +190,13 @@ export default class Form extends Dialog {
       this.setValue(field, value);
     });
 
-    super.submitHandler(evt);
+    super.okHandler(evt);
   }
 
   cancelHandler(evt) {
     this.formDefinition.forEach(field =>
       this.setValue(field, field.previousValue));
+
+    super.cancelHandler(evt);
   }
 }

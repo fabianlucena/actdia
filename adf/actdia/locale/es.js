@@ -27,6 +27,7 @@ export default {
   'Line width': 'Ancho de línea',
   'Loading...': 'Cargando...',
   'Name': 'Nombre',
+  'No': 'No',
   'No Connector class registered for type: %s.': 'No hay clase de Conector registrada para el tipo: %s.',
   'No form definition available.': 'No hay definición de formulario disponible.',
   'No shape defined for connector in item %s.': 'No se ha definido forma para el conector en el ítem %s.',
@@ -43,4 +44,5 @@ export default {
   'Unknown shape: %s in item %s.': 'Forma desconocida: %s en el ítem %s.',
   'URL copied to clipboard.': 'URL copiada al portapapeles.',
   'Welcome to ActDia!': '¡Bienvenido a ActDia!',
+  'Yes': 'Sí',
 };

@@ -1,7 +1,7 @@
 import Form from './form.js';
 import { isNode } from './node.js';
 import { _ } from './locale.js';
-import { getValueByPath, setValueByPath } from './utils.js';
+import { getValueByPath, setValueByPath, deletePropertyByPath } from './utils.js';
 
 export default class NodeForm extends Form {
   showForNode(node, options) {
