@@ -46,7 +46,7 @@ export default class NodeSelector extends Dialog {
       if (categoryDiv?.dataset?.url) {
         this.loadCategory({
           path: categoryDiv.dataset.url,
-          previousBreadcrumbs: [...breadcrumbs],
+          previousBreadcrumbs: [...this.breadcrumbs],
           namespace: categoryDiv.dataset.namespace + '.',
         });
       }
