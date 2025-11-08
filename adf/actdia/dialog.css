@@ -80,16 +80,26 @@
 }
 
 .dialog .footer button.cancel {
+  border: .15em solid #3d1e49;
+  background-color: #5e4363;
+}
+
+.dialog .footer button.close {
   border: .15em solid #491e1e;
   background-color: #634343;
 }
 
-.dialog .footer button.close {
-  border: .15em solid #49461e;
-  background-color: #616343;
+.dialog .footer button.ok {
+  border: .15em solid #1f1e49;
+  background-color: #434563;
 }
 
-.dialog .footer button.submit {
+.dialog .footer button.yes {
   border: .15em solid #1e4927;
   background-color: #436348;
+}
+
+.dialog .footer button.no {
+  border: .15em solid #491f1e;
+  background-color: #634743;
 }
