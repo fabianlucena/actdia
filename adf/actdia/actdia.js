@@ -15,7 +15,7 @@ import {
 } from './utils.js';
 import { _, loadLocale, getLocales, loadLocales } from './locale.js';
 import { transformPathD } from './path2d.js';
-import nodeSelector from './node_selector.js';
+import NodeSelector from './node_selector.js';
 import Dialog from './dialog.js';
 import NodeForm from './node_form.js';
 import './drag.js';
@@ -476,6 +476,7 @@ export default class ActDia {
 
     this.dialog = new Dialog({ container: this.container });
     this.nodeForm = new NodeForm({ container: this.container });
+    this.nodeSelector = new NodeSelector({ container: this.container, actdia: this });
     createNotificationContainer();
 
     this.configureTools();
@@ -2256,37 +2257,8 @@ export default class ActDia {
   }
 
   dblClickDefaultHandler(evt) {
-    this.showNodeSelector();
-  }
-
-  showNodeSelector() {
     const { x, y } = this.getUntransformedPosition(this.mouse);
-    this.showDialog(
-      _('Loading...'),
-      {
-        header: _('Add node'),
-        x: 0,
-        y: 0,
-        width: '95%',
-        submitButton: false,
-        cancelButton: false,
-        closeButton: true,
-        onClick: async (evt) => {
-          const classDiv = evt.target.closest('.actdia-node-class');
-          const fqcn = classDiv?.dataset?.fqcn;
-          if (fqcn) {
-            await this.addItem({
-              fqcn,
-              x,
-              y,
-            });
-          }
-          this.closeDialog();
-        }
-      }
-    );
-
-    nodeSelector(this);
+    this.nodeSelector.show({ x, y });
   }
 
   keyDownHandler(evt) {
