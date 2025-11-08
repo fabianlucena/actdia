@@ -97,10 +97,15 @@ export default class Node extends Item {
     this.addConnector(input);
   }
 
-  removeLastInput() {
+  addOutput(output) {
+    output.type ??= 'out';
+    this.addConnector(output);
+  }
+
+  removeLasConnectorByType(type) {
     for (let i = this.connectors.length - 1; i >= 0; i--) {
       const connector = this.connectors[i];
-      if (connector.type === 'in') {
+      if (connector.type === type) {
         this.connectors.splice(i, 1);
         if (connector.connections?.length) {
           this.actdia.deleteItem(...connector.connections);
@@ -112,9 +117,12 @@ export default class Node extends Item {
     }
   }
 
-  addOutput(output) {
-    output.type ??= 'out';
-    this.addConnector(output);
+  removeLastInput() {
+    this.removeLasConnectorByType('in');
+  }
+
+  removeLastOutput() {
+    this.removeLasConnectorByType('out');
   }
 
   getConnectorFromId(id) {
