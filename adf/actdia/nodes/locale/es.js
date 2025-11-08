@@ -7,6 +7,8 @@ export default {
   'Oscillograph': 'Oscilógrafo',
   'Pulse generator': 'Generador de pulsos',
   'Switch': 'Interruptor',
+  'Unbus': 'Descanalizar',
   'Viewer': 'Visor',
   'Vertical switch': 'Interruptor vertical',
+  'Json Data': 'Datos JSON',
 };

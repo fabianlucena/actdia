@@ -1,7 +1,7 @@
 import Node from '../node.js';
 
-export default class Bus extends Node {
-  static _label = 'Bus';
+export default class Unbus extends Node {
+  static _label = 'Unbus';
 
   shape = {
     shape: 'rect',
@@ -21,15 +21,15 @@ export default class Bus extends Node {
   };
 
   connectors = [
-    { name: 'o0', type: 'out', x: 1, y: 1, direction: 'right', extends: 'tiny' },
     { name: 'i0', type: 'in', x: 0, y: 1, direction: 'left', extends: 'tiny' },
-    { name: 'i1', type: 'in', x: 0, y: 2, direction: 'left', extends: 'tiny' },
+    { name: 'o0', type: 'out', x: 1, y: 1, direction: 'right', extends: 'tiny' },
+    { name: 'o1', type: 'out', x: 1, y: 2, direction: 'right', extends: 'tiny' },
   ];
 
   defaultConnector = {
-    type: 'in',
-    x: 0,
-    direction: 'left',
+    type: 'out',
+    x: 1,
+    direction: 'right',
     extends: 'tiny',
   };
 
@@ -43,7 +43,7 @@ export default class Bus extends Node {
   ];
 
   get length() {
-    return this.connectors.filter(c => c.type === 'in').length;
+    return this.connectors.filter(c => c.type === 'out').length;
   }
 
   set length(value) {
@@ -54,7 +54,7 @@ export default class Bus extends Node {
       }
     } else if (value < newLength) {
       for (let i = value; i < newLength; i++) {
-        this.removeLastInput();
+        this.removeLastOutput();
       }
     }
   }
@@ -69,11 +69,17 @@ export default class Bus extends Node {
   getNewConnector(connector) {
     const newConnector = super.getNewConnector(connector);
     newConnector.y ??= newConnector.index + 1;
-    newConnector.name ??= `i${newConnector.index}`;
+    newConnector.name ??= `o${newConnector.index}`;
     return newConnector;
   }
 
   updateStatus(options = {}) {
-    this.setStatus([...this.connectors.filter(c => c.type === 'in').map(c => c.status)], options);
+    this.setStatus(this.connectors.find(c => c.type === 'in')?.status, options);
+  }
+
+  propagate(options = {}) {
+    this.connectors
+      .filter(c => c.type === 'out')
+      .forEach((c, i) => c.setStatus(this.status[i], options));
   }
 }

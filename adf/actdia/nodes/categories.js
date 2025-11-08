@@ -3,6 +3,7 @@ export default {
   locale: ['es'],
   nodesClasses: [
     'bus.js',
+    'unbus.js',
     'h_switch.js',
     'oscillograph.js',
     'pulse_generator.js',
