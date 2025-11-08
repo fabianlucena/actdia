@@ -6,6 +6,8 @@ export default class Form extends Dialog {
   constructor({ container }) {
     super(...arguments)
     this.contentElement.addEventListener('input', evt => this.inputHandler(evt));
+    
+    this.contentElement.addEventListener('click', evt => this.clickHandler(evt));
   }
 
   show(options) {
@@ -64,17 +66,18 @@ export default class Form extends Dialog {
           ${field.disabled ? 'disabled="disabled"' : ''} 
         >`;
       field.options?.forEach(option => {
-        let value, label, style;
+        let value, label, attr = '';
         if (typeof option === 'object') {
           value = option.value;
           label = option.label;
-          style = option.style? ` style="${option.style}"` : '';
+          if (option.style) attr += ` style="${option.style}"`;
+          if (option.title) attr += ` title="${option.title}"`;
         } else {
           value = option;
           label = option;
         }
 
-        fieldHtml += `<option value="${value}" ${value == value ? 'selected' : ''}${style}>${label}</option>`;
+        fieldHtml += `<option value="${value}" ${value == value ? 'selected' : ''}${attr}>${label}</option>`;
       });
       fieldHtml += `</select>`;
     } else if (tag === 'list' || type === 'list') {
@@ -100,9 +103,24 @@ export default class Form extends Dialog {
         >`;
     }
 
-    if (field.label)
+    if (field.label) {
       fieldHtml = `<label for="${field.id}">${field.label}:</label>
         <span class="field ${field.className ?? ''}">${fieldHtml}</span>`;
+    }
+    
+    if (field.options?.length && (tag !== 'select' && type !== 'select')) {
+      fieldHtml += `<div class="options" data-name="${field.name}">`
+          + field.options.map(option =>
+            `<span
+              class="option"
+              title="${option.title || ''}"
+              data-value="${option.value}"
+            >
+              ${option.label || option.value}
+            </span>`
+          ).join('')
+        + '</div>';
+    }
 
     return fieldHtml;
   }
@@ -138,6 +156,21 @@ export default class Form extends Dialog {
       }
     }
 
+    this.setValue(field, value);
+  }
+
+  clickHandler(evt) {
+    const optionElement = evt.target.closest('.option');
+    const value = optionElement?.dataset?.value;
+    if (typeof value === 'undefined')
+      return;
+
+    const optionsElement = optionElement.closest('.options');
+    const name = optionsElement?.dataset?.name;
+    if (typeof name === 'undefined')
+      return;
+
+    const field = this.formDefinition.find(f => f.name === name);
     this.setValue(field, value);
   }
 

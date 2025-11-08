@@ -2,7 +2,7 @@
 
 .form {
   display: grid;
-  grid-template-columns: 1fr minmax(20em, auto);
+  grid-template-columns: 20em 20em;
   gap: .5em;
 }
 
@@ -37,4 +37,26 @@
 
 .form .field > ul > li > * {
   flex: 1;
+}
+
+.form .options {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: .2em;
+  justify-content: space-between;
+  margin: .2em;
+}
+
+.form .option {
+  border: .1em solid #666;
+  border-radius: .2em;
+  padding: .2em .5em;
+  cursor: pointer;
+}
+
+.form .option:hover {
+  background-color: #444;
+  box-shadow: 0 0 .5em #ffffffaa;
 }
