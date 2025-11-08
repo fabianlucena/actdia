@@ -10,6 +10,7 @@ export default {
     'switch.js',
     'v_switch.js',
     'viewer.js',
+    'json_data.js',
   ],
   categories: [
     { url: 'electronic', _label: 'Electronic' },

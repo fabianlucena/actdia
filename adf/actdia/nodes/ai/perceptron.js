@@ -92,7 +92,6 @@ let updateActivationFunctionOptions = () => {
   }
 
   updateActivationFunctionOptions = () => {};
-  console.log(activationFunctions);
 }
 
 export default class Perceptron extends Node {
