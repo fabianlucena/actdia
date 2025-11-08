@@ -95,9 +95,6 @@ export default class Connector extends Element {
   }
 
   setStatus(status, options = {}) {
-    if (JSON.stringify(this.status) === JSON.stringify(status))
-      return;
-
     this.status = status;
     if (this.type === 'in' && this.item)
       this.item.updateStatus(options);

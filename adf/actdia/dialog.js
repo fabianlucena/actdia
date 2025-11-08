@@ -178,7 +178,6 @@ export default class Dialog {
   }
   
   close() {
-    console.log('Closing dialog');
     this.element.style.display = 'none';
   }
 

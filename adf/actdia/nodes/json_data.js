@@ -2,6 +2,8 @@ import Node from '../node.js';
 
 export default class JsonData extends Node {
   static _label = 'JSON Data';
+  
+  autoPropagate = true;
 
   shape = {
     shapes: [
@@ -45,4 +47,13 @@ export default class JsonData extends Node {
       _label: 'JSON Data',
     },
   ];
+
+  update() {
+    this.setStatus(this.data ? JSON.parse(this.data) : null);
+
+    this.shape.shapes[1].text = this.data;
+    this.actdia.tryUpdateShape(this, this.svgShape?.children?.[1], this.shape.shapes[1]);
+
+    super.update();
+  }
 }

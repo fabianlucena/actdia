@@ -700,6 +700,12 @@ export default class ActDia {
     await this.addOptionsItem({ elementClass: 'Connection' }, ...data.connections);
     if (options.skipNotification !== true)
       this.pushNotification(_('Diagram loaded.'), 'success');
+
+    this.#items.forEach(item => {
+      if (isNode(item) && item.autoPropagate) {
+        item.propagate();
+      }
+    });
   }
 
   share(options) {

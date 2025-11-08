@@ -37,7 +37,7 @@ export default class Viewer extends Node {
   updateStatus() {
     let status = this.connectors[0].status;
     if (Array.isArray(status)) {
-      status = status.map(v => v ? 1 : 0);
+      status = status.map(v => v ? v : 0);
     }
 
     this.shape.shapes[1].text = JSON.stringify(status);
