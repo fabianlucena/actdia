@@ -1,6 +1,100 @@
 import Node from '../../node.js';
 import { _ } from '../../locale.js';
 
+const activationFunctions = {
+  relu: {
+    func: x => Math.max(0, x),
+    derived: x => (x > 0 ? 1 : 0),
+    _name: 'ReLU',
+    _description: 'Rectified Linear Unit: f(x) = x for x > 0, else 0',
+  },
+  sigmoid: {
+    func: x => 1 / (1 + Math.exp(-x)),
+    derived: x => x * (1 - x),
+    _name: 'Sigmoid',
+    _description: 'Sigmoid function: f(x) = 1 / (1 + e^(-x))',
+  },
+  tanh: {
+    func: x => (Math.exp(x) - Math.exp(-x)) / (Math.exp(x) + Math.exp(-x)),
+    derived: x => 1 - x * x,
+    _name: 'Tanh',
+    _description: 'Hyperbolic Tangent: f(x) = (e^x - e^(-x)) / (e^x + e^(-x))',
+  },
+  identity: {
+    func: x => x,
+    derived: x => 1,
+    _name: 'Identity',
+    _description: 'Identity function: f(x) = x',
+  },
+  step: {
+    func: x => x >= 0 ? 1 : 0,
+    derived: x => 0,
+    _name: 'Step',
+    _description: 'Step function: f(x) = 1 for x >= 0, else 0',
+  },
+  softmax: {
+    func: x => Math.exp(x) / Math.sum(Math.exp(x)),
+    derived: x => x * (1 - x),
+    _name: 'Softmax',
+    _description: 'Softmax function: f(x) = e^(x_i) / Σ e^(x_j) for all j',
+  },
+  clamped: {
+    func: x => x < 0 ? 0 : x > 1 ? 1 : x,
+    derived: x => (x >= 0 && x <= 1) ? 1 : 0,
+    _name: 'Clamped',
+    _description: 'Clamped function: f(x) = 0 for x < 0, f(x) = 1 for x > 1, else f(x) = x',
+  },
+  clampedSymmetric: {
+    func: x => Math.max(-1, Math.min(1, x)),
+    derived: x => (x > -1 && x < 1) ? 1 : 0,
+    _name: 'Clamped Symmetric',
+    _description: 'Clamped Symmetric function: f(x) = -1 for x < -1, f(x) = 1 for x > 1, else f(x) = x',
+  },
+  leakyReLU: {
+    func: x => x > 0 ? x : 0.01 * x,
+    derived: x => (x > 0 ? 1 : 0.01),
+    _name: 'Leaky ReLU',
+    _description: 'Leaky Rectified Linear Unit: f(x) = x for x > 0, else 0.01 * x',
+  },
+  elu: {
+    func: x => x >= 0 ? x : (Math.exp(x) - 1),
+    derived: x => (x >= 0 ? 1 : Math.exp(x)),
+    _name: 'ELU',
+    _description: 'Exponential Linear Unit: f(x) = x for x >= 0, else e^x - 1',
+  },
+  selu: {
+    func: x => x >= 0 ? 1.0507 * x : 1.0507 * (Math.exp(x) - 1),
+    derived: x => (x >= 0 ? 1.0507 : 1.0507 * Math.exp(x)),
+    _name: 'SELU',
+    _description: 'Scaled Exponential Linear Unit: f(x) = 1.0507 * x for x >= 0, else 1.0507 * (e^x - 1)',
+  },
+  gelu: {
+    func: x => 0.5 * x * (1 + Math.tanh(Math.sqrt(2 / Math.PI) * (x + 0.044715 * Math.pow(x, 3)))),
+    derived: x => 0.5 * (1 + Math.tanh(Math.sqrt(2 / Math.PI) * (x + 0.044715 * Math.pow(x, 3)))),
+    _name: 'GELU',
+    _description: 'Gaussian Error Linear Unit: f(x) = 0.5 * x * (1 + tanh(√(2/π) * (x + 0.044715 * x³)))',
+  },
+  swish: {
+    func: x => x / (1 + Math.exp(-x)),
+    derived: x => {
+      const sig = 1 / (1 + Math.exp(-x));
+      return sig + x * sig * (1 - sig);
+    },
+    _name: 'Swish / SiLU',
+    _description: 'Swish / Sigmoid Linear Unit: f(x) = x / (1 + e^(-x))',
+  },
+};
+let updateActivationFunctionOptions = () => {
+  for (const key in activationFunctions) {
+    const funcData = activationFunctions[key];
+    funcData.name = _(funcData._name);
+    funcData.description = _(funcData._description);
+  }
+
+  updateActivationFunctionOptions = () => {};
+  console.log(activationFunctions);
+}
+
 export default class Perceptron extends Node {
   shape = {
     shapes: [
@@ -47,27 +141,14 @@ export default class Perceptron extends Node {
     },
     {
       name: 'activationFunction',
-      type: 'string',
+      type: 'select',
       _label: 'Activation function',
-      options: [
-        { value: 'x => Math.max(0, x)', label: _('ReLU'), title: _('Rectified Linear Unit: f(x) = x for x > 0, else 0') },
-        { value: 'x => 1 / (1 + Math.exp(-x))', label: _('Sigmoid'), title: _('Sigmoid function: f(x) = 1 / (1 + e^(-x))') },
-        { value: 'x => (Math.exp(x) - Math.exp(-x)) / (Math.exp(x) + Math.exp(-x))', label: _('Tanh'), title: _('Hyperbolic Tangent: f(x) = (e^x - e^(-x)) / (e^x + e^(-x))') },
-        { value: 'x => x', label: _('Identity'), title: _('Identity function: f(x) = x') },
-        { value: 'x => x >= 0 ? 1 : 0', label: _('Step'), title: _('Step function: f(x) = 1 for x >= 0, else 0') },
-        { value: 'x => Math.exp(x) / Math.sum(Math.exp(x))', label: _('Softmax'), title: _('Softmax function: f(x) = e^(x_i) / Σ e^(x_j) for all j') },
-        { value: 'x => x < 0 ? 0 : x > 1 ? 1 : x', label: _('Clamped'), title: _('Clamped function: f(x) = 0 for x < 0, f(x) = 1 for x > 1, else f(x) = x') },
-        { value: 'x => Math.max(-1, Math.min(1, x))', label: _('Clamped Symmetric'), title: _('Clamped Symmetric function: f(x) = -1 for x < -1, f(x) = 1 for x > 1, else f(x) = x') },
-        { value: 'x => x > 0 ? x : 0.01 * x', label: _('Leaky ReLU'), title: _('Leaky Rectified Linear Unit: f(x) = x for x > 0, else 0.01 * x') },
-        { value: 'x => x >= 0 ? x : (Math.exp(x) - 1)', label: _('ELU'), title: _('Exponential Linear Unit: f(x) = x for x >= 0, else e^x - 1') },
-        { value: 'x => x >= 0 ? 1.0507 * x : 1.0507 * (Math.exp(x) - 1)', label: _('SELU'), title: _('Scaled Exponential Linear Unit: f(x) = 1.0507 * x for x >= 0, else 1.0507 * (e^x - 1)') },
-        { value: 'x => x / (1 + Math.exp(-x))', label: _('Swish / SiLU'), title: _('Swish / Sigmoid Linear Unit: f(x) = x / (1 + e^(-x))') },
-        { value: 'x => 0.5 * x * (1 + Math.tanh(0.5 * x))', label: _('GELU'), title: _('Gaussian Error Linear Unit: f(x) = 0.5 * x * (1 + tanh(0.5 * x))') },
-        { value: 'x => x * (1 - x)', label: _('Derivative of Sigmoid'), title: _('Derivative of Sigmoid function: f(x) = x * (1 - x)') },
-        { value: 'x => 1 - x * x', label: _('Derivative of Tanh'), title: _('Derivative of Tanh function: f(x) = 1 - x^2') },
-        { value: 'x => 1 - Math.pow(x, 2)', label: _('Derivative of Clamped'), title: _('Derivative of Clamped function: f(x) = 1 - x^2') },
-        { value: 'x => (x >= 0 && x <= 1) ? 1 : 0', label: _('Derivative of Step'), title: _('Derivative of Step function: f(x) = 0 for all x except at x = 0 where it is undefined') },
-      ],
+      options: Object.entries(activationFunctions)
+        .map(([key, info]) => ({
+          value: key,
+          label: info.name || info._name,
+          title: info.description || info._description,
+        })),
     },
     {
       name: 'bias',
@@ -103,15 +184,23 @@ export default class Perceptron extends Node {
     }
   }
 
+  constructor(params) {
+    super(...arguments);
+    updateActivationFunctionOptions();
+  }
+
   weights = [];
-  #activationFunction = x => Math.max(0, x);
+  #activationFunction = 'relu';
+  #func = activationFunctions.relu.func;
+  #derived = activationFunctions.relu.derived;
 
-  set activationFunction(func) {
-    if (typeof func === 'string') {
-      func = eval(func);
+  set activationFunction(funcName) {
+    const funcData = activationFunctions[funcName];
+    if (funcData) {
+      this.#activationFunction = funcName;
+      this.#func = funcData.func;
+      this.#derived = funcData.derived;
     }
-
-    this.#activationFunction = func;
   }
 
   get activationFunction() {
@@ -158,9 +247,11 @@ export default class Perceptron extends Node {
   }
 
   updateStatus(options = {}) {
-    const status = this.connectors.filter(c => c.type === 'in')
+    const linearStatus = this.connectors.filter(c => c.type === 'in')
       .map((c, index) => (c.status ?? 0) * (this.weights[index] ?? 0))
       .reduce((a, b) => a + b, 0) + (this.bias ?? 0);
+
+    const status = this.#func(linearStatus);
 
     this.setStatus(status, options);
   }
