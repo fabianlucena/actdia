@@ -4,6 +4,7 @@ export default {
   'Bus': 'Canal',
   'Electronic': 'Electrónica',
   'Horizontal switch': 'Interruptor horizontal',
+  'No data': 'Sin datos',
   'Oscillograph': 'Oscilógrafo',
   'Pulse generator': 'Generador de pulsos',
   'Switch': 'Interruptor',
