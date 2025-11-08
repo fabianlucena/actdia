@@ -61,7 +61,7 @@ export default class NodeSelector extends Dialog {
     super.show(
       {
         header: _('Add node'),
-        submitButton: false,
+        okButton: false,
         cancelButton: false,
         closeButton: true,
       },
