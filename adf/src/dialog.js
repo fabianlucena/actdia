@@ -1,5 +1,5 @@
 import './dialog.css';
-import { _ } from './locale.js';
+import { _ } from '../actdia/locale.js';
 
 export default class Dialog {
   onClose = null;
@@ -7,45 +7,52 @@ export default class Dialog {
   onCancel = null;
   onNo = null;
   onYes = null;
+  destroyOnClose = false;
 
-  constructor({ container }) {
-    this.container = container;
+  constructor(options) {
+    this.create(...arguments);
+  }
 
-    this.element = document.createElement('div');
-    this.element.classList.add('dialog', 'draggable');
-    this.element.style.display = 'flex';
-    this.element.style.position = 'fixed';
-    this.element.style.flexDirection = 'column';
-    this.container.appendChild(this.element);
-    this.element.innerHTML = 
-      `<div class="header">
-        <div class="header-text"></div>
-        <button type="button" class="close">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18" height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="3"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
-      <div class="content"></div>
-      <div class="footer">
-        <div class="actions">
-          <button type="button" class="ok">${_('OK')}</button>
-          <button type="button" class="cancel">${_('Cancel')}</button>
-          <button type="button" class="yes">${_('Yes')}</button>
-          <button type="button" class="no">${_('No')}</button>
-          <button type="button" class="close">${_('Close')}</button>
+  create() {
+    Object.assign(this, ...arguments);
+
+    if (!this.element) {
+      this.element = document.createElement('div');
+      this.element.classList.add('dialog', 'draggable');
+      this.element.style.display = 'flex';
+      this.element.style.position = 'fixed';
+      this.element.style.flexDirection = 'column';
+      this.element.innerHTML = 
+        `<div class="header">
+          <div class="header-text"></div>
+          <button type="button" class="close">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18" height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
         </div>
-      </div>`;
+        <div class="content"></div>
+        <div class="footer">
+          <div class="actions">
+            <button type="button" class="ok">${_('OK')}</button>
+            <button type="button" class="cancel">${_('Cancel')}</button>
+            <button type="button" class="yes">${_('Yes')}</button>
+            <button type="button" class="no">${_('No')}</button>
+            <button type="button" class="close">${_('Close')}</button>
+          </div>
+        </div>`;
+    }
+    this.container.appendChild(this.element);
 
     this.headerElement = this.element.querySelector('.header');
     this.headerTextElement = this.element.querySelector('.header-text');
@@ -59,14 +66,31 @@ export default class Dialog {
     this.yesButton = this.footerElement.querySelector('.yes');
     this.noButton = this.footerElement.querySelector('.no');
 
-    this.element.addEventListener('keydown', evt => evt.stopPropagation());
-    this.cancelButton.addEventListener('click', evt => this.cancelHandler(evt));
-    this.headerCloseButton.addEventListener('click', evt => this.closeHandler(evt));
-    this.closeButton.addEventListener('click', evt => this.closeHandler(evt));
-    this.okButton.addEventListener('click', evt => this.okHandler(evt));
-    this.cancelButton.addEventListener('click', evt => this.cancelHandler(evt));
-    this.yesButton.addEventListener('click', evt => this.yesHandler(evt));
-    this.noButton.addEventListener('click', evt => this.noHandler(evt));
+    this.keydownHandlerBind = this.keydownHandler.bind(this);
+    this.clickHandlerBind = this.clickHandler.bind(this);
+
+    this.element.addEventListener('keydown', this.keydownHandlerBind);
+    this.element.addEventListener('click', this.clickHandlerBind);
+  }
+
+  destroy() {
+    this.element.removeEventListener('keydown', this.keydownHandlerBind);
+    this.cancelButton.removeEventListener('click', this.clickHandlerBind);
+
+    this.headerElement = null;
+    this.headerTextElement = null;
+    this.contentElement = null;
+    this.footerElement = null;
+
+    this.headerCloseButton = null;
+    this.closeButton = null;
+    this.okButton = null;
+    this.cancelButton = null;
+    this.yesButton = null;
+    this.noButton = null;
+
+    this.element.remove();
+    this.element = null;
   }
 
   show(content, options) {
@@ -179,35 +203,102 @@ export default class Dialog {
   
   close() {
     this.element.style.display = 'none';
+    if (this.destroyOnClose) {
+      this.destroy();
+    }
+  }
+
+  keydownHandler(evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+  }
+
+  clickHandler(evt) {
+    if (this.onClick
+      && this.onClick(evt)
+      && evt.defaultPrevented
+    )
+      return;
+
+    const target = evt.target;
+    if (target.closest('.ok')) {
+      this.okHandler(evt);
+      return;
+    }
+
+    if (target.closest('.cancel')) {
+      this.cancelHandler(evt);
+      return;
+    }
+
+    if (target.closest('.close')) {
+      this.closeHandler(evt);
+      return;
+    }
+
+    if (target.closest('.yes')) {
+      this.yesHandler(evt);
+      return;
+    }
+
+    if (target.closest('.no')) {
+      this.noHandler(evt);
+      return;
+    }
   }
 
   closeHandler(evt) {
+    if (this.onClose
+      && this.onClose()
+      && evt.defaultPrevented
+    )
+      return;
+
     evt.preventDefault();
-    this.onClose && this.onClose();
     this.close();
   }
 
   okHandler(evt) {
+    if (this.onOk
+      && this.onOk()
+      && evt.defaultPrevented
+    )
+      return;
+
     evt.preventDefault();
-    this.onOk && this.onOk();
     this.close();
   }
 
   cancelHandler(evt) {
+    if (this.onCancel
+      && this.onCancel()
+      && evt.defaultPrevented
+    )
+      return;
+
     evt.preventDefault();
-    this.onCancel && this.onCancel();
     this.close();
   }
   
   yesHandler(evt) {
+    if (this.onYes
+      && this.onYes()
+      && evt.defaultPrevented
+    )
+      return;
+
     evt.preventDefault();
-    this.onYes && this.onYes();
     this.close();
   }
 
   noHandler(evt) {
+    if (this.onNo
+      && this.onNo()
+      && evt.defaultPrevented
+    )
+      return;
+
     evt.preventDefault();
-    this.onNo && this.onNo();
     this.close();
   }
 }

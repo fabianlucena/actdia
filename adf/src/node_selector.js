@@ -1,6 +1,6 @@
 import './node-selector.css';
+import Dialog from './dialog.js';
 import Item from '../actdia/item.js';
-import Dialog from '../actdia/dialog.js';
 import { _, loadLocale } from '../actdia/locale.js';
 
 export default class NodeSelector extends Dialog {

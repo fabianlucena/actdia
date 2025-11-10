@@ -1,6 +1,6 @@
 import './form.css';
 import { _ } from './locale.js';
-import Dialog from './dialog.js';
+import Dialog from '../src/dialog.js';
 
 export default class Form extends Dialog {
   constructor({ container }) {

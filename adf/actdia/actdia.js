@@ -15,7 +15,6 @@ import {
 } from './utils.js';
 import { _, loadLocale, getLocales, loadLocales } from './locale.js';
 import { transformPathD } from './path2d.js';
-import Dialog from './dialog.js';
 import NodeForm from './node_form.js';
 import './drag.js';
 import { createNotificationContainer, pushNotification } from './notistack.js';
@@ -341,7 +340,7 @@ export default class ActDia {
       },
       draggable: false,
       exportable: false,
-      onClick: () => this.view({ selected: true}),
+      onClick: () => this.onView && this.onView({ selected: true}),
     }),
 
     new Item({
@@ -412,10 +411,12 @@ export default class ActDia {
     pushNotification(message, options);
   }
 
-  create(options) {
-    options.container && (this.container = options.container);
+  create({ container, onView } = {}) {
+    this.container = container ?? this.container;
     if (!this.container)
       throw new Error('No element to setup ActDia');
+
+    this.onView = onView ?? this.onView;
 
     this.container.classList.add('actdia');
     this.container.tabIndex = 0;
@@ -465,7 +466,6 @@ export default class ActDia {
     window.addEventListener('beforeprint', () => this.svg.classList.add('print'));
     window.addEventListener('afterprint', evt => this.svg.classList.remove('print'));
 
-    this.dialog = new Dialog({ container: this.container });
     this.nodeForm = new NodeForm({ container: this.container });
     createNotificationContainer();
 
@@ -648,19 +648,6 @@ export default class ActDia {
     a.href = url;
     a.download = 'actdia.svg';
     a.click();
-  }
-
-  view(options) {
-    const exportable = this.getExportableItems(options);
-    const data = this.getData(exportable);
-    this.dialog.show(
-      '<pre>' + JSON.stringify(data, '', 2) + '</pre>',
-      {
-        closeButton: true,
-        okButton: false,
-        cancelButton: false,
-      }
-    );
   }
 
   viewInConsole(options) {
@@ -2302,13 +2289,5 @@ export default class ActDia {
 
   backspaceDefaultHandler(evt) {
     this.deleteSelected();
-  }
-
-  showDialog(content, options) {
-    this.dialog.show(content, options);
-  }
-
-  closeDialog() {
-    this.dialog.close();
   }
 }
