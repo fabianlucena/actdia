@@ -7,13 +7,13 @@ export default class Dialog {
   onCancel = null;
   onNo = null;
   onYes = null;
-  destroyOnClose = false;
+  destroyOnClose = true;
 
   constructor(options) {
     this.create(...arguments);
   }
 
-  create() {
+  create(options) {
     Object.assign(this, ...arguments);
 
     if (!this.element) {
@@ -71,6 +71,10 @@ export default class Dialog {
 
     this.element.addEventListener('keydown', this.keydownHandlerBind);
     this.element.addEventListener('click', this.clickHandlerBind);
+
+    if (options.content) {
+      this.show(...arguments);
+    }
   }
 
   destroy() {
@@ -95,6 +99,7 @@ export default class Dialog {
 
   show(content, options) {
     options ??= {};
+    Object.assign(options, [...arguments].slice(2));
 
     if (typeof content === 'object' && content !== null) {
       options = { ...options, ...content };
@@ -113,31 +118,39 @@ export default class Dialog {
       this.element.classList.add(options.className);
     }
 
-    if (options.closeButton === false) {
-      this.closeButton.style.display = 'none';
-      this.headerCloseButton.style.display = 'none';
+    let closeButton;
+    if (options.closeButton === false
+      || options.okButton || options.cancelButton || options.yesButton || options.noButton
+    ) {
+      closeButton = false;
     } else {
+      closeButton = true;
+    }
+    
+    if (closeButton) {
+      this.headerCloseButton.style.display = '';
       this.closeButton.style.display = '';
       this.closeButton.innerHTML = 
         typeof options.closeButton === 'string' ? options.closeButton : _('Close');
-
-      this.headerCloseButton.style.display = '';
+    } else {
+      this.closeButton.style.display = 'none';
+      this.headerCloseButton.style.display = 'none';
     }
 
-    if (options.okButton === false) {
-      this.okButton.style.display = 'none';
-    } else {
+    if (options.okButton) {
       this.okButton.style.display = '';
       this.okButton.innerHTML = 
         typeof options.okButton === 'string' ? options.okButton : _('OK');
+    } else {
+      this.okButton.style.display = 'none';      
     }
 
-    if (options.cancelButton === false) {
-      this.cancelButton.style.display = 'none';
-    } else {
+    if (options.cancelButton) {
       this.cancelButton.style.display = '';
       this.cancelButton.innerHTML = 
         typeof options.cancelButton === 'string' ? options.cancelButton : _('Cancel');
+    } else {
+      this.cancelButton.style.display = 'none';
     }
 
     if (options.yesButton) {

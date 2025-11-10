@@ -1,6 +1,7 @@
 import ActDia from './actdia/actdia.js';
 import NodeSelector from './src/node_selector.js';
 import Dialog from './src/dialog.js';
+import { _ } from './actdia/locale.js';
 
 let container = null;
 let actdia = null;
@@ -42,13 +43,9 @@ function onSelectNode({ evt, fqcn, }) {
 function onView(options) {
   const exportable = actdia.getExportableItems(options);
   const data = actdia.getData(exportable);
-  const dialog = new Dialog({ container });
-  dialog.show(
-    '<pre>' + JSON.stringify(data, '', 2) + '</pre>',
-    {
-      closeButton: true,
-      okButton: false,
-      cancelButton: false,
-    }
-  );
+  new Dialog({
+    container,
+    content: '<pre>' + JSON.stringify(data, '', 2) + '</pre>',
+    header: _('Exported Data'),
+  });
 }
