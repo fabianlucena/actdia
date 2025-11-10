@@ -71,18 +71,18 @@ export default class Form extends Dialog {º
           ${field.disabled ? 'disabled="disabled"' : ''} 
         >`;
       field.options?.forEach(option => {
-        let value, label, attr = '';
+        let thisValue, label, attr = '';
         if (typeof option === 'object') {
-          value = option.value;
-          label = option.label;
+          thisValue = option.value;
+          label = option.label ?? _(option._label || option.value);
           if (option.style) attr += ` style="${option.style}"`;
           if (option.title) attr += ` title="${option.title}"`;
         } else {
-          value = option;
-          label = option;
+          thisValue = option;
+          label = _(option);
         }
 
-        fieldHtml += `<option value="${value}" ${value == value ? 'selected' : ''}${attr}>${label}</option>`;
+        fieldHtml += `<option value="${thisValue}" ${value == thisValue ? 'selected="selected"' : ''}${attr}>${label}</option>`;
       });
       fieldHtml += `</select>`;
     } else if (tag === 'list' || type === 'list') {

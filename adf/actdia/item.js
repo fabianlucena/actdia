@@ -40,6 +40,52 @@ export default class Item extends Element {
     ];
   }
 
+  get reflection() {
+    return [this.sx ?? 1, this.sy ?? 1];
+  }
+
+  set reflection(scale) {
+    if (typeof scale === 'string') {
+      scale = scale.replace(/\[|\]|\s/g, '').split(',').map(s => parseFloat(s));
+    }
+    const [sx, sy] = scale;
+
+    if (sx < 0) {
+      if (isNaN(this.sx))
+        this.sx = -1;
+      else if (this.sx > 0)
+        this.sx = -this.sx;
+    } else if (sx > 0) {
+      if (isNaN(this.sx))
+        this.sx = 1;
+      else if (this.sx < 0)
+        this.sx = -this.sx;
+    }
+
+    if (sy < 0) {
+      if (isNaN(this.sy))
+        this.sy = -1;
+      else if (this.sy > 0)
+        this.sy = -this.sy;
+    } else if (sy > 0) {
+      if (isNaN(this.sy))
+        this.sy = -1;
+      else if (this.sy < 0)
+        this.sy = -this.sy;
+    }
+
+    this.updateTransform();
+  }
+
+  get rotate() {
+    return this._rotate || 0;
+  }
+
+  set rotate(angle) {
+    this._rotate = angle;
+    this.updateTransform();
+  }
+
   init(options) {
     super.init(...arguments);
     this.id ??= crypto.randomUUID();
@@ -99,13 +145,35 @@ export default class Item extends Element {
   moveTo(to) {
     this.x = to.x;
     this.y = to.y;
+    this.updateTransform();
+  }
 
-    this.svgElement?.setAttribute('transform', `translate(${to.x * this.actdia.style.sx} ${to.y * this.actdia.style.sy})`);
+  updateTransform() {
+    let transform = `translate(${this.x * this.actdia.style.sx} ${this.y * this.actdia.style.sy})`;
+    if (this.rotate) {
+      transform += ` rotate(${this.rotate})`;
+    }
+
+    if ((!isNaN(this.sx) && this.sx) || (!isNaN(this.sy) && this.sy)) {
+      transform += ` scale(${(this.sx) ?? 1}, ${(this.sy) ?? 1})`;
+    }
+    
+    if (this.skewX) {
+      transform += ` skewX(${this.skewX})`;
+    }
+    
+    if (this.skewY) {
+      transform += ` skewY(${this.skewY})`;
+    }
+    
+    this.svgElement?.setAttribute('transform', transform.trim());
   }
 
   update(options = {}) {
-    if (!options.skipNotification)
+    if (!options.skipNotification) {
+      this.updateTransform();
       this.actdia?.updateItem(this);
+    }
   }
 
   select(selectValue = true) {

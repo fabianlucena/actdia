@@ -731,6 +731,7 @@ export default class ActDia {
       item.svgShape = item.svgElement?.querySelector('.actdia-shape');
       item.svgSelectionBox = item.svgElement?.querySelector('.actdia-selection-box');
       item.svgConnectors = item.svgElement?.querySelector('.actdia-connectors');
+      item.update();
     });
 
     return result.length === 1 ? result[0] : result;
@@ -1083,7 +1084,24 @@ export default class ActDia {
     style.lineCap && (attributes['stroke-linecap'] = style.lineCap);
     style.lineJoin && (attributes['stroke-linejoin'] = style.lineJoin);
     style.miter && (attributes['stroke-miterlimit'] = style.miter);
-    (style.opacity || style.opacity === 0) && (attributes['opacity'] = style.opacity);
+    (style.opacity || style.opacity === 0) && (attributes.opacity = style.opacity);
+
+    let transform = '';
+    if (style.rotate) {
+      transform += ` rotate(${style.rotate})`;
+    }
+    if (style.sx !== this.style.sx || style.sy !== this.style.sy) {
+      transform += ` scale(${(style.sx / this.style.sx) ?? 1}, ${(style.sy / this.style.sy) ?? 1})`;
+    }
+    if (style.skewX) {
+      transform += ` skewX(${style.skewX})`;
+    }
+    if (style.skewY) {
+      transform += ` skewY(${style.skewY})`;
+    }
+    if (transform) {
+      attributes.transform = ((attributes.transform ? attributes.transform + ' ' : '') + transform).trim();
+    }
 
     return attributes;
   }
