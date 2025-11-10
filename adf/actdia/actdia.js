@@ -15,11 +15,7 @@ import {
 } from './utils.js';
 import { _, loadLocale, getLocales, loadLocales } from './locale.js';
 import { transformPathD } from './path2d.js';
-import NodeForm from './node_form.js';
-import './drag.js';
-import { createNotificationContainer, pushNotification } from './notistack.js';
 import { DIRECTIONS } from './connector.js';
-import './son.js';
 
 export default class ActDia {
   style = {
@@ -408,7 +404,7 @@ export default class ActDia {
   }
 
   pushNotification(message, options = {}) {
-    pushNotification(message, options);
+    console.log(message);
   }
 
   create({ container, onView } = {}) {
@@ -465,9 +461,6 @@ export default class ActDia {
     this.container.addEventListener('keyup', evt => this.keyUpHandler(evt));
     window.addEventListener('beforeprint', () => this.svg.classList.add('print'));
     window.addEventListener('afterprint', evt => this.svg.classList.remove('print'));
-
-    this.nodeForm = new NodeForm({ container: this.container });
-    createNotificationContainer();
 
     this.configureTools();
   }
@@ -2160,8 +2153,11 @@ export default class ActDia {
           return;
       }
 
-      this.nodeForm.showForNode(item, { x: this.mouse.x, y: this.mouse.y });
-      return;
+      if (this.onItemDblClick) {
+        this.onItemDblClick({ actdia: this, item, evt });
+        if (evt.defaultPrevented)
+          return;
+      }
     }
 
     this.dblClickDefaultHandler(evt);

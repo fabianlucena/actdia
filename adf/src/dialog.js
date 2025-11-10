@@ -118,22 +118,17 @@ export default class Dialog {
       this.element.classList.add(options.className);
     }
 
-    let closeButton;
-    if (options.closeButton === false
-      || options.okButton || options.cancelButton || options.yesButton || options.noButton
-    ) {
-      closeButton = false;
-    } else {
-      closeButton = true;
-    }
-    
-    if (closeButton) {
-      this.headerCloseButton.style.display = '';
+    if (options.closeButton !== false) {
       this.closeButton.style.display = '';
       this.closeButton.innerHTML = 
         typeof options.closeButton === 'string' ? options.closeButton : _('Close');
     } else {
       this.closeButton.style.display = 'none';
+    }
+
+    if (options.headerCloseButton !== false) {
+      this.headerCloseButton.style.display = '';
+    } else {
       this.headerCloseButton.style.display = 'none';
     }
 

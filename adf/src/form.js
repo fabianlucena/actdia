@@ -1,13 +1,17 @@
 import './form.css';
-import { _ } from './locale.js';
-import Dialog from '../src/dialog.js';
+import Dialog from './dialog.js';
+import { _ } from '../actdia/locale.js';
 
-export default class Form extends Dialog {
-  constructor({ container }) {
-    super(...arguments)
-    this.contentElement.addEventListener('input', evt => this.inputHandler(evt));
-    
-    this.contentElement.addEventListener('click', evt => this.clickHandler(evt));
+export default class Form extends Dialog {º
+  create(options) {
+    super.create(...arguments);
+    this.inputHandlerBind = this.inputHandler.bind(this);
+    this.contentElement.addEventListener('input', this.inputHandlerBind);
+  }
+
+  destroy() {
+    this.contentElement.removeEventListener('input', this.inputHandlerBind);
+    super.destroy();
   }
 
   show(options) {
@@ -25,6 +29,7 @@ export default class Form extends Dialog {
       content: `<form class="form">${html}</form>`,
       ...options,
       okButton: _('Save'),
+      cancelButton: true,
       closeButton: false,
     });
   }
@@ -162,16 +167,17 @@ export default class Form extends Dialog {
   clickHandler(evt) {
     const optionElement = evt.target.closest('.option');
     const value = optionElement?.dataset?.value;
-    if (typeof value === 'undefined')
-      return;
+    if (typeof value !== 'undefined') {
+      const optionsElement = optionElement.closest('.options');
+      const name = optionsElement?.dataset?.name;
+      if (typeof name !== 'undefined') {
+        const field = this.formDefinition.find(f => f.name === name);
+        this.setValue(field, value);
+        evt.preventDefault();
+      }
+    }
 
-    const optionsElement = optionElement.closest('.options');
-    const name = optionsElement?.dataset?.name;
-    if (typeof name === 'undefined')
-      return;
-
-    const field = this.formDefinition.find(f => f.name === name);
-    this.setValue(field, value);
+    super.clickHandler(evt);
   }
 
   okHandler(evt) {
