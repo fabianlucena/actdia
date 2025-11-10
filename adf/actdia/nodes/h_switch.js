@@ -61,13 +61,13 @@ export default class HSwitch extends Node {
     this.actdia.tryUpdateShape(this, this.svgShape?.children?.[2], this.shape.shapes[2]);
   }
 
-  onClick(evt, detail) {
-    if (!detail.actdia
+  onClick({ evt, item, shape }) {
+    if (!item.actdia
       || evt.button !== 0
       || evt.ctrlKey
       || evt.shiftKey
       || evt.altKey
-      || detail.shapes?.some(s => s.connector)
+      || item.shapes?.some(s => s.connector)
     )
       return;
 

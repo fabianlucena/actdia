@@ -24,9 +24,10 @@ export default class VSwitch extends Node {
         ry: .3,
       },
       {
+        name: 'knob',
         shape: 'circle',
         x: 0.5,
-        y: 1.4,
+        y: 1.3,
         r: .4,
         fill: 'darkred',
         stroke: 'darkred',
@@ -50,28 +51,28 @@ export default class VSwitch extends Node {
     if (this.status) {
       shape.fill = 'lightgreen';
       shape.stroke = 'darkgreen';
-      shape.y = 0.6;
+      shape.y = 0.7;
     } else {
       shape.fill = '#800000';
       shape.stroke = '#400000';
-      shape.y = 1.4;
+      shape.y = 1.3;
     }
 
     this.actdia.tryUpdateShape(this, this.svgShape?.children?.[2], this.shape.shapes[2]);
   }
 
-  onClick(evt, detail) {
-    if (!detail.actdia
+  onClick({ evt, item, shape }) {
+    if (!item.actdia
       || evt.button !== 0
       || evt.ctrlKey
       || evt.shiftKey
       || evt.altKey
-      || detail.shapes?.some(s => s.connector)
+      || item.shapes?.some(s => s.connector)
+      || shape?.name !== 'knob'
     )
       return;
 
     this.setStatus(!this.status);
-
-    return false;
+    evt.preventDefault();
   }
 }

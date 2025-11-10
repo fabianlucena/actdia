@@ -85,13 +85,13 @@ export default class PulseGenerator extends Node {
     this.actdia.tryUpdateShape(this, this.svgShape?.children?.[3], this.shape.shapes[3]);
   }
 
-  onClick(evt, detail) {
-    if (!detail.actdia
+  onClick({ evt, detail }) {
+    if (!detail.item
       || evt.button !== 0
       || evt.ctrlKey
       || evt.shiftKey
       || evt.altKey
-      || detail.shapes?.some(s => s.connector)
+      || item.shapes?.some(s => s.connector)
     )
       return;
 

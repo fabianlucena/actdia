@@ -1072,6 +1072,7 @@ export default class ActDia {
     ].filter(c => c);
 
     options?.id && (attributes.id = options.id);
+    (style.name || options?.name) && (attributes.name = style.name ?? options.name);
     classList.length && (attributes.className = classList.join(' '));
     style.fill && (attributes.fill = style.fill);
     style.fill === false && (attributes.fill = 'none');
@@ -1917,31 +1918,70 @@ export default class ActDia {
     }
   }
 
+  getShapeByKeyValue(shapes, key, value) {
+    for (let i = 0; i < shapes.length; i++) {
+      const shape = shapes[i];
+      if (shape[key] === value) {
+        return shape;
+      } else if (shape.shapes?.length) {
+        const found = this.getShapeByKeyValue(shape.shapes, key, value);
+        if (found) {
+          return found;
+        }
+      }
+    }
+
+    return null;
+  }
+
   getEventItem(evt) {
+    if (!evt.target instanceof SVGElement) {
+      return {};
+    }
+
+    const shapeSVG = evt.target;
+    const result = { shapeSVG };
     const svgItem = evt.target.closest('g.actdia-item');
     if (!svgItem)
-      return null;
+      return result;
 
+    result.svgItem = svgItem;
     const item = this.#items.find(i => i.id === svgItem.id);
+    result.item = item;
 
-    return item;
+    const attributes = shapeSVG.attributes;
+    const id = attributes?.id?.value;
+    if (id) {
+      if (item.shape.id === id) {
+        result.shape = item.shape;
+      } else if (item.shape.shapes?.length) {
+        result.shape = this.getShapeByKeyValue(item.shape.shapes, 'id', id);
+      }
+    }
+    
+    const name = attributes?.name?.value;
+    if (name) {
+      if (item.shape.name === name) {
+        result.shape = item.shape;
+      } else if (item.shape.shapes?.length) {
+        result.shape = this.getShapeByKeyValue(item.shape.shapes, 'name', name);
+      }
+    }
+
+    return result;
   }
 
   getEventItemConnector(evt) {
-    const item = this.getEventItem(evt);
-    if (!item)
-      return {};
-
-    if (!item.connectors?.length)
-      return { item, connector: null };
+    const result = this.getEventItem(evt);
+    if (!result.item?.connectors?.length)
+      return result;
 
     let svgConnector = evt.target.closest('g.actdia-connector');
     if (!svgConnector)
-      return { item, connector: null };
+      return result;
 
-    const connector = item.connectors.find(c => c.id === svgConnector.id);
-
-    return { item, connector };
+    result.connector = result.item.connectors.find(c => c.id === svgConnector.id);
+    return result;
   }
 
   getUntransformedPosition(position) {
@@ -2043,14 +2083,14 @@ export default class ActDia {
   }
 
   mouseClickHandler(evt) {
-    const { item, connector } = this.getEventItemConnector(evt);
+    const { item, shape, connector } = this.getEventItemConnector(evt);
     if (!item) {
       this.#items.forEach(i => i.select(false));
       return;
     }
 
     if (connector) {
-      this.connectorClickHandler(evt, { item, connector });
+      this.connectorClickHandler({ evt, item, connector });
       return;
     }
 
@@ -2060,7 +2100,15 @@ export default class ActDia {
     }
 
     if (item.onClick) {
-      if (item.onClick(evt, item) === false)
+      if (item.onClick({ evt, item, shape }) === false)
+        evt.preventDefault();
+
+      if (evt.defaultPrevented)
+        return;
+    }
+
+    if (item.handleClick) {
+      if (item.handleClick({ evt, item, shape }) === false)
         evt.preventDefault();
 
       if (evt.defaultPrevented)
@@ -2079,7 +2127,7 @@ export default class ActDia {
     return true;
   }
 
-  connectorClickHandler(evt, { item, connector }) {
+  connectorClickHandler({ evt, item, connector }) {
     if (!item || !connector) {
       return true;
     }
@@ -2143,7 +2191,7 @@ export default class ActDia {
   }
 
   mouseDblClickHandler(evt) {
-    const item = this.getEventItem(evt);
+    const { item } = this.getEventItem(evt);
     if (item) {
       if (item.onDblClick) {
         if (item.onDblClick(evt, item) === false)
@@ -2193,7 +2241,7 @@ export default class ActDia {
       }
     }
 
-    const item = this.getEventItem(evt);
+    const { item } = this.getEventItem(evt);
     if (item) {
       if (this.itemMouseDownHandler(evt, item) === false) {
         return false;
