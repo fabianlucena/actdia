@@ -151,17 +151,17 @@ export default class Connection extends Item {
     const
       dx = tx - fx,
       dy = ty - fy,
-      dd = Math.pow(dx * dx + dy * dy, 1/2) / 3,
-      x1 = fx + dd * Math.cos(this.from.connector.direction),
-      y1 = fy - dd * Math.sin(this.from.connector.direction);
+      dd = Math.pow(dx * dx + dy * dy, 1 / 2) / 3,
+      x1 = fx + dd * Math.cos(this.from.connector.direction / 180 * Math.PI),
+      y1 = fy - dd * Math.sin(this.from.connector.direction / 180 * Math.PI);
 
     let d;
     if (isMouse) {
       d = `M ${fx} ${fy} Q ${x1} ${y1} ${tx} ${ty}`;
     } else {
       const
-        x2 = tx + dd * Math.cos(this.to.connector.direction),
-        y2 = ty - dd * Math.sin(this.to.connector.direction);
+        x2 = tx + dd * Math.cos(this.to.connector.direction / 180 * Math.PI),
+        y2 = ty - dd * Math.sin(this.to.connector.direction / 180 * Math.PI);
       d = `M ${fx} ${fy} C ${x1} ${y1} ${x2} ${y2} ${tx} ${ty}`;
     }
 

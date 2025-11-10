@@ -44,7 +44,64 @@ export default class ActDia {
       dominantBaseline: 'bottom',
     },
 
-    connector: {
+    in: {
+      shape: {
+        shapes: [
+          {
+            shape: 'circle',
+            cx: 0,
+            cy: 0,
+            r: 0.5,
+          },
+          {
+            shape: 'path',
+            d: `M 0.3 -0.3
+              L -0.4 0
+              L  0.3 0.3`,
+          },
+        ],
+      },
+      styles: {
+        small: {
+          shape: {
+            shapes: [
+              {
+                shape: 'circle',
+                cx: 0,
+                cy: 0,
+                r: 0.3,
+              },
+              {
+                shape: 'path',
+                d: `M 0.2 -0.2
+                  L -0.2 0
+                  L  0.2 0.2`,
+              },
+            ],
+          },
+        },
+        tiny: {
+          shape: {
+            shapes: [
+              {
+                shape: 'circle',
+                cx: 0,
+                cy: 0,
+                r: 0.2,
+              },
+              {
+                shape: 'path',
+                d: `M 0.1 -0.1
+                  L -0.15 0
+                  L  0.1 0.1`,
+              },
+            ],
+          },
+        },
+      },
+    },
+
+    out: {
       shape: {
         shapes: [
           {
@@ -62,15 +119,32 @@ export default class ActDia {
         ],
       },
       styles: {
+        small: {
+          shape: {
+            shapes: [
+              {
+                shape: 'circle',
+                cx: 0,
+                cy: 0,
+                r: 0.3,
+              },
+              {
+                shape: 'path',
+                d: `M -0.2 -0.2
+                  L  0.2 0
+                  L -0.2 0.2`,
+              },
+            ],
+          },
+        },
         tiny: {
           shape: {
             shapes: [
               {
-                shape: 'path',
-                d: `M 0 -0.2
-                  A 0.2 0.2 0 1 0 0  0.2
-                  A 0.2 0.2 0 1 0 0 -0.2
-                  Z`,
+                shape: 'circle',
+                cx: 0,
+                cy: 0,
+                r: 0.2,
               },
               {
                 shape: 'path',
@@ -80,20 +154,47 @@ export default class ActDia {
               },
             ],
           },
-        }
+        },
       },
     },
 
-    in: {
-      extends: 'connector',
-    },
-
-    out: {
-      extends: 'connector',
-    },
-
     io: {
-      extends: 'connector',
+      shape: {
+        shapes: [
+          {
+            shape: 'circle',
+            cx: 0,
+            cy: 0,
+            r: 0.5,
+          },
+          {
+            shape: 'path',
+            d: `M 0.3 -0.3
+              L -0.4 0
+              L  0.3 0.3`,
+          },
+        ],
+      },
+      styles: {
+        tiny: {
+          shape: {
+            shapes: [
+              {
+                shape: 'circle',
+                cx: 0,
+                cy: 0,
+                r: 0.2,
+              },
+              {
+                shape: 'path',
+                d: `M 0.1 -0.1
+                  L -0.15 0
+                  L  0.1 0.1`,
+              },
+            ],
+          },
+        }
+      },
     },
 
     connection: {},
@@ -1187,18 +1288,27 @@ export default class ActDia {
           throw new Error('Unknown shape: ' + shape.shape);
         }
 
-        const { shape: shape1, shapes, x, y, ...attributes } = shape;
+        const { shape: shape1, shapes, x, y, rotate, skewX, skewY, ...attributes } = shape;
         attributes.transform = '';
+
         if (x || y) {
-          attributes.transform = `translate(${(x ?? 0) * (options.sx ?? this.style.sx)}, ${(y ?? 0) * (options.sy ?? this.style.sy)})`;
+          attributes.transform += ` translate(${(x ?? 0) * (options.sx ?? this.style.sx)}, ${(y ?? 0) * (options.sy ?? this.style.sy)})`;
+        }
+
+        if (rotate) {
+          attributes.transform += ` rotate(${rotate})`;
         }
 
         if (shape.sx || shape.sy) {
           attributes.transform += ` scale(${shape.sx ?? 1}, ${shape.sy ?? 1})`;
         }
 
-        if (shape.skewX) {
-          attributes.transform += ` skewX(${shape.skewX})`;
+        if (skewX) {
+          attributes.transform += ` skewX(${skewX})`;
+        }
+
+        if (skewY) {
+          attributes.transform += ` skewY(${skewY})`;
         }
 
         data = {
@@ -1649,7 +1759,7 @@ export default class ActDia {
   }
 
   getConnectorShapeData(connector, node, options) {
-    const style = this.getStyle({ item: node, shape: connector, type: connector.type || 'connector', options });
+    const style = this.getStyle({ item: node, shape: { ...connector, rotate: -connector.direction }, type: connector.type || 'connector', options });
     const shape = connector.shape ?? style.shape;
 
     if (!shape) {
@@ -1666,6 +1776,7 @@ export default class ActDia {
         x: connector.x,
         y: connector.y,
         id: connector.id,
+        rotate: -connector.direction,
         ...shape,
       },
       style: {

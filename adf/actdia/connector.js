@@ -2,16 +2,11 @@ import Element from './element.js';
 import { _ } from './locale.js';
 import { doesExtend } from './utils.js';
 
-const PI_0 = 0;
-const PI_1_2 = Math.PI * 1 / 2;
-const PI = Math.PI;
-const PI_3_2 = Math.PI * 3 / 2;
-
 export const DIRECTIONS = {
-  RIGHT: PI_0,
-  DOWN: PI_3_2,
-  LEFT: PI,
-  UP: PI_1_2,
+  RIGHT: 0,
+  DOWN: 270,
+  LEFT: 180,
+  UP: 90,
 };
 
 export default class Connector extends Element {
@@ -63,7 +58,7 @@ export default class Connector extends Element {
   getDirection(direction, defaultDirection) {
     if (typeof direction === 'number') {
       if (isNaN(direction) || !isFinite(direction))
-          return this.getDirection(defaultDirection, PI_1_2);
+          return this.getDirection(defaultDirection, 90);
 
       return direction;
     }
@@ -73,16 +68,16 @@ export default class Connector extends Element {
 
     if (typeof direction === 'string') {
       switch (direction) {
-        case 'right': return PI_0;
+        case 'right': return 0;
         case 'bottom':
-        case 'down': return PI_3_2;
-        case 'left': return PI;
+        case 'down': return 270;
+        case 'left': return 180;
         case 'top':
-        case 'up': return PI_1_2;
+        case 'up': return 90;
       }
     }
 
-    return this.getDirection(defaultDirection, PI_1_2);
+    return this.getDirection(defaultDirection, 90);
   }
 
   addConnection(item) {

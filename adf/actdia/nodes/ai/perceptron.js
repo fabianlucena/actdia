@@ -229,7 +229,7 @@ export default class Perceptron extends Node {
       const input = inputs[i];
       input.x = 1 - Math.sin(a);
       input.y = 1 - Math.cos(a);
-      input.direction = a + Math.PI / 2;
+      input.direction = a * 180 / Math.PI + 90;
 
       input.connections?.forEach(conn => conn.update());
     }
