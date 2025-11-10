@@ -15,7 +15,6 @@ import {
 } from './utils.js';
 import { _, loadLocale, getLocales, loadLocales } from './locale.js';
 import { transformPathD } from './path2d.js';
-import NodeSelector from './node_selector.js';
 import Dialog from './dialog.js';
 import NodeForm from './node_form.js';
 import './drag.js';
@@ -23,19 +22,7 @@ import { createNotificationContainer, pushNotification } from './notistack.js';
 import { DIRECTIONS } from './connector.js';
 import './son.js';
 
-window.addEventListener('DOMContentLoaded', async () => {
-  await loadLocale('.', 'es');
-  ActDia.autoCreate();
-});
-
 export default class ActDia {
-  static autoCreated;
-  static autoCreate() {
-    var container = document.querySelector('#actdia');
-    ActDia.autoCreated = new ActDia({ container });
-    return ActDia.autoCreated;
-  }
-
   style = {
     sx: 16,
     sy: 16,
@@ -402,7 +389,11 @@ export default class ActDia {
   constructor(options) {
     this.create(options);
 
-    Element.importAsync('./node.js')
+    loadLocale('.', 'es')
+      .then(() => {
+        this.pushNotification(_('Welcome to ActDia!'), 'info');
+        return Element.importAsync('./node.js');
+      })
       .then(() => Element.importAsync('./connection.js'))
       .then(() => Element.importAsync('./text.js'))
       .then(() => Element.importAsync('./connector-in.js'))
@@ -424,7 +415,7 @@ export default class ActDia {
   create(options) {
     options.container && (this.container = options.container);
     if (!this.container)
-      throw new Error('No elemento to setup ActDia');
+      throw new Error('No element to setup ActDia');
 
     this.container.classList.add('actdia');
     this.container.tabIndex = 0;
@@ -476,12 +467,9 @@ export default class ActDia {
 
     this.dialog = new Dialog({ container: this.container });
     this.nodeForm = new NodeForm({ container: this.container });
-    this.nodeSelector = new NodeSelector({ container: this.container, actdia: this });
     createNotificationContainer();
 
     this.configureTools();
-
-    this.pushNotification(_('Welcome to ActDia!'), 'info');
   }
 
   parseSVGFragment(svgFragment) {
@@ -2263,8 +2251,7 @@ export default class ActDia {
   }
 
   dblClickDefaultHandler(evt) {
-    const { x, y } = this.getUntransformedPosition(this.mouse);
-    this.nodeSelector.show({ x, y });
+    this.onDblClick && this.onDblClick(evt);
   }
 
   keyDownHandler(evt) {

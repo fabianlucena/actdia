@@ -1,7 +1,7 @@
 import './node-selector.css';
-import Item from './item.js';
-import Dialog from './dialog.js';
-import { _, loadLocale } from './locale.js';
+import Item from '../actdia/item.js';
+import Dialog from '../actdia/dialog.js';
+import { _, loadLocale } from '../actdia/locale.js';
 
 export default class NodeSelector extends Dialog {
   breadcrumbsContainer = null;
@@ -55,9 +55,7 @@ export default class NodeSelector extends Dialog {
     this.classesContainer.addEventListener('click', evt => this.classesClickHandler(evt));
   }
 
-  show(options) {
-    this.x = options.x;
-    this.y = options.y;
+  show({ path } = {}) {
     super.show(
       {
         header: _('Add node'),
@@ -67,7 +65,7 @@ export default class NodeSelector extends Dialog {
       },
       ...arguments
     );
-    this.loadCategory({ path: './nodes', namespace: 'nodes.' });
+    this.loadCategory({ path, namespace: 'nodes.' });
   }
 
   async loadCategory({ path, previousBreadcrumbs = [], namespace = '' }) {
@@ -148,18 +146,16 @@ export default class NodeSelector extends Dialog {
   }
 
   classesClickHandler(evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
+    if (!this.onSelectNode) {
+      return;
+    }
 
     const classDiv = evt.target.closest('.actdia-node-class');
     const fqcn = classDiv?.dataset?.fqcn;
-    if (fqcn) {
-      this.actdia.addItem({
-        fqcn,
-        x: this.x,
-        y: this.y,
-      });
+    if (!fqcn) {
+      return;
     }
-    this.close();
+
+    this.onSelectNode({ evt, fqcn });
   }
 }
