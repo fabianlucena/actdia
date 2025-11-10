@@ -1949,25 +1949,29 @@ export default class ActDia {
     const item = this.#items.find(i => i.id === svgItem.id);
     result.item = item;
 
+    let shape;
     const attributes = shapeSVG.attributes;
     const id = attributes?.id?.value;
     if (id) {
       if (item.shape.id === id) {
-        result.shape = item.shape;
+        shape = item.shape;
       } else if (item.shape.shapes?.length) {
-        result.shape = this.getShapeByKeyValue(item.shape.shapes, 'id', id);
+        shape = this.getShapeByKeyValue(item.shape.shapes, 'id', id);
       }
     }
     
-    const name = attributes?.name?.value;
-    if (name) {
-      if (item.shape.name === name) {
-        result.shape = item.shape;
-      } else if (item.shape.shapes?.length) {
-        result.shape = this.getShapeByKeyValue(item.shape.shapes, 'name', name);
+    if (!shape) {
+      const name = attributes?.name?.value;
+      if (name) {
+        if (item.shape.name === name) {
+          shape = item.shape;
+        } else if (item.shape.shapes?.length) {
+          shape = this.getShapeByKeyValue(item.shape.shapes, 'name', name);
+        }
       }
     }
 
+    result.shape = shape;
     return result;
   }
 
