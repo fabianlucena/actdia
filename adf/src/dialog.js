@@ -212,7 +212,7 @@ export default class Dialog {
   
   close() {
     this.element.style.display = 'none';
-    console.log(this.container);
+    this.container.focus();
     if (this.destroyOnClose) {
       this.destroy();
     }
