@@ -98,8 +98,6 @@ export default class PulseGenerator extends Node {
     )
       return;
 
-    console.log(shape.name);
-
     if (shape.name === 'start') {
       this.active = true;
       this.updateButtons();

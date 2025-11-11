@@ -1,5 +1,5 @@
 import './form.css';
-import Dialog from './dialog.js';
+import Dialog, { ConfirmDialog } from './dialog.js';
 import { _ } from '../actdia/locale.js';
 
 export default class Form extends Dialog {
@@ -132,6 +132,7 @@ export default class Form extends Dialog {
 
   keydownHandler(evt) {
     evt.stopPropagation();
+    super.keydownHandler(evt);
   }
 
   inputHandler(evt) {
@@ -207,9 +208,16 @@ export default class Form extends Dialog {
   }
 
   cancelHandler(evt) {
-    this.formDefinition.forEach(field =>
-      this.setValue(field, field.previousValue));
-
-    super.cancelHandler(evt);
+    evt.stopPropagation();
+    evt.preventDefault();
+    
+    new ConfirmDialog({
+      container: this.container,
+      onYes: () => {
+        this.formDefinition.forEach(field => this.setValue(field, field.previousValue));
+        this.forceClose();
+      },
+      onClosed: () => this.element?.focus(),
+    });
   }
 }

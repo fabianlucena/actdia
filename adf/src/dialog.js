@@ -8,6 +8,8 @@ export default class Dialog {
   onNo = null;
   onYes = null;
   destroyOnClose = true;
+  confirmToClose = false;
+  onClosed = null;
 
   constructor(options) {
     this.create(...arguments);
@@ -46,26 +48,25 @@ export default class Dialog {
         <div class="footer">
           <div class="actions">
             <button type="button" class="ok">${_('OK')}</button>
-            <button type="button" class="cancel">${_('Cancel')}</button>
             <button type="button" class="yes">${_('Yes')}</button>
             <button type="button" class="no">${_('No')}</button>
+            <button type="button" class="cancel">${_('Cancel')}</button>
             <button type="button" class="close">${_('Close')}</button>
           </div>
         </div>`;
     }
-    this.container.appendChild(this.element);
 
     this.headerElement = this.element.querySelector('.header');
     this.headerTextElement = this.element.querySelector('.header-text');
     this.contentElement = this.element.querySelector('.content');
     this.footerElement = this.element.querySelector('.footer');
 
-    this.headerCloseButton = this.headerElement.querySelector('.close');
-    this.closeButton = this.footerElement.querySelector('.close');
-    this.okButton = this.footerElement.querySelector('.ok');
-    this.cancelButton = this.footerElement.querySelector('.cancel');
-    this.yesButton = this.footerElement.querySelector('.yes');
-    this.noButton = this.footerElement.querySelector('.no');
+    this.headerCloseButtonElement = this.headerElement.querySelector('.close');
+    this.closeButtonElement = this.footerElement.querySelector('.close');
+    this.okButtonElement = this.footerElement.querySelector('.ok');
+    this.cancelButtonElement = this.footerElement.querySelector('.cancel');
+    this.yesButtonElement = this.footerElement.querySelector('.yes');
+    this.noButtonElement = this.footerElement.querySelector('.no');
 
     this.keydownHandlerBinded = this.keydownHandler.bind(this);
     this.clickHandlerBinded = this.clickHandler.bind(this);
@@ -73,26 +74,26 @@ export default class Dialog {
     this.element.addEventListener('keydown', this.keydownHandlerBinded);
     this.element.addEventListener('click', this.clickHandlerBinded);
 
-    if (options.content) {
+    if (this.content) {
       this.show(...arguments);
     }
   }
 
   destroy() {
     this.element.removeEventListener('keydown', this.keydownHandlerBinded);
-    this.cancelButton.removeEventListener('click', this.clickHandlerBinded);
+    this.element.removeEventListener('click', this.clickHandlerBinded);
 
     this.headerElement = null;
     this.headerTextElement = null;
     this.contentElement = null;
     this.footerElement = null;
 
-    this.headerCloseButton = null;
-    this.closeButton = null;
-    this.okButton = null;
-    this.cancelButton = null;
-    this.yesButton = null;
-    this.noButton = null;
+    this.headerCloseButtonElement = null;
+    this.closeButtonElement = null;
+    this.okButtonElement = null;
+    this.cancelButtonElement = null;
+    this.yesButtonElement = null;
+    this.noButtonElement = null;
 
     this.element.remove();
     this.element = null;
@@ -103,72 +104,78 @@ export default class Dialog {
     Object.assign(options, [...arguments].slice(2));
 
     if (typeof content === 'object' && content !== null) {
-      options = { ...options, ...content };
-      content = options.content;
+      options = { ...content, ...options };
+    } else {
+      options.content = content;
     }
 
-    if (options.header) {
-      this.headerTextElement.innerHTML = options.header;
+    Object.assign(this, options);
+    
+    if (!this.element.parentNode || options.container) {
+      this.container ??= document.body;
+      this.container.appendChild(this.element);
     }
 
-    if (typeof content === 'string')
-      this.contentElement.innerHTML = content;
+    this.headerTextElement.innerHTML = this.header;
+
+    if (typeof this.content !== 'undefined')
+      this.contentElement.innerHTML = this.content;
 
     this.element.className = 'dialog draggable';
-    if (options.className) {
-      this.element.classList.add(options.className);
+    if (this.className) {
+      this.element.classList.add(this.className);
     }
 
-    if (options.closeButton !== false) {
-      this.closeButton.style.display = '';
-      this.closeButton.innerHTML = 
-        typeof options.closeButton === 'string' ? options.closeButton : _('Close');
+    if (this.closeButton && (!this.cancelButton && !this.noButton)) {
+      this.closeButtonElement.style.display = '';
+      this.closeButtonElement.innerHTML = 
+        typeof this.closeButton === 'string' ? this.closeButton : _('Close');
     } else {
-      this.closeButton.style.display = 'none';
+      this.closeButtonElement.style.display = 'none';
     }
 
-    if (options.headerCloseButton !== false) {
-      this.headerCloseButton.style.display = '';
+    if (this.headerCloseButton !== false) {
+      this.headerCloseButtonElement.style.display = '';
     } else {
-      this.headerCloseButton.style.display = 'none';
+      this.headerCloseButtonElement.style.display = 'none';
     }
 
-    if (options.okButton) {
-      this.okButton.style.display = '';
-      this.okButton.innerHTML = 
-        typeof options.okButton === 'string' ? options.okButton : _('OK');
+    if (this.okButton) {
+      this.okButtonElement.style.display = '';
+      this.okButtonElement.innerHTML = 
+        typeof this.okButton === 'string' ? this.okButton : _('OK');
     } else {
-      this.okButton.style.display = 'none';      
+      this.okButtonElement.style.display = 'none';      
     }
 
-    if (options.cancelButton) {
-      this.cancelButton.style.display = '';
-      this.cancelButton.innerHTML = 
-        typeof options.cancelButton === 'string' ? options.cancelButton : _('Cancel');
+    if (this.cancelButton) {
+      this.cancelButtonElement.style.display = '';
+      this.cancelButtonElement.innerHTML = 
+        typeof this.cancelButton === 'string' ? this.cancelButton : _('Cancel');
     } else {
-      this.cancelButton.style.display = 'none';
+      this.cancelButtonElement.style.display = 'none';
     }
 
-    if (options.yesButton) {
-      this.yesButton.style.display = '';
-      this.yesButton.innerHTML =
-        typeof options.yesButton === 'string' ? options.yesButton : _('Yes');
+    if (this.yesButton) {
+      this.yesButtonElement.style.display = '';
+      this.yesButtonElement.innerHTML =
+        typeof this.yesButton === 'string' ? this.yesButton : _('Yes');
     } else {
-      this.yesButton.style.display = 'none';
+      this.yesButtonElement.style.display = 'none';
     }
 
-    if (options.noButton) {
-      this.noButton.style.display = '';
-      this.noButton.innerHTML =
-        typeof options.noButton === 'string' ? options.noButton : _('No');
+    if (this.noButton) {
+      this.noButtonElement.style.display = '';
+      this.noButtonElement.innerHTML =
+        typeof this.noButton === 'string' ? this.noButton : _('No');
     } else {
-      this.noButton.style.display = 'none';
+      this.noButtonElement.style.display = 'none';
     }
 
     this.element.style.display = 'flex';
 
-    if (typeof options.width !== 'undefined')
-      this.element.style.width = options.width;
+    if (typeof this.width !== 'undefined')
+      this.element.style.width = this.width;
     else {
       this.element.style.width = '';
       const maxWidth = document.body.clientWidth * .8;
@@ -176,8 +183,8 @@ export default class Dialog {
         this.element.style.width = maxWidth + 'px';
     }
 
-    if (typeof options.height !== 'undefined')
-      this.element.style.height = options.height;
+    if (typeof this.height !== 'undefined')
+      this.element.style.height = this.height;
     else {
       this.element.style.height = '';
       const maxHeight = document.body.clientHeight * .8;
@@ -185,17 +192,18 @@ export default class Dialog {
         this.element.style.height = maxHeight + 'px';
     }
 
-    if (typeof options.x !== 'undefined')
-      this.element.style.left = options.x + 'px';
+    if (typeof this.x !== 'undefined')
+      this.element.style.left = this.x + 'px';
     else
       this.element.style.left = (document.body.clientWidth - this.element.offsetWidth) / 2 + 'px';
 
-    if (typeof options.y !== 'undefined')
-      this.element.style.top = options.y + 'px';
+    if (typeof this.y !== 'undefined')
+      this.element.style.top = this.y + 'px';
     else
       this.element.style.top = (document.body.clientHeight - this.element.offsetHeight) / 2 + 'px';
 
-    this.onClick = options.onClick;
+    this.onClick = this.onClick;
+    this.element.focus();
   }
 
   showError(content, options) {
@@ -211,49 +219,64 @@ export default class Dialog {
   }
   
   close() {
+    if (this.confirmToClose) {
+      new ConfirmDialog({
+        container: this.container,
+        onYes: () => this.forceClose(),
+        onClosed: () => this.element?.focus(),
+      });
+    } else {
+      this.forceClose();
+    }
+  }
+
+  forceClose() {
     this.element.style.display = 'none';
     this.container.focus();
     if (this.destroyOnClose) {
       this.destroy();
     }
+
+    this.onClosed
+      && this.onClosed();
   }
 
   keydownHandler(evt) {
     if (evt.key === 'Escape') {
-      if (this.cancelButton.style.display !== 'none') {
-        evt.preventDefault();
-        evt.stopPropagation();
+      if (this.cancelButtonElement.style.display !== 'none') {
         this.cancelHandler(evt);
+        evt.preventDefault();
+        evt.stopPropagation();
         return;
       }
 
-      if (this.noButton.style.display !== 'none') {
-        evt.preventDefault();
-        evt.stopPropagation();
+      if (this.noButtonElement.style.display !== 'none') {
         this.noHandler(evt);
+        evt.preventDefault();
+        evt.stopPropagation();
         return;
       }
 
-      if (this.closeButton.style.display !== 'none') {
+      if (this.closeButtonElement.style.display !== 'none') {
+        this.closeHandler(evt);
         evt.preventDefault();
         evt.stopPropagation();
-        this.closeHandler(evt);
         return;
       }
     }
 
     if (evt.key === 'Enter') {
-      if (this.okButton.style.display !== 'none') {
+      if (this.okButtonElement.style.display !== 'none') {
+        this.okHandler(evt);
         evt.preventDefault();
         evt.stopPropagation();
-        this.okHandler(evt);
         return;
       }
 
-      if (this.yesButton.style.display !== 'none') {
+      if (this.yesButtonElement.style.display !== 'none') {
+        this.yesHandler(evt);
         evt.preventDefault();
         evt.stopPropagation();
-        this.yesHandler(evt);
         return;
       }
     }
@@ -346,5 +369,20 @@ export default class Dialog {
 
     evt.preventDefault();
     this.close();
+  }
+}
+
+export class ConfirmDialog extends Dialog {
+  confirmToClose = false;
+
+  content = _('Are you sure you want to close this dialog? Unsaved changes will be lost.');
+  header = _('Confirm Close');
+
+  yesButton = true;
+  noButton = true;
+
+  constructor(options) {
+    super();
+    this.create(...arguments);
   }
 }

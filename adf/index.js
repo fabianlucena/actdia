@@ -2,9 +2,10 @@ import ActDia from './actdia/actdia.js';
 import NodeSelector from './src/node_selector.js';
 import Dialog from './src/dialog.js';
 import NodeForm from './src/node_form.js';
-import { _ } from './actdia/locale.js';
+import { _, loadLocale } from './actdia/locale.js';
 import { createNotificationContainer, pushNotification } from './src/notistack.js';
 import './src/drag.js';
+import { getPath } from './src/utils.js';
 
 let container = null;
 let actdia = null;
@@ -13,6 +14,8 @@ let mouseSelectOn;
 
 window.addEventListener('DOMContentLoaded', async () => {
   createNotificationContainer();
+
+  await loadLocale(getPath(import.meta.url) + '/src', 'es');
 
   container = document.querySelector('#actdia');
   actdia = new ActDia({
