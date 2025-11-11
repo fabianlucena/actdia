@@ -2030,28 +2030,6 @@ export default class ActDia {
     }
   }
 
-  async copyToClipboard() {
-    const exportable = this.#items.filter(i => i.exportable !== false);
-    let selected = exportable.filter(i => i.selected
-      || isConnection(i) && (i.from.item?.selected && i.to.item?.selected)
-    );
-    if (!selected.length) {
-      selected = exportable;
-    }
-
-    const jsonText = JSON.stringify(this.getData(selected), null, 2);
-    const svgText = await this.getSVG(selected);
-
-    const item = new ClipboardItem({
-      'text/plain': new Blob([jsonText], { type: 'text/plain' }),
-      'image/svg+xml': new Blob([svgText], { type: 'image/svg+xml' }),
-    });
-
-    navigator.clipboard.write([item]).then(() =>
-      this.pushNotification(_('Image and JSON copied to the clipboard.'), 'success')
-    );
-  }
-
   escapeDefaultHandler(evt) {
     this.cancelCaptureItem();
     this.cancelDrag();

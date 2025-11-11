@@ -13,7 +13,7 @@ export default class NodeForm extends Form {
 
     this.node = node;
     this.updateFormDefinition();
-    options.header ??= _('Node Properties');
+    options.header ??= _('Node properties');
 
     super.show(options);
   }

@@ -30,7 +30,7 @@ export class Text extends Node {
     {
       name: 'text',
       type: 'textarea',
-      _label: 'Texto',
+      _label: 'Text',
     },
     {
       name: 'autoSize',

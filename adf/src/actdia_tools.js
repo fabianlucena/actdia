@@ -2,13 +2,13 @@ import Item from '../actdia/item.js';
 import { encodeHTML } from '../actdia/utils.js';
 import Dialog from './dialog.js';
 import { _ } from '../actdia/locale.js';
+import { pushNotification } from './notistack.js';
 
 export default class ActDiaTools {
   tools = [
     new Item({
       type: 'tool',
-      name: 'Menu',
-      description: 'Menu',
+      name: _('Menu'),
       position: 'fixed',
       classList: ['full-filled'],
       shape: {
@@ -55,8 +55,8 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: 'Save',
-      description: 'Save the diagram',
+      name: _('Save'),
+      description: _('Saves the diagram.'),
       position: 'fixed',
       shape: {
         shapes: [
@@ -80,8 +80,45 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: 'Download JSON',
-      description: 'Download the diagram as a JSON file',
+      name: _('Copy to clipboard'),
+      description: _('Copies the diagram to the clipboard in JSON and SVG.'),
+      position: 'fixed',
+      shape: {
+        shapes: [
+          {
+            shape: 'rect',
+            x: 0.3,
+            y: 0.1,
+            width: 0.7,
+            height: 0.8,
+            fill: '#666',
+            stroke: '#333',
+            strokeWidth: 0.02,
+          },
+          {
+            shape: 'rect',
+            x: 0.1,
+            y: 0.2,
+            width: 0.7,
+            height: 0.8,
+            fill: '#444',
+            stroke: '#666',
+            strokeWidth: 0.02,
+          },
+        ],
+      },
+      box: null,
+      selectable: false,
+      draggable: false,
+      exportable: false,
+      onClick: () => this.copyToClipboard(),
+    }),
+
+    new Item({
+      type: 'tool',
+      visible: false,
+      name: _('Download JSON'),
+      description: _('Download the diagram as a JSON file.'),
       position: 'fixed',
       shape: {
         shapes: [
@@ -104,8 +141,8 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: 'Upload',
-      description: 'Upload a JSON file',
+      name: _('Upload'),
+      description: _('Upload a diagram as a JSON file.'),
       position: 'fixed',
       shape: {
         shapes: [
@@ -128,8 +165,8 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: 'Share',
-      description: 'Share the diagram un URL',
+      name: _('Share'),
+      description: _('Share the diagram as a URL.'),
       position: 'fixed',
       shape: {
         shapes: [
@@ -167,8 +204,8 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: 'Download SVG',
-      description: 'Download the diagram as a SVG image',
+      name: _('Download SVG'),
+      description: _('Download the diagram as a SVG image.'),
       position: 'fixed',
       shape: {
         shapes: [
@@ -193,10 +230,8 @@ export default class ActDiaTools {
           },
           {
             shape: 'path',
-            d: 'M0.5 0.75 V0.9 M0.45 0.85 L0.5 0.9 L0.55 0.85',
-            stroke: '#cacacaff',
-            lineCap: 'round',
-            lineJoin: 'round',
+            d: `M 0.5 0.4 V 1
+              M 0.35 0.85 L 0.5 1 L 0.65 0.85`,
           },
         ],
       },
@@ -210,8 +245,8 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: 'View',
-      description: 'View the diagram as a JSON file',
+      name: _('View'),
+      description: _('View the diagram as a JSON data.'),
       position: 'fixed',
       shape: {
         shapes: [
@@ -237,8 +272,8 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: 'Console',
-      description: 'View the diagram in the console',
+      name: _('View in console'),
+      description: _('View the diagram in the browser\'s console.'),
       position: 'fixed',
       shape: {
         shapes: [
@@ -286,8 +321,10 @@ export default class ActDiaTools {
     const options = { sx: 18, sy: 18 };
     const svgList = this.tools.map(tool => 
       '<div'
+        + ` id="${encodeHTML(tool.id)}"`
         + ' class="button actdia-tool-button"'
-        + ' data-id="' + encodeHTML(tool.id) + '"'
+        + ` data-id="${encodeHTML(tool.id)}"`
+        + ` title="${tool.description ? tool.name + ':\n' + tool.description : tool.name}"`
       + '>'
         + '<svg xmlns="http://www.w3.org/2000/svg"'
           + ' width="100%"'
@@ -342,7 +379,22 @@ export default class ActDiaTools {
   save() {
     const data = this.getData();
     localStorage.setItem('actdia', JSON.stringify(data));
-    this.pushNotification(_('Diagram saved.'), 'success');
+    pushNotification(_('Diagram saved.'), 'success');
+  }
+
+  async copyToClipboard(options) {
+    const exportable = this.getExportableItems(options);
+    const jsonText = JSON.stringify(this.getData(exportable), null, 2);
+    //const svgText = await this.actdia.getSVG(exportable);
+
+    const item = new ClipboardItem({
+      'text/plain': new Blob([jsonText], { type: 'text/plain' }),
+      //'image/svg+xml': new Blob([svgText], { type: 'image/svg+xml' }),
+    });
+
+    navigator.clipboard.write([item]).then(() =>
+      pushNotification(_('Image and JSON copied to the clipboard.'), 'success')
+    );
   }
 
   downloadJson(options) {
@@ -372,9 +424,9 @@ export default class ActDiaTools {
         try {
           const json = JSON.parse(evt.target.result);
           await this.actdia.load(json, { skipNotification: true });
-          this.pushNotification(_('Diagram loaded from JSON file.'), 'success');
+          pushNotification(_('Diagram loaded from JSON file.'), 'success');
         } catch (err) {
-          this.pushNotification(_('Invalid JSON file.'), 'error');
+          pushNotification(_('Invalid JSON file.'), 'error');
         }
       };
       reader.readAsText(file);
@@ -389,14 +441,14 @@ export default class ActDiaTools {
     const url = new URL(window.location.href);
     url.hash = '#' + encodeURIComponent(JSON.stringify(data));
     navigator.clipboard.writeText(url.toString())
-      .then(() => this.pushNotification(_('URL copied to clipboard.'), 'success'))
-      .catch(err => this.pushNotification(_('Error to copy: %s', err), 'error'));
+      .then(() => pushNotification(_('URL copied to clipboard.'), 'success'))
+      .catch(err => pushNotification(_('Error to copy: %s', err), 'error'));
   }
   
   async downloadSvg(options) {
     const exportable = this.getExportableItems(options);
     const svgText = await this.getSVG(exportable);
-    const blob = new Blob([svgText], { type: "image/svg+xml" });
+    const blob = new Blob([svgText], { type: 'image/svg+xml' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -416,7 +468,7 @@ export default class ActDiaTools {
     new Dialog({
       container: this.container,
       content: '<pre>' + JSON.stringify(data, '', 2) + '</pre>',
-      header: _('Exported Data'),
+      header: _('Exported data'),
     });
   }
 }
