@@ -2,15 +2,15 @@ import './form.css';
 import Dialog from './dialog.js';
 import { _ } from '../actdia/locale.js';
 
-export default class Form extends Dialog {º
+export default class Form extends Dialog {
   create(options) {
     super.create(...arguments);
-    this.inputHandlerBind = this.inputHandler.bind(this);
-    this.contentElement.addEventListener('input', this.inputHandlerBind);
+    this.inputHandlerBinded = this.inputHandler.bind(this);
+    this.contentElement.addEventListener('input', this.inputHandlerBinded);
   }
 
   destroy() {
-    this.contentElement.removeEventListener('input', this.inputHandlerBind);
+    this.contentElement.removeEventListener('input', this.inputHandlerBinded);
     super.destroy();
   }
 
@@ -130,7 +130,14 @@ export default class Form extends Dialog {º
     return fieldHtml;
   }
 
+  keydownHandler(evt) {
+    evt.stopPropagation();
+  }
+
   inputHandler(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+
     const name = evt.target.name;
     let field = this.formDefinition.find(f => f.name === name);
     let value;

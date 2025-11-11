@@ -22,6 +22,7 @@ export default class Dialog {
       this.element.style.display = 'flex';
       this.element.style.position = 'fixed';
       this.element.style.flexDirection = 'column';
+      this.element.tabIndex = 0;
       this.element.innerHTML = 
         `<div class="header">
           <div class="header-text"></div>
@@ -66,11 +67,11 @@ export default class Dialog {
     this.yesButton = this.footerElement.querySelector('.yes');
     this.noButton = this.footerElement.querySelector('.no');
 
-    this.keydownHandlerBind = this.keydownHandler.bind(this);
-    this.clickHandlerBind = this.clickHandler.bind(this);
+    this.keydownHandlerBinded = this.keydownHandler.bind(this);
+    this.clickHandlerBinded = this.clickHandler.bind(this);
 
-    this.element.addEventListener('keydown', this.keydownHandlerBind);
-    this.element.addEventListener('click', this.clickHandlerBind);
+    this.element.addEventListener('keydown', this.keydownHandlerBinded);
+    this.element.addEventListener('click', this.clickHandlerBinded);
 
     if (options.content) {
       this.show(...arguments);
@@ -78,8 +79,8 @@ export default class Dialog {
   }
 
   destroy() {
-    this.element.removeEventListener('keydown', this.keydownHandlerBind);
-    this.cancelButton.removeEventListener('click', this.clickHandlerBind);
+    this.element.removeEventListener('keydown', this.keydownHandlerBinded);
+    this.cancelButton.removeEventListener('click', this.clickHandlerBinded);
 
     this.headerElement = null;
     this.headerTextElement = null;
@@ -211,14 +212,51 @@ export default class Dialog {
   
   close() {
     this.element.style.display = 'none';
+    console.log(this.container);
     if (this.destroyOnClose) {
       this.destroy();
     }
   }
 
   keydownHandler(evt) {
-    evt.preventDefault();
-    evt.stopPropagation();
+    if (evt.key === 'Escape') {
+      if (this.cancelButton.style.display !== 'none') {
+        evt.preventDefault();
+        evt.stopPropagation();
+        this.cancelHandler(evt);
+        return;
+      }
+
+      if (this.noButton.style.display !== 'none') {
+        evt.preventDefault();
+        evt.stopPropagation();
+        this.noHandler(evt);
+        return;
+      }
+
+      if (this.closeButton.style.display !== 'none') {
+        evt.preventDefault();
+        evt.stopPropagation();
+        this.closeHandler(evt);
+        return;
+      }
+    }
+
+    if (evt.key === 'Enter') {
+      if (this.okButton.style.display !== 'none') {
+        evt.preventDefault();
+        evt.stopPropagation();
+        this.okHandler(evt);
+        return;
+      }
+
+      if (this.yesButton.style.display !== 'none') {
+        evt.preventDefault();
+        evt.stopPropagation();
+        this.yesHandler(evt);
+        return;
+      }
+    }
   }
 
   clickHandler(evt) {

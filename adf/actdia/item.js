@@ -40,8 +40,42 @@ export default class Item extends Element {
     ];
   }
 
+  get coords() {
+    return [this.x, this.y];
+  }
+
+  set coords(coords) {
+    if (typeof coords === 'string') {
+      coords = coords.replace(/\[|\]|\s/g, '').split(',').map(s => parseFloat(s));
+    }
+    
+    if (Array.isArray(coords) && coords.length === 2) {
+      const [x, y] = coords;
+      if (!isNaN(x)) this.x = x;
+      if (!isNaN(y)) this.y = y;
+      this.updateTransform();
+    }
+
+    if (coords instanceof Object) {
+      if (!isNaN(coords.x)) this.x = coords.x;
+      if (!isNaN(coords.y)) this.y = coords.y;
+      this.updateTransform();
+    }
+  }
+
   get reflection() {
-    return [this.sx ?? 1, this.sy ?? 1];
+    if (this.sx < 0) {
+      if (this.sy < 0) {
+        return [-1, -1];
+      }
+      return [-1, 1];
+    }
+
+    if (this.sy < 0) {
+      return [1, -1];
+    }
+
+    return;
   }
 
   set reflection(scale) {
@@ -171,7 +205,7 @@ export default class Item extends Element {
       connector.connections.forEach(connection => connection.update());
     });
   }
-  
+
   update(options = {}) {
     if (!options.skipNotification) {
       this.updateTransform();

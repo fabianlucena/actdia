@@ -34,10 +34,14 @@ export default class NodeForm extends Form {
         _label: 'Description',
       },
       {
+        name: 'coords',
+        _label: 'Coordinates',
+        type: 'text',
+      },
+      {
         name: 'rotate',
         _label: 'Rotate',
         type: 'select',
-        nullable: true,
         options: [
           { value: 0, label: '0°' },
           { value: 90, label: '90°' },
@@ -49,7 +53,6 @@ export default class NodeForm extends Form {
         name: 'reflection',
         _label: 'Reflection',
         type: 'select',
-        nullable: true,
         options: [
           { value: '[ 1,  1]', _label: 'None' },
           { value: '[ 1, -1]', _label: 'Horizontal' },
