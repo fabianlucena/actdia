@@ -126,8 +126,8 @@ export default class Connection extends Item {
 
     const 
       fromCtm = this.from.item.svgElement.getCTM?.(),
-      fx = fromCtm.e / this.actdia.style.sx + this.from.connector.x,
-      fy = fromCtm.f / this.actdia.style.sy + this.from.connector.y;
+      fx = fromCtm.e / this.actdia.style.sx + this.from.connector.x * fromCtm.a + this.from.connector.y * fromCtm.c,
+      fy = fromCtm.f / this.actdia.style.sy + this.from.connector.x * fromCtm.b + this.from.connector.y * fromCtm.d;
     if (isNaN(fx) || isNaN(fy)) {
       this.shape = {};
       return; 
@@ -140,8 +140,8 @@ export default class Connection extends Item {
       ty = mouse.y;
     } else {
       const toCtm = this.to.item.svgElement.getCTM();
-      tx = toCtm.e / this.actdia.style.sx + (this.to.connector.x ?? 0);
-      ty = toCtm.f / this.actdia.style.sy + (this.to.connector.y ?? 0);
+      tx = toCtm.e / this.actdia.style.sx + (this.to.connector.x ?? 0) * toCtm.a + (this.to.connector.y ?? 0) * toCtm.c;
+      ty = toCtm.f / this.actdia.style.sy + (this.to.connector.x ?? 0) * toCtm.b + (this.to.connector.y ?? 0) * toCtm.d;
     }
     if (isNaN(tx) || isNaN(ty)) {
       this.shape = {};
@@ -152,16 +152,18 @@ export default class Connection extends Item {
       dx = tx - fx,
       dy = ty - fy,
       dd = Math.pow(dx * dx + dy * dy, 1 / 2) / 3,
-      x1 = fx + dd * Math.cos(this.from.connector.direction / 180 * Math.PI),
-      y1 = fy - dd * Math.sin(this.from.connector.direction / 180 * Math.PI);
+      fa = (this.from.connector.direction + (this.from.item.rotate ?? 0)) / 180 * Math.PI,
+      x1 = fx + dd * Math.cos(fa),
+      y1 = fy - dd * Math.sin(fa);
 
     let d;
     if (isMouse) {
       d = `M ${fx} ${fy} Q ${x1} ${y1} ${tx} ${ty}`;
     } else {
       const
-        x2 = tx + dd * Math.cos(this.to.connector.direction / 180 * Math.PI),
-        y2 = ty - dd * Math.sin(this.to.connector.direction / 180 * Math.PI);
+        ta = (this.to.connector.direction + (this.to.item.rotate ?? 0)) / 180 * Math.PI,
+        x2 = tx + dd * Math.cos(ta),
+        y2 = ty - dd * Math.sin(ta);
       d = `M ${fx} ${fy} C ${x1} ${y1} ${x2} ${y2} ${tx} ${ty}`;
     }
 
