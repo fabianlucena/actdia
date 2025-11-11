@@ -103,7 +103,7 @@ export default class Item extends Element {
         this.sy = -this.sy;
     } else if (sy > 0) {
       if (isNaN(this.sy))
-        this.sy = -1;
+        this.sy = 1;
       else if (this.sy < 0)
         this.sy = -this.sy;
     }

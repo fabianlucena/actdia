@@ -1,16 +1,17 @@
 import ActDia from './actdia/actdia.js';
 import NodeSelector from './src/node_selector.js';
-import Dialog from './src/dialog.js';
 import NodeForm from './src/node_form.js';
 import { _, loadLocale } from './actdia/locale.js';
 import { createNotificationContainer, pushNotification } from './src/notistack.js';
 import './src/drag.js';
-import { getPath } from './src/utils.js';
+import { getPath } from './actdia/utils.js';
+import ActDiaTools from './src/actdia_tools.js';
 
-let container = null;
-let actdia = null;
-let nodeSelector = null;
-let mouseSelectOn;
+let container = null,
+  actdia = null,
+  nodeSelector = null,
+  mouseSelectOn,
+  tools;
 
 window.addEventListener('DOMContentLoaded', async () => {
   createNotificationContainer();
@@ -18,10 +19,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   await loadLocale(getPath(import.meta.url) + '/src', 'es');
 
   container = document.querySelector('#actdia');
-  actdia = new ActDia({
-    container,
-    onView: onView,
-  });
+  actdia = new ActDia({ container });
 
   nodeSelector = new NodeSelector({ actdia, container });
   nodeSelector.onSelectNode = onSelectNode;
@@ -29,6 +27,8 @@ window.addEventListener('DOMContentLoaded', async () => {
   actdia.onDblClick = dblClickHandler;
   actdia.onItemDblClick = itemDblClickHandler;
   actdia.pushNotification = pushNotification;
+
+  tools = new ActDiaTools({ container, actdia });
 });
 
 function dblClickHandler(evt) {
@@ -54,14 +54,4 @@ function onSelectNode({ evt, fqcn, }) {
   });
 
   nodeSelector.close();
-}
-
-function onView(options) {
-  const exportable = actdia.getExportableItems(options);
-  const data = actdia.getData(exportable);
-  new Dialog({
-    container,
-    content: '<pre>' + JSON.stringify(data, '', 2) + '</pre>',
-    header: _('Exported Data'),
-  });
 }
