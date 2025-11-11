@@ -167,8 +167,11 @@ export default class Item extends Element {
     }
     
     this.svgElement?.setAttribute('transform', transform.trim());
+    this.connectors?.forEach(connector => {
+      connector.connections.forEach(connection => connection.update());
+    });
   }
-
+  
   update(options = {}) {
     if (!options.skipNotification) {
       this.updateTransform();

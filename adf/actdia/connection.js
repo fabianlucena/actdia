@@ -134,12 +134,12 @@ export default class Connection extends Item {
     }
 
     const isMouse = this.to === 'mouse';
-    let tx, ty;
+    let tx, ty, toCtm;
     if (isMouse) {
       tx = mouse.x;
       ty = mouse.y;
     } else {
-      const toCtm = this.to.item.svgElement.getCTM();
+      toCtm = this.to.item.svgElement.getCTM();
       tx = toCtm.e / this.actdia.style.sx + (this.to.connector.x ?? 0) * toCtm.a + (this.to.connector.y ?? 0) * toCtm.c;
       ty = toCtm.f / this.actdia.style.sy + (this.to.connector.x ?? 0) * toCtm.b + (this.to.connector.y ?? 0) * toCtm.d;
     }
@@ -152,7 +152,7 @@ export default class Connection extends Item {
       dx = tx - fx,
       dy = ty - fy,
       dd = Math.pow(dx * dx + dy * dy, 1 / 2) / 3,
-      fa = (this.from.connector.direction + (this.from.item.rotate ?? 0)) / 180 * Math.PI,
+      fa = this.from.connector.direction / 180 * Math.PI - Math.atan2(fromCtm.b, fromCtm.a),
       x1 = fx + dd * Math.cos(fa),
       y1 = fy - dd * Math.sin(fa);
 
@@ -161,7 +161,7 @@ export default class Connection extends Item {
       d = `M ${fx} ${fy} Q ${x1} ${y1} ${tx} ${ty}`;
     } else {
       const
-        ta = (this.to.connector.direction + (this.to.item.rotate ?? 0)) / 180 * Math.PI,
+        ta = (this.to.connector.direction / 180 * Math.PI - Math.atan2(toCtm.b, toCtm.a)),
         x2 = tx + dd * Math.cos(ta),
         y2 = ty - dd * Math.sin(ta);
       d = `M ${fx} ${fy} C ${x1} ${y1} ${x2} ${y2} ${tx} ${ty}`;

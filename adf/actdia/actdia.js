@@ -2154,11 +2154,6 @@ export default class ActDia {
             y: dragging.from.y + dd.y,
           };
           item.moveTo(to);
-          this.#items
-            .filter(i => isConnection(i)
-                && (i.from?.item === item
-                || i.to?.item === item))
-            .forEach(connection => connection.update());
         } else if (isHTMLElement(item)) {
           this.pushNotification(_('Check this out...'), 'debug');
           item.style.left = dragging.from.x + ix + 'px';
