@@ -29,10 +29,10 @@ export default class SRFF_E extends Node {
   };
 
   connectors = [
-    { name: 's', label: true, type: 'in', x: 0, y: 1, direction: 'left', extends: 'tiny' },
-    { name: 'r', label: true, type: 'in', x: 0, y: 5, direction: 'left', extends: 'tiny' },
-    { name: 'clk', label: true, margin: .6, type: 'in', x: 0, y: 3, direction: 'left', extends: 'tiny' },
-    { name: 'q', label: true, type: 'out', x: 5, y: 1, direction: 'right', extends: 'tiny' },
+    { name: 's',   label: true, type: 'in', x: 0, y: 1, direction: 'left', extends: 'tiny' },
+    { name: 'r',   label: true, type: 'in', x: 0, y: 5, direction: 'left', extends: 'tiny' },
+    { name: 'clk', label: true, type: 'in', x: 0, y: 3, direction: 'left', extends: 'tiny', margin: .6 },
+    { name: 'q',  label: true, type: 'out', x: 5, y: 1, direction: 'right', extends: 'tiny' },
     { name: '!q', label: true, type: 'out', x: 5, y: 5, direction: 'right', extends: 'tiny' },
   ];
 
