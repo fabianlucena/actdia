@@ -126,8 +126,8 @@ export default class Connection extends Item {
 
     const 
       fromCtm = this.from.item.svgElement.getCTM?.(),
-      fx = fromCtm.e / this.actdia.style.sx + this.from.connector.x * fromCtm.a + this.from.connector.y * fromCtm.c,
-      fy = fromCtm.f / this.actdia.style.sy + this.from.connector.x * fromCtm.b + this.from.connector.y * fromCtm.d;
+      fx = ( fromCtm.e + this.from.connector.x * fromCtm.a + this.from.connector.y * fromCtm.c ) / this.actdia.style.sx,
+      fy = ( fromCtm.f + this.from.connector.x * fromCtm.b + this.from.connector.y * fromCtm.d ) / this.actdia.style.sx;
     if (isNaN(fx) || isNaN(fy)) {
       this.shape = {};
       return; 
@@ -140,8 +140,8 @@ export default class Connection extends Item {
       ty = mouse.y;
     } else {
       toCtm = this.to.item.svgElement.getCTM();
-      tx = toCtm.e / this.actdia.style.sx + (this.to.connector.x ?? 0) * toCtm.a + (this.to.connector.y ?? 0) * toCtm.c;
-      ty = toCtm.f / this.actdia.style.sy + (this.to.connector.x ?? 0) * toCtm.b + (this.to.connector.y ?? 0) * toCtm.d;
+      tx = ( toCtm.e + (this.to.connector.x ?? 0) * toCtm.a + (this.to.connector.y ?? 0) * toCtm.c ) / this.actdia.style.sx;
+      ty = ( toCtm.f + (this.to.connector.x ?? 0) * toCtm.b + (this.to.connector.y ?? 0) * toCtm.d ) / this.actdia.style.sy;
     }
     if (isNaN(tx) || isNaN(ty)) {
       this.shape = {};
