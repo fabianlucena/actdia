@@ -4,16 +4,17 @@
   left: 1em;
   color: #fff;
   z-index: 1000;
+  font-size: .9em;
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
+  gap: 0.2em;
 }
 
 .notistack-container .notification {
   background: #333;
   color: #fff;
-  padding: 1em 1.5em;
-  border-radius: 0.5em;
+  padding: .3em .8em;
+  border-radius: 0.3em;
   border: .15em solid #555;
 }
 
