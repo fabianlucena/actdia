@@ -186,6 +186,8 @@ export default class Dialog {
         this.element.style.width = maxWidth + 'px';
     }
 
+    this.updatePosition();
+
     if (typeof this.height !== 'undefined')
       this.element.style.height = this.height;
     else {
@@ -195,18 +197,20 @@ export default class Dialog {
         this.element.style.height = maxHeight + 'px';
     }
 
-    if (typeof this.x !== 'undefined')
-      this.element.style.left = this.x + 'px';
-    else
-      this.element.style.left = (document.body.clientWidth - this.element.offsetWidth) / 2 + 'px';
-
-    if (typeof this.y !== 'undefined')
-      this.element.style.top = this.y + 'px';
-    else
-      this.element.style.top = (document.body.clientHeight - this.element.offsetHeight) / 2 + 'px';
-
     this.onClick = this.onClick;
     this.element.focus();
+  }
+
+  updatePosition() {
+    if (isNaN(this.x))
+      this.element.style.left = (document.body.clientWidth - this.element.offsetWidth) / 2 + 'px';
+    else
+      this.element.style.left = this.x + 'px';
+
+    if (isNaN(this.y))
+      this.element.style.top = (document.body.clientHeight - this.element.offsetHeight) / 2 + 'px';
+    else
+      this.element.style.top = this.y + 'px';
   }
 
   showError(content, options) {
