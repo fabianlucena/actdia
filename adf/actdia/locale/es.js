@@ -7,6 +7,7 @@ export default {
   'Connector "%s" click to connect.': 'Conector "%s" haga clic para conectar.',
   'Diagram loaded.': 'Diagrama cargado.',
   'No Connector class registered for type: %s.': 'No hay clase de Conector registrada para el tipo: %s.',
+  'No container element to setup ActDia.': 'No hay elemento contenedor para configurar ActDia.',
   'No shape defined for connector in item %s.': 'No se ha definido forma para el conector en el ítem %s.',
   'Padding bottom': 'Relleno inferior',
   'Padding left': 'Relleno izquierdo',

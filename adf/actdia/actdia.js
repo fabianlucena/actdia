@@ -213,7 +213,7 @@ export default class ActDia {
   selectedConnections = [];
 
   constructor(options) {
-    this.create(options);
+    this.create(...arguments);
 
     loadLocale('.', 'es')
       .then(() => {
@@ -238,10 +238,10 @@ export default class ActDia {
     console.log(message);
   }
 
-  create({ container } = {}) {
-    this.container = container ?? this.container;
+  create(options) {
+    Object.assign(this, ...arguments);
     if (!this.container)
-      throw new Error('No element to setup ActDia');
+      throw new Error(_('No container element to setup ActDia.'));
 
     this.container.classList.add('actdia');
     this.container.tabIndex = 0;
@@ -279,17 +279,19 @@ export default class ActDia {
     window.addEventListener('resize', () => this.adjustSize());
 
     document.body.addEventListener('mousemove', evt => this.mouseMoveHandler(evt), true);
-    this.svg.addEventListener('mouseover', evt => this.mouseOverHandler(evt), true);
-    this.svg.addEventListener('mouseout', evt => this.mouseOutHandler(evt), true);
-    this.svg.addEventListener('click', evt => this.mouseClickHandler(evt), true);
+    this.svg.addEventListener('mouseover', evt => this.mouseOverHandler(evt));
+    this.svg.addEventListener('mouseout', evt => this.mouseOutHandler(evt));
+    this.svg.addEventListener('click', evt => this.mouseClickHandler(evt));
     this.svg.addEventListener('contextmenu', evt => this.contextMenuHandler(evt));
-    this.svg.addEventListener('dblclick', evt => this.mouseDblClickHandler(evt), true);
+    this.svg.addEventListener('dblclick', evt => this.mouseDblClickHandler(evt));
     this.svg.addEventListener('mousedown', evt => this.mouseDownHandler(evt));
     this.svg.addEventListener('mouseup', evt => this.mouseUpHandler(evt));
-    this.container.addEventListener('keydown', evt => this.keyDownHandler(evt));
-    this.container.addEventListener('keyup', evt => this.keyUpHandler(evt));
     window.addEventListener('beforeprint', () => this.svg.classList.add('print'));
     window.addEventListener('afterprint', evt => this.svg.classList.remove('print'));
+  }
+
+  addEventListener(eventName, handler) {
+    this.svg.addEventListener(eventName, handler);
   }
 
   parseSVGFragment(svgFragment) {
@@ -1793,12 +1795,13 @@ export default class ActDia {
   mouseOverHandler(evt) {
     if (!this.dragging && !this.capturedItem) {
       let { item, connector } = this.getEventItemConnector(evt);
-      if (connector) {
-        this.showLabel(_('Connector "%s" click to connect.', connector.name));
-        return;
+      if (this.editable) {
+        if (connector) {
+          this.showLabel(_('Connector "%s" click to connect.', connector.name));
+          return;
+        }
       }
 
-      item ??= this.getEventItem(evt);
       if (!item)
         return;
 
@@ -1813,6 +1816,9 @@ export default class ActDia {
   }
 
   mouseClickHandler(evt) {
+    if (!this.editable)
+      return;
+
     const { item, shape, connector } = this.getEventItemConnector(evt);
     if (!item) {
       this.#items.forEach(i => i.select(false));
@@ -1858,7 +1864,7 @@ export default class ActDia {
   }
 
   connectorClickHandler({ evt, item, connector }) {
-    if (!item || !connector) {
+    if (!this.editable || !item || !connector) {
       return true;
     }
 
@@ -1923,22 +1929,28 @@ export default class ActDia {
   mouseDblClickHandler(evt) {
     const { item } = this.getEventItem(evt);
     if (item) {
-      if (item.onDblClick) {
-        if (item.onDblClick(evt, item) === false)
-          evt.preventDefault();
+      const event = new CustomEvent(
+        'item:dblclick',
+        {
+          detail: {
+            item,
+            mouse: this.mouse,
+          },
+          bubbles: true,
+          cancelable: true,
+        }
+      );
+      const original = event.stopPropagation;
+      event.stopPropagation = () => {
+        event._stopped = true;
+        evt.stopImmediatePropagation();
+        return original.call(event);
+      };
+      this.svg.dispatchEvent(event);
 
-        if (evt.defaultPrevented)
-          return;
-      }
-
-      if (this.onItemDblClick) {
-        this.onItemDblClick({ actdia: this, item, evt });
-        if (evt.defaultPrevented)
-          return;
-      }
+      if (event.defaultPrevented)
+        evt.preventDefault();
     }
-
-    this.dblClickDefaultHandler(evt);
   }
 
   contextMenuHandler(evt) {
@@ -2009,37 +2021,5 @@ export default class ActDia {
       this.endDrag();
       evt.preventDefault();
     }
-  }
-
-  dblClickDefaultHandler(evt) {
-    this.onDblClick && this.onDblClick(evt);
-  }
-
-  keyDownHandler(evt) {
-    switch (evt.key) {
-      case 'Escape': return this.escapeDefaultHandler(evt);
-      case 'Delete': return this.deleteDefaultHandler(evt);
-      case 'Backspace': return this.backspaceDefaultHandler(evt);
-    }
-  }
-
-  keyUpHandler(evt) {
-    switch (evt.key) {
-      case 'c': if (evt.ctrlKey || evt.metaKey)
-        this.copyToClipboard(evt);
-    }
-  }
-
-  escapeDefaultHandler(evt) {
-    this.cancelCaptureItem();
-    this.cancelDrag();
-  }
-
-  deleteDefaultHandler(evt) {
-    this.deleteSelected();
-  }
-
-  backspaceDefaultHandler(evt) {
-    this.deleteSelected();
   }
 }
