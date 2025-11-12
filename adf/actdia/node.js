@@ -79,6 +79,7 @@ export default class Node extends Item {
       {
         index,
         item: this,
+        actdia: this.actdia,
       },
       ...arguments,
     );
