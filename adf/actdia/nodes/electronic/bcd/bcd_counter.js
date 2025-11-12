@@ -10,14 +10,14 @@ export default class BCDCounter extends Node {
         shape: 'rect',
         x: 0,
         y: 0,
-        width: 5,
-        height: 6,
+        width: 6,
+        height: 7,
       },
       {
         shape: 'text',
         text: 'BCD Counter\nMOD-10',
-        sx: 0.7,
-        sy: 0.7,
+        sx: 0.8,
+        sy: 0.8,
         textAnchor: 'left',
         dominantBaseline: 'top',
         margin: 0.2,
@@ -28,19 +28,19 @@ export default class BCDCounter extends Node {
   box = {
     x: 0,
     y: 0,
-    width: 5,
-    height: 6,
+    width: 6,
+    height: 7,
   };
 
   connectors = [
-    { name: 'clk', label: 'CLK', type: 'in', x: 0, y: 3, direction: 'left', extends: 'tiny' },
-    { name: 'en', label: 'EN', type: 'in', x: 0, y: 4, direction: 'left', extends: 'tiny' },
-    { name: 'rst', label: 'RST', type: 'in', x: 0, y: 5, direction: 'left', extends: 'tiny' },
-    { name: 'q0', label: 'Q0', type: 'out', x: 5, y: 2, direction: 'right', extends: 'tiny' },
-    { name: 'q1', label: 'Q1', type: 'out', x: 5, y: 3, direction: 'right', extends: 'tiny' },
-    { name: 'q2', label: 'Q2', type: 'out', x: 5, y: 4, direction: 'right', extends: 'tiny' },
-    { name: 'q3', label: 'Q3', type: 'out', x: 5, y: 5, direction: 'right', extends: 'tiny' },
-    { name: 'carry', label: 'Carry', type: 'out', x: 3, y: 6, direction: 'bottom', extends: 'tiny' },
+    { name: 'clk', label: 'CLK', type: 'in', x: 0, y: 4, direction: 'left', extends: 'tiny' },
+    { name: 'en', label: 'EN', type: 'in', x: 0, y: 5, direction: 'left', extends: 'tiny' },
+    { name: 'rst', label: 'RST', type: 'in', x: 0, y: 6, direction: 'left', extends: 'tiny' },
+    { name: 'q0', label: 'Q0', type: 'out', x: 6, y: 3, direction: 'right', extends: 'tiny' },
+    { name: 'q1', label: 'Q1', type: 'out', x: 6, y: 4, direction: 'right', extends: 'tiny' },
+    { name: 'q2', label: 'Q2', type: 'out', x: 6, y: 5, direction: 'right', extends: 'tiny' },
+    { name: 'q3', label: 'Q3', type: 'out', x: 6, y: 6, direction: 'right', extends: 'tiny' },
+    { name: 'carry', label: 'Carry', type: 'out', x: 4, y: 7, direction: 'bottom', extends: 'tiny' },
   ];
 
   previousClockStatus = 0;

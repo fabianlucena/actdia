@@ -13,55 +13,6 @@ export default class SRFF_E extends Node {
         height: 6,
       },
       {
-        shape: 'text',
-        x: .4,
-        y: 1,
-        text: 'S',
-        textAnchor: 'start',
-        dominantBaseline: 'central',
-        fontSize: 0.8,
-      },
-      {
-        shape: 'text',
-        x: .4,
-        y: 5,
-        text: 'R',
-        textAnchor: 'start',
-        dominantBaseline: 'central',
-        fontSize: 0.8,
-      },
-      {
-        shape: 'text',
-        x: 4.6,
-        y: 1,
-        text: 'Q',
-        textAnchor: 'end',
-        dominantBaseline: 'central',
-        fontSize: 0.8,
-      },
-      {
-        shape: 'text',
-        x: 4.6,
-        y: 5,
-        text: 'Q',
-        textAnchor: 'end',
-        dominantBaseline: 'central',
-        fontSize: 0.8,
-      },
-      {
-        shape: 'path',
-        d: 'M 3.9 4.4 H 4.5',
-      },
-      {
-        shape: 'text',
-        x: .8,
-        y: 3,
-        text: 'CLK',
-        textAnchor: 'start',
-        dominantBaseline: 'central',
-        fontSize: .8,
-      },
-      {
         shape: 'path',
         x: 0,
         y: 2.5,
@@ -78,11 +29,11 @@ export default class SRFF_E extends Node {
   };
 
   connectors = [
-    { name: 's', type: 'in', x: 0, y: 1, direction: 'left', extends: 'tiny' },
-    { name: 'r', type: 'in', x: 0, y: 5, direction: 'left', extends: 'tiny' },
-    { name: 'clk', type: 'in', x: 0, y: 3, direction: 'left', extends: 'tiny' },
-    { name: 'q', type: 'out', x: 5, y: 1, direction: 'right', extends: 'tiny' },
-    { name: '!q', type: 'out', x: 5, y: 5, direction: 'right', extends: 'tiny' },
+    { name: 's', label: true, type: 'in', x: 0, y: 1, direction: 'left', extends: 'tiny' },
+    { name: 'r', label: true, type: 'in', x: 0, y: 5, direction: 'left', extends: 'tiny' },
+    { name: 'clk', label: true, margin: .6, type: 'in', x: 0, y: 3, direction: 'left', extends: 'tiny' },
+    { name: 'q', label: true, type: 'out', x: 5, y: 1, direction: 'right', extends: 'tiny' },
+    { name: '!q', label: true, type: 'out', x: 5, y: 5, direction: 'right', extends: 'tiny' },
   ];
 
   previousClockStatus = 0;

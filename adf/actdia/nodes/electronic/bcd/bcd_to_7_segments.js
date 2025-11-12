@@ -10,14 +10,14 @@ export default class BCTo7Segments extends Node {
         shape: 'rect',
         x: 0,
         y: 0,
-        width: 5,
+        width: 6,
         height: 8,
       },
       {
         shape: 'text',
         text: 'BCD to\n7-segments\nDecoder',
-        sx: 0.7,
-        sy: 0.7,
+        sx: 0.8,
+        sy: 0.8,
         textAnchor: 'left',
         dominantBaseline: 'top',
         margin: 0.2,
@@ -28,7 +28,7 @@ export default class BCTo7Segments extends Node {
   box = {
     x: 0,
     y: 0,
-    width: 5,
+    width: 6,
     height: 8,
   };
 
@@ -38,13 +38,13 @@ export default class BCTo7Segments extends Node {
     { name: 'q2', label: 'Q3', type: 'in', x: 0, y: 6, direction: 'left', extends: 'tiny' },
     { name: 'q3', label: 'Q4', type: 'in', x: 0, y: 7, direction: 'left', extends: 'tiny' },
 
-    { name: 'a', label: true, type: 'out', x: 5, y: 1, direction: 'right', extends: 'tiny' },
-    { name: 'b', label: true, type: 'out', x: 5, y: 2, direction: 'right', extends: 'tiny' },
-    { name: 'c', label: true, type: 'out', x: 5, y: 3, direction: 'right', extends: 'tiny' },
-    { name: 'd', label: true, type: 'out', x: 5, y: 4, direction: 'right', extends: 'tiny' },
-    { name: 'e', label: true, type: 'out', x: 5, y: 5, direction: 'right', extends: 'tiny' },
-    { name: 'f', label: true, type: 'out', x: 5, y: 6, direction: 'right', extends: 'tiny' },
-    { name: 'g', label: true, type: 'out', x: 5, y: 7, direction: 'right', extends: 'tiny' },
+    { name: 'a', label: true, type: 'out', x: 6, y: 1, direction: 'right', extends: 'tiny' },
+    { name: 'b', label: true, type: 'out', x: 6, y: 2, direction: 'right', extends: 'tiny' },
+    { name: 'c', label: true, type: 'out', x: 6, y: 3, direction: 'right', extends: 'tiny' },
+    { name: 'd', label: true, type: 'out', x: 6, y: 4, direction: 'right', extends: 'tiny' },
+    { name: 'e', label: true, type: 'out', x: 6, y: 5, direction: 'right', extends: 'tiny' },
+    { name: 'f', label: true, type: 'out', x: 6, y: 6, direction: 'right', extends: 'tiny' },
+    { name: 'g', label: true, type: 'out', x: 6, y: 7, direction: 'right', extends: 'tiny' },
   ];
 
   updateStatus() {
