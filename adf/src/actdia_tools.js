@@ -522,7 +522,7 @@ export default class ActDiaTools {
     new Dialog({
       container: this.container,
       content: '<pre>' + JSON.stringify(data, '', 2) + '</pre>',
-      header: _('Exported data'),
+      header: _('JSON data'),
     });
   }
 }
