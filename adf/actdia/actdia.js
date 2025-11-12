@@ -848,6 +848,9 @@ export default class ActDia {
     typeof textAnchor !== 'undefined' && textAnchor !== null && (styleAttribute.push(`text-anchor: ${textAnchor}`));
     typeof dominantBaseline !== 'undefined' && dominantBaseline !== null && (styleAttribute.push(`dominant-baseline: ${dominantBaseline}`));
 
+    if (style.textDecoration)
+      styleAttribute.push(`text-decoration: ${style.textDecoration}`);
+
     if (styleAttribute.length) {
       attributes.style = styleAttribute.join('; ') + ';';
     }
@@ -1271,6 +1274,9 @@ export default class ActDia {
       y += height / 2;
     }
 
+    if (shape.textDecoration)
+      style.textDecoration = shape.textDecoration;
+
     return {
       x, y, width, height,
       lineSpacing: (style.lineSpacing ?? 0),
@@ -1321,7 +1327,7 @@ export default class ActDia {
 
   getConnectorShapeData(connector, node, options) {
     const style = this.getStyle({ item: node, shape: { ...connector, rotate: -connector.direction }, type: connector.type || 'connector', options });
-    const shape = connector.shape ?? style.shape;
+    let shape = connector.shape ?? style.shape;
 
     if (!shape) {
       console.log(connector);
@@ -1329,17 +1335,67 @@ export default class ActDia {
       return;
     }
 
+    shape = {
+      className: 'actdia-connector',
+      name: connector.name,
+      type: connector.type,
+      x: connector.x,
+      y: connector.y,
+      id: connector.id,
+      rotate: -connector.direction,
+      shapes: [...shape.shapes],
+    };
+
+    if (connector.label) {
+      let text = connector.label;
+      if (text === true) {
+        text = connector.name.toUpperCase();
+        if (text[0] === '!') {
+          text = text.substring(1);
+          connector.textDecoration = 'overline';
+        }
+      }
+
+      if (text) {
+        const textShape = {
+          shape: 'text',
+          text,
+          x: connector.labelOffsetX || 0,
+          y: connector.labelOffsetY || 0,
+          sx: 0.7,
+          sy: 0.7,
+          textAnchor: 'middle',
+          dominantBaseline: 'middle',
+          rotate: connector.direction,
+        };
+
+        if (connector.textDecoration)
+          textShape.textDecoration = connector.textDecoration;
+
+        if (connector.direction === 0) {
+          textShape.width = 0;
+          textShape.textAnchor = 'right';
+          textShape.margin = { right: .5 + (connector.margin || 0) };
+        } else if (connector.direction === DIRECTIONS.LEFT) {
+          textShape.width = 0;
+          textShape.textAnchor = 'left';
+          textShape.margin = { left: .5 + (connector.margin || 0) };
+        } else if (connector.direction === DIRECTIONS.UP) {
+          textShape.height = 0;
+          textShape.dominantBaseline = 'top';
+          textShape.margin = { top: .4 + (connector.margin || 0) };
+        } else if (connector.direction === DIRECTIONS.DOWN) {
+          textShape.height = 0;
+          textShape.dominantBaseline = 'bottom';
+          textShape.margin = { bottom: .4 + (connector.margin || 0) };
+        }
+
+        shape.shapes.push(textShape);
+      }
+    }
+
     return {
-      shape: {
-        className: 'actdia-connector',
-        name: connector.name,
-        type: connector.type,
-        x: connector.x,
-        y: connector.y,
-        id: connector.id,
-        rotate: -connector.direction,
-        ...shape,
-      },
+      shape,
       style: {
         sx: style.sx,
         sy: style.sy,
@@ -1372,43 +1428,6 @@ export default class ActDia {
     };
 
     const shape = { ...data.shape, shapes: [ ...(data.shape.shapes || []) ] };
-    if (connector.label) {
-      const text = connector.label === true ? connector.name: connector.label;
-      if (text) {
-        const textData = {
-          shape: 'text',
-          text,
-          x: connector.labelOffsetX || 0,
-          y: connector.labelOffsetY || 0,
-          sx: 0.55,
-          sy: 0.55,
-          textAnchor: 'middle',
-          dominantBaseline: 'middle',
-          rotate: connector.direction,
-        };
-
-        if (connector.direction === 0) {
-          textData.width = 0;
-          textData.textAnchor = 'right';
-          textData.margin = { right: .3 };
-        } else if (connector.direction === DIRECTIONS.LEFT) {
-          textData.width = 0;
-          textData.textAnchor = 'left';
-          textData.margin = { left: .3 };
-        } else if (connector.direction === DIRECTIONS.UP) {
-          textData.height = 0;
-          textData.dominantBaseline = 'top';
-          textData.margin = { top: .2 };
-        } else if (connector.direction === DIRECTIONS.DOWN) {
-          textData.height = 0;
-          textData.dominantBaseline = 'bottom';
-          textData.margin = { bottom: .2 };
-        }
-
-        shape.shapes.push(textData);
-      }
-    }
-
     const shapeSVG = this.getShapeSVG(
       shape,
       node,
