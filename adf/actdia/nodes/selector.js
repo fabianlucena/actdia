@@ -18,8 +18,22 @@ export default class Selector extends Node {
         x: 0,
         width: 4,
         height: 4,
-        text: '',
-        fontSize: .8,
+        text: '*',
+        fontSize: .6,
+      },
+      {
+        shape: 'circle',
+        x: 2,
+        y: 2,
+        r: 1.2,
+        fill: false,
+      },
+      {
+        shape: 'line',
+        x1: 2,
+        y1: .7,
+        x2: 2,
+        y2: 1.2,
       },
     ],
   };
@@ -56,5 +70,8 @@ export default class Selector extends Node {
 
     this.shape.shapes[1].text = `${this.index} / ${data.length}`;
     this.actdia.tryUpdateShape(this, this.svgShape?.children?.[1], this.shape.shapes[1]);
+
+    this.shape.shapes[3].rotate = `${360 * this.index / data.length}, 2, 2`;
+    this.actdia.tryUpdateShape(this, this.svgShape?.children?.[3], this.shape.shapes[3]);
   }
 }
