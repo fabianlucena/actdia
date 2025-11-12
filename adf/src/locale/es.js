@@ -26,6 +26,7 @@ export default {
   'JSON data': 'Datos JSON',
   'JSON data copied to the clipboard.': 'Datos JSON copiados al portapapeles.',
   'Line width': 'Ancho de línea',
+  'Loading...': 'Cargando...',
   'Name': 'Nombre',
   'No': 'No',
   'No form definition available.': 'No hay definición de formulario disponible.',
