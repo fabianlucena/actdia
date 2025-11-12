@@ -656,8 +656,8 @@ export default class ActDia {
       y = (item.y ?? 0);
 
     let transform = '';
-    if ((!isNaN(x) && x) || (!isNaN(y) && y)) transform += ` translate(${x}, ${y})`;
     if (!isNaN(sx) || !isNaN(sy)) transform += ` scale(${sx ?? 1}, ${sy ?? 1})`;
+    if ((!isNaN(x) && x) || (!isNaN(y) && y)) transform += ` translate(${x}, ${y})`;
     if (transform) {
       transform = ` transform="${transform.trim()}"`;
     }
@@ -804,21 +804,13 @@ export default class ActDia {
     (style.opacity || style.opacity === 0) && (attributes.opacity = style.opacity);
 
     let transform = '';
-    if (style.rotate) {
-      transform += ` rotate(${style.rotate})`;
-    }
-    if (!isNaN(style.sx) || !isNaN(style.sy)) {
-      transform += ` scale(${style.sx ?? 1}, ${style.sy ?? 1})`;
-    }
-    if (style.skewX) {
-      transform += ` skewX(${style.skewX})`;
-    }
-    if (style.skewY) {
-      transform += ` skewY(${style.skewY})`;
-    }
-    if (transform) {
-      attributes.transform = ((attributes.transform ? attributes.transform + ' ' : '') + transform).trim();
-    }
+
+    if (!isNaN(style.sx) || !isNaN(style.sy)) transform += ` scale(${style.sx ?? 1}, ${style.sy ?? 1})`;
+    if ((!isNaN(style.x) && style.x) || (!isNaN(style.y) && style.y)) transform += ` translate(${style.x ?? 0}, ${style.y ?? 0})`;
+    if (style.rotate) transform += ` rotate(${style.rotate})`;
+    if (style.skewX) transform += ` skewX(${style.skewX})`;
+    if (style.skewY) transform += ` skewY(${style.skewY})`;
+    if (transform) attributes.transform = ((attributes.transform ? attributes.transform + ' ' : '') + transform).trim();
 
     attributes['vector-effect'] = 'non-scaling-stroke';
 
@@ -1002,15 +994,10 @@ export default class ActDia {
     rx ??= 0;
     ry ??= 0;
 
-    return { x, y, width, height, rx, ry, style };
+    return { x, y, width, height, rx, ry, style: { ...style, x: undefined, y: undefined } };
   }
 
   getRectSVGData(shape, item, options) {
-    if (options.sx === 18) {
-      console.log(options);
-      console.trace();
-    }
-
     const { x, y, width, height, rx, ry, style } = this.getRectData(shape, item, options);
     const attributes = {
       ...this.getStyleSVGAttributes(style, options),
@@ -1077,7 +1064,7 @@ export default class ActDia {
       r = cy;
     }
 
-    return { cx, cy, r, r, style };
+    return { cx, cy, r, r, style: { ...style, x: undefined, y: undefined }};
   }
 
   getCircleSVGData(shape, item, options) {
@@ -1119,7 +1106,7 @@ export default class ActDia {
     rx ??= r ?? 1;
     ry ??= r ?? 1;
 
-    return { cx, cy, rx, ry, style };
+    return { cx, cy, rx, ry, style: { ...style, x: undefined, y: undefined }};
   }
 
   getEllipseSVGData(shape, item, options) {
@@ -1208,7 +1195,7 @@ export default class ActDia {
     x = getNumber(x, 0);
     y = getNumber(y, 0);
 
-    return { x, y, d: shape.d, style };
+    return { x, y, d: shape.d, style: { ...style, x, y }};
   }
 
   getPathSVGData(shape, item, options) {
@@ -1287,7 +1274,7 @@ export default class ActDia {
     return {
       x, y, width, height,
       lineSpacing: (style.lineSpacing ?? 0),
-      style,
+      style: { ...style, x: undefined, y: undefined },
     };
   }
 
@@ -1296,8 +1283,8 @@ export default class ActDia {
     const lines = shape.text.split('\n');
     const attributes = {
       classList: [ ...(style.classList || [])],
-      x: x,
-      y: y,
+      x,
+      y,
       ...this.getStyleSVGAttributes(style, options),
       ...this.getFontStyleSVGAttributes(style),
     };
@@ -1397,6 +1384,7 @@ export default class ActDia {
           sy: 0.55,
           textAnchor: 'middle',
           dominantBaseline: 'middle',
+          rotate: connector.direction,
         };
 
         if (connector.direction === 0) {

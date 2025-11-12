@@ -135,8 +135,8 @@ export default class NodeSelector extends Dialog {
             class="node-class"
             data-fqcn="${classInfo.fqcn}"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="${options.width}" height="${options.height}" transform="scale(10,10)"  >
-              ${this.actdia.getItemSVG(item)}
+            <svg xmlns="http://www.w3.org/2000/svg" width="${options.width}" height="${options.height}" >
+              ${this.actdia.getItemSVG(item, itemOptions)}
             </svg>
             <div
               class="node-class-name"
