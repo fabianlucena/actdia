@@ -80,8 +80,8 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: _('Copy to clipboard'),
-      description: _('Copies the diagram to the clipboard in JSON and SVG.'),
+      name: _('Copy JSON to clipboard'),
+      description: _('Copies the diagram data to the clipboard in JSON format.'),
       position: 'fixed',
       shape: {
         shapes: [
@@ -105,13 +105,66 @@ export default class ActDiaTools {
             stroke: '#666',
             strokeWidth: 0.02,
           },
+          {
+            shape: 'text',
+            text: 'JSON',
+            textAnchor: 'right',
+            dominantBaseline: 'bottom',
+            fill: '#fff',
+            fontSize: 0.3,
+          },
         ],
       },
       box: null,
       selectable: false,
       draggable: false,
       exportable: false,
-      onClick: () => this.copyToClipboard(),
+      onClick: () => this.copyJSONToClipboard(),
+    }),
+
+    new Item({
+      type: 'tool',
+      visible: false,
+      name: _('Copy SVG to clipboard'),
+      description: _('Copies the diagram image to the clipboard in SVG format.'),
+      position: 'fixed',
+      shape: {
+        shapes: [
+          {
+            shape: 'rect',
+            x: 0.3,
+            y: 0.1,
+            width: 0.7,
+            height: 0.8,
+            fill: '#666',
+            stroke: '#333',
+            strokeWidth: 0.02,
+          },
+          {
+            shape: 'rect',
+            x: 0.1,
+            y: 0.2,
+            width: 0.7,
+            height: 0.8,
+            fill: '#444',
+            stroke: '#666',
+            strokeWidth: 0.02,
+          },
+          {
+            shape: 'text',
+            text: 'SVG',
+            textAnchor: 'right',
+            dominantBaseline: 'bottom',
+            fill: '#fff',
+            fontSize: 0.3,
+          },
+        ],
+      },
+      box: null,
+      selectable: false,
+      draggable: false,
+      exportable: false,
+      onClick: () => this.copySVGToClipboard(),
     }),
 
     new Item({
@@ -382,20 +435,21 @@ export default class ActDiaTools {
     pushNotification(_('Diagram saved.'), 'success');
   }
 
-  async copyToClipboard(options) {
+  async copyJSONToClipboard(options) {
     const exportable = this.getExportableItems(options);
     const jsonText = JSON.stringify(this.getData(exportable), null, 2);
-    //const svgText = await this.actdia.getSVG(exportable);
-
-    const item = new ClipboardItem({
-      'text/plain': new Blob([jsonText], { type: 'text/plain' }),
-      //'image/svg+xml': new Blob([svgText], { type: 'image/svg+xml' }),
-    });
-
-    navigator.clipboard.write([item]).then(() =>
-      pushNotification(_('Image and JSON copied to the clipboard.'), 'success')
-    );
+    const json = new ClipboardItem({ 'text/plain': new Blob([jsonText], { type: 'application/json' })});
+    await navigator.clipboard.write([json]);
+    pushNotification(_('JSON data copied to the clipboard.'), 'success');
   }
+
+  async copySVGToClipboard(options) {
+    const exportable = this.getExportableItems(options);
+    const svgText = await this.actdia.getSVG(exportable);
+    const svg = new ClipboardItem({ 'text/plain': new Blob([svgText], { type: 'image/svg+xml' })});
+    await navigator.clipboard.write([svg]);
+    pushNotification(_('SVG image copied to the clipboard.'), 'success');
+ }
 
   downloadJson(options) {
     const exportable = this.getExportableItems(options);
