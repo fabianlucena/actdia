@@ -32,10 +32,9 @@ export default class NodeSelector extends Dialog {
 
       const breadcrumbDiv = evt.target.closest('.node-breadcrumb');
       if (breadcrumbDiv?.dataset?.url) {
-        loadCategory({
+        this.loadCategory({
           path: breadcrumbDiv.dataset.url,
-          previousBreadcrumbs: breadcrumbs.filter(b => b.url.length < breadcrumbDiv.dataset.url.length),
-          namespace: breadcrumbDiv.dataset.namespace + '.',
+          previousBreadcrumbs: this.breadcrumbs.filter(b => b.url.length < breadcrumbDiv.dataset.url.length),
         });
       }
     });
@@ -49,7 +48,6 @@ export default class NodeSelector extends Dialog {
         this.loadCategory({
           path: categoryDiv.dataset.url,
           previousBreadcrumbs: [...this.breadcrumbs],
-          namespace: categoryDiv.dataset.namespace + '.',
         });
       }
     });
@@ -57,7 +55,7 @@ export default class NodeSelector extends Dialog {
     this.classesContainer.addEventListener('click', evt => this.classesClickHandler(evt));
   }
 
-  show({ path } = {}) {
+  show({ path, defaultPath } = {}) {
     super.show(
       {
         header: _('Add node'),
@@ -67,29 +65,35 @@ export default class NodeSelector extends Dialog {
       },
       ...arguments
     );
-    this.loadCategory({ path, namespace: 'nodes.' });
+    
+    if (path) {
+      this.loadCategory({ path });
+    } else if (!this.categories?.length && defaultPath) {
+      this.loadCategory({ path: defaultPath });
+    }
   }
 
-  async loadCategory({ path, previousBreadcrumbs = [], namespace = '' }) {
+  async loadCategory({ path, previousBreadcrumbs = [] }) {
     const categoriesData = (await import(`${path}/categories.js`)).default;
-    await loadLocale(path, ...categoriesData.locale);
+    if (categoriesData.locale) {
+      await loadLocale(path, ...categoriesData.locale);
+    }
 
     this.breadcrumbs = [
       ...previousBreadcrumbs,
       {
         _label: categoriesData._label,
         url: path,
-        namespace,
       }
     ];
 
-    this.categories = categoriesData.categories;
-    this.nodesClasses = categoriesData.nodesClasses;
+    this.categories = categoriesData.categories || [];
+    this.nodesClasses = categoriesData.nodesClasses || [];
 
-    this.update({ path, namespace });
+    this.update({ path });
   }
 
-  async update({ path, namespace }) {
+  async update({ path }) {
     this.breadcrumbsContainer.innerHTML = this.breadcrumbs
       .map(b => '<div'
           + ` class="node-breadcrumb"`
@@ -101,7 +105,6 @@ export default class NodeSelector extends Dialog {
       ?.map(c => '<div'
           + ` class="node-category"`
           + ` data-url="${path}/${c.url}"`
-          + ` data-namespace="${namespace + (c.namespace || c.url)}"`
         + ` >${_(c._label)}</div>`)
       .join('') || '';
 
