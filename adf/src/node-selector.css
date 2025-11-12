@@ -1,34 +1,59 @@
-.actdia-node-selector-breadcrumbs {
+.node-selector {
+  max-width: 90vw;
+  max-height: 80vh;
+}
+
+.node-selector-breadcrumbs {
   display: flex;
   width: 100%;
   flex-wrap: wrap;
   background-color: #444444;
 }
 
-.actdia-node-selector-categories {
+.node-selector-categories {
   display: flex;
   flex-wrap: wrap;
 }
 
-.actdia-node-selector-classes {
+.node-selector-classes {
   display: flex;
   flex-wrap: wrap;
 }
 
-.actdia-node-breadcrumb {
+.node-breadcrumb {
   padding: .3em .7em;
   margin: .1em;
   cursor: pointer;
 }
 
-.actdia-node-breadcrumb:not(:first-child) {
+.node-breadcrumb:not(:first-child) {
   border-left: .1em dashed rgba(128, 128, 128, 0.5);
 }
 
-.actdia-node-category {
+.node-category {
   padding: .3em .7em;
   margin: .1em;
   background-color: #555555;
   cursor: pointer;
   border-radius: .3em;
+}
+
+.node-class {
+  background-color: #202020;
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid #424141ff;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.node-class-name {
+  text-align: center;
+  margin-top: 5px;
+  background-color: #464646;
+  width: 100%;
 }

@@ -87,23 +87,3 @@
   border: .15em solid #464646;
   border-radius: .3em;
 }
-
-.actdia-node-class {
-  background-color: #202020;
-  margin: 5px;
-  padding: 5px;
-  border: 1px solid #424141ff;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.actdia-node-class-name {
-  text-align: center;
-  margin-top: 5px;
-  background-color: #464646;
-  width: 100%;
-}

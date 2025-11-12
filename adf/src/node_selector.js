@@ -7,28 +7,30 @@ export default class NodeSelector extends Dialog {
   breadcrumbsContainer = null;
   categoriesContainer = null;
   classesContainer = null;
+  destroyOnClose = false;
 
   breadcrumbs = [];
   categories = [];
   nodesClasses = [];
+  className = 'node-selector';
 
   constructor({ container, actdia }) {
     super(...arguments);
     this.actdia = actdia;
 
-    this.contentElement.innerHTML = '<div class="actdia-node-selector-breadcrumbs" ></div>'
-      + '<div class="actdia-node-selector-categories" ></div>'
-      + '<div class="actdia-node-selector-classes" ></div>';
+    this.contentElement.innerHTML = '<div class="node-selector-breadcrumbs" ></div>'
+      + '<div class="node-selector-categories" ></div>'
+      + '<div class="node-selector-classes" ></div>';
 
-    this.breadcrumbsContainer = this.contentElement.querySelector('.actdia-node-selector-breadcrumbs');
-    this.categoriesContainer = this.contentElement.querySelector('.actdia-node-selector-categories');
-    this.classesContainer = this.contentElement.querySelector('.actdia-node-selector-classes');
+    this.breadcrumbsContainer = this.contentElement.querySelector('.node-selector-breadcrumbs');
+    this.categoriesContainer = this.contentElement.querySelector('.node-selector-categories');
+    this.classesContainer = this.contentElement.querySelector('.node-selector-classes');
 
     this.breadcrumbsContainer.addEventListener('click', evt => {
       evt.stopPropagation();
       evt.preventDefault();
 
-      const breadcrumbDiv = evt.target.closest('.actdia-node-breadcrumb');
+      const breadcrumbDiv = evt.target.closest('.node-breadcrumb');
       if (breadcrumbDiv?.dataset?.url) {
         loadCategory({
           path: breadcrumbDiv.dataset.url,
@@ -42,7 +44,7 @@ export default class NodeSelector extends Dialog {
       evt.stopPropagation();
       evt.preventDefault();
 
-      const categoryDiv = evt.target.closest('.actdia-node-category');
+      const categoryDiv = evt.target.closest('.node-category');
       if (categoryDiv?.dataset?.url) {
         this.loadCategory({
           path: categoryDiv.dataset.url,
@@ -90,14 +92,14 @@ export default class NodeSelector extends Dialog {
   async update({ path, namespace }) {
     this.breadcrumbsContainer.innerHTML = this.breadcrumbs
       .map(b => '<div'
-          + ` class="actdia-node-breadcrumb"`
+          + ` class="node-breadcrumb"`
           + ` data-url="${b.url}"`
         + ` >${_(b._label)}</div>`)
       .join('');
 
     this.categoriesContainer.innerHTML = this.categories
       ?.map(c => '<div'
-          + ` class="actdia-node-category"`
+          + ` class="node-category"`
           + ` data-url="${path}/${c.url}"`
           + ` data-namespace="${namespace + (c.namespace || c.url)}"`
         + ` >${_(c._label)}</div>`)
@@ -127,14 +129,14 @@ export default class NodeSelector extends Dialog {
         item.y = (options.height / (2 * itemOptions.sy) - (item.box.y + item.box.height / 2));
 
         let html = `<div
-            class="actdia-node-class"
+            class="node-class"
             data-fqcn="${classInfo.fqcn}"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="${options.width}" height="${options.height}">
               ${this.actdia.getItemSVG(item, itemOptions)}
             </svg>
             <div
-              class="actdia-node-class-name"
+              class="node-class-name"
             >
               ${_(classInfo._label)}
             </div>
@@ -150,7 +152,7 @@ export default class NodeSelector extends Dialog {
       return;
     }
 
-    const classDiv = evt.target.closest('.actdia-node-class');
+    const classDiv = evt.target.closest('.node-class');
     const fqcn = classDiv?.dataset?.fqcn;
     if (!fqcn) {
       return;

@@ -20,7 +20,7 @@ export default class Dialog {
 
     if (!this.element) {
       this.element = document.createElement('div');
-      this.element.classList.add('dialog', 'draggable');
+      this.element.classList.add('dialog', 'draggable', ...(this.classList ?? []), this.className);
       this.element.style.display = 'flex';
       this.element.style.position = 'fixed';
       this.element.style.flexDirection = 'column';
@@ -110,6 +110,9 @@ export default class Dialog {
     }
 
     Object.assign(this, options);
+
+    if (!this.element)
+      this.create();
     
     if (!this.element.parentNode || options.container) {
       this.container ??= document.body;
