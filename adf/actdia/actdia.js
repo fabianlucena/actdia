@@ -244,27 +244,31 @@ export default class ActDia {
       throw new Error(_('No container element to setup ActDia.'));
 
     this.container.classList.add('actdia');
-    this.container.tabIndex = 0;
-    this.container.focus();
     this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     this.container.appendChild(this.svg);
+    this.svg.tabIndex = 0;
+    this.svg.focus();
     this.adjustSize();
 
+    this.mainGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    this.mainGroup.setAttribute('transform', `scale(${this.style.sx},${this.style.sy})`);
+    this.svg.appendChild(this.mainGroup);
+    
     this.canvasLayerSVG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     this.canvasLayerSVG.classList.add('actdia-canvas-layer');
-    this.svg.appendChild(this.canvasLayerSVG);
+    this.mainGroup.appendChild(this.canvasLayerSVG);
 
     this.connectionsLayerSVG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     this.connectionsLayerSVG.classList.add('actdia-connections-layer');
-    this.svg.appendChild(this.connectionsLayerSVG);
+    this.mainGroup.appendChild(this.connectionsLayerSVG);
 
     this.nodesLayerSVG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     this.nodesLayerSVG.classList.add('actdia-nodes-layer');
-    this.svg.appendChild(this.nodesLayerSVG);
+    this.mainGroup.appendChild(this.nodesLayerSVG);
 
     this.othersLayerSVG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     this.othersLayerSVG.classList.add('actdia-others-layer');
-    this.svg.appendChild(this.othersLayerSVG);
+    this.mainGroup.appendChild(this.othersLayerSVG);
     
     this.appendSVGFragment(this.canvasLayerSVG, this.getGridSVG());
     this.appendSVGFragment(this.canvasLayerSVG, this.getPageSVG());
@@ -290,8 +294,8 @@ export default class ActDia {
     window.addEventListener('afterprint', evt => this.svg.classList.remove('print'));
   }
 
-  addEventListener(eventName, handler) {
-    this.svg.addEventListener(eventName, handler);
+  addEventListener(eventName, handler, bubbles) {
+    this.svg.addEventListener(eventName, handler, bubbles);
   }
 
   parseSVGFragment(svgFragment) {
@@ -551,13 +555,16 @@ export default class ActDia {
   }
 
   getGridSVG(options) {
-    const style = this.style.grid;
-    const { sx, sy } = this.style;
-    const dots = [];
-    for (let x = -style.dotSize / 2; x < this.pixelsWidth; x += sx) {
-      for (let y = -style.dotSize / 2; y < this.pixelsHeight; y += sy) {
+    const style = this.style.grid,
+      { sx, sy } = this.style,
+      dots = [],
+      dotSizeX = (style.dotSize ?? 1) / sx,
+      dotSizeY = (style.dotSize ?? 1) / sy;
+
+    for (let x = -dotSizeX / 2; x < this.pixelsWidth / sx + dotSizeX; x++) {
+      for (let y = -dotSizeY / 2; y < this.pixelsHeight / sy + dotSizeY; y++) {
         dots.push(
-          `<rect x="${x}" y="${y}" width="${style.dotSize}" height="${style.dotSize}" ></rect>`
+          `<rect x="${x}" y="${y}" width="${dotSizeX}" height="${dotSizeY}" vector-effect="non-scaling-stroke"></rect>`
         );
       }
     }
@@ -570,6 +577,7 @@ export default class ActDia {
   getPageSVG(options) {
     return `<rect class="actdia-page" x="0" y="0"
         width="${this.pageWidth}" height="${this.pageHeight}"
+        vector-effect="non-scaling-stroke"
       />`;
   }
 
@@ -591,11 +599,10 @@ export default class ActDia {
       return;
     }
 
-    const 
-      childOptions = {
-        ...options,
-        prefix: options.prefix + options.tab,
-      };
+    const { sx, sy, ...childOptions } = {
+      ...options,
+      prefix: options.prefix + options.tab,
+    };
 
     const components = [];
     if (!item.noSelectionBox) {
@@ -645,19 +652,26 @@ export default class ActDia {
     ].filter(c => c);
 
     const
-      sx = options.sx ?? this.style.sx ?? 1,
-      sy = options.sy ?? this.style.sy ?? 1,
-      x = (item.x ?? 0) * sx,
-      y = (item.y ?? 0) * sy;
+      x = (item.x ?? 0),
+      y = (item.y ?? 0);
+
+    let transform = '';
+    if ((!isNaN(x) && x) || (!isNaN(y) && y)) transform += ` translate(${x}, ${y})`;
+    if (!isNaN(sx) || !isNaN(sy)) transform += ` scale(${sx ?? 1}, ${sy ?? 1})`;
+    if (transform) {
+      transform = ` transform="${transform.trim()}"`;
+    }
+
+    const url = item.getElementClassUrl();
 
     const svg = options.prefix + '<g'
         + (item.id && (childOptions.prefix + `id="${encodeHTML(item.id)}"`) || '')
         + (item.name && (childOptions.prefix + `name="${encodeHTML(item.name)}"`) || '')
         + childOptions.prefix + `class="${classList.join(' ')}"`
         + (item.description && (childOptions.prefix + `description="${encodeHTML(item.description)}"`) || '')
-        + ((x || y) && childOptions.prefix + `transform="translate(${x}, ${y})"` || '')
+        + transform
         + childOptions.prefix + `data-item-class="${encodeHTML(item.getElementClass())}"`
-        + childOptions.prefix + `data-url="${encodeHTML(item.getElementClassUrl())}"`
+        + (url && childOptions.prefix + `data-url="${encodeHTML(item.getElementClassUrl())}"` || '')
       + options.prefix + '>'
         + components.join('')
       + options.prefix + '</g>';
@@ -668,8 +682,6 @@ export default class ActDia {
   getStyle({ style, className, classList, item, shape, type, options }) {
     style = {
       ...style,
-      sx: this.style.sx,
-      sy: this.style.sy,
       ...this.style.item,
       ...this.style[item.type],
       ...this.style[type],
@@ -784,7 +796,7 @@ export default class ActDia {
     style.fill === false && (attributes.fill = 'none');
     style.stroke && (attributes.stroke = style.stroke);
     style.stroke === false && (attributes.stroke = 'none');
-    style.strokeWidth && (attributes['stroke-width'] = style.strokeWidth * (style.sx + style.sy) / 2);
+    style.strokeWidth && (attributes['stroke-width'] = style.strokeWidth);
     Array.isArray(style.dash) && style.dash.length && (attributes['stroke-dasharray'] = style.dash.join(' '));
     style.lineCap && (attributes['stroke-linecap'] = style.lineCap);
     style.lineJoin && (attributes['stroke-linejoin'] = style.lineJoin);
@@ -795,8 +807,8 @@ export default class ActDia {
     if (style.rotate) {
       transform += ` rotate(${style.rotate})`;
     }
-    if (style.sx !== this.style.sx || style.sy !== this.style.sy) {
-      transform += ` scale(${(style.sx / this.style.sx) ?? 1}, ${(style.sy / this.style.sy) ?? 1})`;
+    if (!isNaN(style.sx) || !isNaN(style.sy)) {
+      transform += ` scale(${style.sx ?? 1}, ${style.sy ?? 1})`;
     }
     if (style.skewX) {
       transform += ` skewX(${style.skewX})`;
@@ -808,19 +820,15 @@ export default class ActDia {
       attributes.transform = ((attributes.transform ? attributes.transform + ' ' : '') + transform).trim();
     }
 
+    attributes['vector-effect'] = 'non-scaling-stroke';
+
     return attributes;
   }
 
   getFontStyleSVGAttributes(style) {
     const attributes = {};
     const styleAttribute = [];
-    let fontSize;
-    if (typeof style.fontSize !== 'undefined' && style.fontSize !== null
-      || style.sx !== this.style.sx
-      || style.sy !== this.style.sy
-    ) {
-      fontSize = (style.fontSize ?? 1) * (style.sx + style.sy) / 2;
-    }
+    let fontSize = isNaN(style.fontSize)? 1: style.fontSize;
 
     let textAnchor = style.textAnchor;
     if (textAnchor === 'left') {
@@ -892,26 +900,26 @@ export default class ActDia {
           throw new Error('Unknown shape: ' + shape.shape);
         }
 
-        const { shape: shape1, shapes, x, y, rotate, skewX, skewY, ...attributes } = shape;
+        const { shape: shape1, shapes, x, y, sx, sy, rotate, skewX, skewY, ...attributes } = shape;
         attributes.transform = '';
 
-        if (x || y) {
-          attributes.transform += ` translate(${(x ?? 0) * (options.sx ?? this.style.sx)}, ${(y ?? 0) * (options.sy ?? this.style.sy)})`;
+        if (!isNaN(x) || !isNaN(y)) {
+          attributes.transform += ` translate(${(x ?? 0)}, ${(y ?? 0)})`;
         }
 
-        if (rotate) {
+        if (!isNaN(rotate)) {
           attributes.transform += ` rotate(${rotate})`;
         }
 
-        if (shape.sx || shape.sy) {
-          attributes.transform += ` scale(${shape.sx ?? 1}, ${shape.sy ?? 1})`;
+        if (!isNaN(sx) || !isNaN(sy)) {
+          attributes.transform += ` scale(${sx ?? 1}, ${sy ?? 1})`;
         }
 
-        if (skewX) {
+        if (!isNaN(skewX)) {
           attributes.transform += ` skewX(${skewX})`;
         }
 
-        if (skewY) {
+        if (!isNaN(skewY)) {
           attributes.transform += ` skewY(${skewY})`;
         }
 
@@ -970,9 +978,7 @@ export default class ActDia {
   }
 
   getRectData(shape, item, options) {
-    const sx = options?.sx ?? this.style.sx,
-      sy = options?.sy ?? this.style.sy,
-      style = this.getStyle({ item, shape, options });
+    const style = this.getStyle({ item, shape, options });
     let { x, y, width, height, rx, ry } = shape;
 
     if (typeof x === 'undefined'
@@ -991,21 +997,20 @@ export default class ActDia {
     
     x ??= 0;
     y ??= 0;
-    x *= sx;
-    y *= sy;
     width ??= 0;
     height ??= 0;
-    width *= sx;
-    height *= sy;
     rx ??= 0;
     ry ??= 0;
-    rx *= sx;
-    ry *= sy;
 
     return { x, y, width, height, rx, ry, style };
   }
 
   getRectSVGData(shape, item, options) {
+    if (options.sx === 18) {
+      console.log(options);
+      console.trace();
+    }
+
     const { x, y, width, height, rx, ry, style } = this.getRectData(shape, item, options);
     const attributes = {
       ...this.getStyleSVGAttributes(style, options),
@@ -1031,11 +1036,6 @@ export default class ActDia {
     y1 ??= shape.y1 ?? 0;
     x2 ??= shape.x2 ?? item.box.width;
     y2 ??= shape.y2 ?? item.box.height;
-    
-    x1 *= style.sx;
-    y1 *= style.sy;
-    x2 *= style.sx;
-    y2 *= style.sy;
 
     return { x1, y1, x2, y2, style };
   }
@@ -1076,10 +1076,6 @@ export default class ActDia {
       cy = item.box.height / 2;
       r = cy;
     }
-    
-    cx *= style.sx;
-    cy *= style.sy;
-    r = r * (style.sx + style.sy) / 2;
 
     return { cx, cy, r, r, style };
   }
@@ -1120,10 +1116,8 @@ export default class ActDia {
       ry = cy;
     }
     
-    cx *= style.sx;
-    cy *= style.sy;
-    rx = (rx ?? r ?? 1) * style.sx;
-    ry = (ry ?? r ?? 1) * style.sy;
+    rx ??= r ?? 1;
+    ry ??= r ?? 1;
 
     return { cx, cy, rx, ry, style };
   }
@@ -1188,14 +1182,11 @@ export default class ActDia {
 
   getPolygonSVGData(shape, item, options) {
     const { x, y, style, ...data } = this.getPolygonData(shape, item, options);
-    const sx = options?.sx ?? this.style.sx,
-      sy = options?.sy ?? this.style.sy;
-
     const points = data.points
       .split(/[\s]+/)
       .map(p => {
         const [x, y] = p.split(',');
-        return [ parseFloat(x) * sx, parseFloat(y) * sy ].join(',');
+        return [ parseFloat(x), parseFloat(y) ].join(',');
       })
       .join(' ');
 
@@ -1221,9 +1212,7 @@ export default class ActDia {
   }
 
   getPathSVGData(shape, item, options) {
-    const { x, y, style, ...data } = this.getPathData(shape, item, options);
-    const sx = options?.sx ?? this.style.sx,
-      sy = options?.sy ?? this.style.sy;
+    const { style, ...data } = this.getPathData(shape, item, options);
 
     options ??= {};
     options.prefix ??= '\n';
@@ -1242,8 +1231,6 @@ export default class ActDia {
       .join('\n')
       .replace(/\n/g, commandsPrefix)
       .trim();
-
-    d = transformPathD(d, { sx, sy, x: x * sx, y: y * sy });
     
     const attributes = {
       ...this.getStyleSVGAttributes(style, options),
@@ -1258,17 +1245,7 @@ export default class ActDia {
 
   getTextData(shape, item, style, options) {
     let { x, y, width, height } = shape;
-    const sx = options?.sx ?? this.style.sx,
-      sy = options?.sy ?? this.style.sy;
     style ??= this.getStyle({ item, shape, type: 'text', options });
-    style.sx = sx;
-    style.sy = sy;
-
-    if (shape.sx)
-      style.sx *= shape.sx;
-    
-    if (shape.sy)
-      style.sy *= shape.sy;
 
     if (typeof x === 'undefined'
       && typeof width === 'undefined'
@@ -1307,16 +1284,9 @@ export default class ActDia {
       y += height / 2;
     }
 
-    x *= sx;
-    y *= sy;
-
-    width *= sx;
-    height *= sy;
-
     return {
       x, y, width, height,
-      sx, sy,
-      lineSpacing: (style.lineSpacing ?? 0) * sy,
+      lineSpacing: (style.lineSpacing ?? 0),
       style,
     };
   }
@@ -1333,10 +1303,10 @@ export default class ActDia {
     };
 
     const children = lines.map((line, index) => {
-      const dy = index === 0 ? 0 : (style.lineSpacing || 1.2);
+      const dy = index === 0 ? 0 : (style.lineSpacing || style.fontSize || 1.2);
       return {
         tag: 'tspan',
-        attributes: { x, dy: dy * style.sy },
+        attributes: { x, dy },
         cData: encodeHTML(line),
       };
     });
@@ -1465,20 +1435,15 @@ export default class ActDia {
     if (!width || !height)
       return;
     
-    const { sx, sy } = { ...this.style, ...options };
     const style = { ...this.style.item, ...this.style.selectedItem, ...item };
 
     x ??= 0;
     y ??= 0;
     x -= style.offset;
     y -= style.offset;
-    x *= sx;
-    y *= sy;
 
     width += style.offset * 2;
     height += style.offset * 2;
-    width *= sx;
-    height *= sy;
 
     return { x, y, width, height, style };
   }
@@ -1496,6 +1461,7 @@ export default class ActDia {
         + attributePrefix + `y="${y}"`
         + attributePrefix + `width="${width}"`
         + attributePrefix + `height="${height}"`
+        + attributePrefix + `vector-effect="non-scaling-stroke"`
       + options.prefix + '/>';
   }
 

@@ -183,7 +183,7 @@ export default class Item extends Element {
   }
 
   updateTransform() {
-    let transform = `translate(${this.x * this.actdia.style.sx} ${this.y * this.actdia.style.sy})`;
+    let transform = `translate(${this.x}, ${this.y})`;
     if (this.rotate) {
       transform += ` rotate(${this.rotate})`;
     }

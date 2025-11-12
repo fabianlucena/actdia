@@ -29,7 +29,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   actdia.addEventListener('dblclick', dblClickHandler);
   actdia.addEventListener('item:dblclick', itemDblClickHandler);
-  actdia.addEventListener('keydown', keyDownHandler);
+  actdia.addEventListener('keydown', keyDownHandler, true);
   actdia.addEventListener('keyup', keyUpHandler);
 });
 

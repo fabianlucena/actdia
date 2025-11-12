@@ -1,6 +1,6 @@
 .node-selector {
-  max-width: 90vw;
-  max-height: 80vh;
+  width: 90vw;
+  height: 80vh;
 }
 
 .node-selector-breadcrumbs {

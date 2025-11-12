@@ -20,7 +20,7 @@ export default class NodeSelector extends Dialog {
 
     this.contentElement.innerHTML = '<div class="node-selector-breadcrumbs" ></div>'
       + '<div class="node-selector-categories" ></div>'
-      + '<div class="node-selector-classes" ></div>';
+      + `<div class="node-selector-classes" >${_('Loading...')}</div>`;
 
     this.breadcrumbsContainer = this.contentElement.querySelector('.node-selector-breadcrumbs');
     this.categoriesContainer = this.contentElement.querySelector('.node-selector-categories');
@@ -135,8 +135,8 @@ export default class NodeSelector extends Dialog {
             class="node-class"
             data-fqcn="${classInfo.fqcn}"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="${options.width}" height="${options.height}">
-              ${this.actdia.getItemSVG(item, itemOptions)}
+            <svg xmlns="http://www.w3.org/2000/svg" width="${options.width}" height="${options.height}" transform="scale(10,10)"  >
+              ${this.actdia.getItemSVG(item)}
             </svg>
             <div
               class="node-class-name"
