@@ -74,23 +74,28 @@ export default class NodeSelector extends Dialog {
   }
 
   async loadCategory({ path, previousBreadcrumbs = [] }) {
-    const categoriesData = (await import(`${path}/categories.js`)).default;
-    if (categoriesData.locale) {
-      await loadLocale(path, ...categoriesData.locale);
-    }
-
-    this.breadcrumbs = [
-      ...previousBreadcrumbs,
-      {
-        _label: categoriesData._label,
-        url: path,
+    try {
+      this.classesContainer.innerHTML = _('Loading...');
+      const categoriesData = (await import(`${path}/categories.js`)).default;
+      if (categoriesData.locale) {
+        await loadLocale(path, ...categoriesData.locale);
       }
-    ];
 
-    this.categories = categoriesData.categories || [];
-    this.nodesClasses = categoriesData.nodesClasses || [];
+      this.breadcrumbs = [
+        ...previousBreadcrumbs,
+        {
+          _label: categoriesData._label,
+          url: path,
+        }
+      ];
 
-    this.update({ path });
+      this.categories = categoriesData.categories || [];
+      this.nodesClasses = categoriesData.nodesClasses || [];
+
+      this.update({ path });
+    } catch (err) {
+      this.classesContainer.innerHTML = _('Error loading node category: %s', err.message);
+    }
   }
 
   async update({ path }) {
