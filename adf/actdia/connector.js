@@ -101,8 +101,8 @@ export default class Connector extends Element {
     options ??= {};
     const connectors = new Set([...options.connectors || []]);
     if (connectors?.has(this)) {
-      this.actdia.pushNotification(_('Circular propagation detected, stopping.'), 'warning');
-      return;
+      //this.actdia?.pushNotification(_('Circular propagation detected, stopping.'), 'warning');
+      //return;
     }
 
     this.connections.forEach(connection => {
