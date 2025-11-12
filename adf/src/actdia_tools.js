@@ -283,8 +283,8 @@ export default class ActDiaTools {
           },
           {
             shape: 'path',
-            d: `M 0.5 0.4 V 1
-              M 0.35 0.85 L 0.5 1 L 0.65 0.85`,
+            d: `M 0.5 0.4 V .95
+              M 0.35 0.8 L 0.5 .95 L 0.65 0.8`,
           },
         ],
       },
