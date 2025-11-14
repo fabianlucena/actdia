@@ -1,5 +1,10 @@
 import Node from '../actdia/node.js';
 
+/*
+export default function create({ Node }) {
+  return class Bus extends Node {
+*/
+
 export default class Bus extends Node {
   static _label = 'Bus';
 
