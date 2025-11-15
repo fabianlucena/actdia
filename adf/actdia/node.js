@@ -2,10 +2,6 @@ import Item from './item.js';
 import Connector from './connector.js';
 import { isEqual } from './utils.js';
 
-export function isNode(item) {
-  return item && (item instanceof Node || item.constructor.name === 'Node');
-}
-
 export default class Node extends Item {
   shape = {
     shapes: [

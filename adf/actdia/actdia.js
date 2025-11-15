@@ -1,9 +1,8 @@
 import actdiaItemsCss from './actdia-items.css?raw';
 import './actdia.css';
 import Element from './element.js';
-import Item, { isItem } from './item.js';
-import { isNode } from './node.js';
-import { isConnection } from './connection.js';
+import Item from './item.js';
+import { isItem, isNode, isConnection } from './type.js';
 import {
   encodeHTML,
   getNumber,

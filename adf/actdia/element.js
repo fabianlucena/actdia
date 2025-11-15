@@ -30,46 +30,58 @@ export default class Element {
   }
 
   static async importAsync(...urls) {
-    const result = await Promise.all(urls.map(async url => {
-      const module = await import(url);
-      const classesRef = Object.values(module);
-      const result = [];
+    const result = await Promise.all(urls.map(url => this.importSingleAsync(url)));
+    return result.flat();
+  }
 
-      for (const classRef of classesRef) {
-        if (typeof classRef !== 'function')
-          continue;
-        
-        const elementClass = classRef.name;
-        const fqcn = url + '/' + elementClass;
-        if (registry[fqcn]) {
-          result.push(registry[fqcn]);
-          continue;
-        }
-        
-        if (classRef.import) {
-          let importUrls = Array.isArray(classRef.import) ?
-            classRef.import : [ classRef.import ];
+  static async importSingleAsync(url) {
+    const module = await import(url);
+    const items = Object.values(module);
+    return items.map(item => this.registerModuleItem(url, item))
+      .flat()
+      .filter(item => item);
+  }
 
-          for (let importUrl of importUrls) {
-            if (importUrl.startsWith('.'))
-              importUrl = getPath(url) + '/' + importUrl;
-            
-            await this.importAsync(importUrl);
-          }
-        }
-
-        result.push(this.registerClass({
-          elementClass,
-          classRef,
-          url,
-          fqcn,
-        }));
+  static async registerModuleItem(url, classRef) {
+    if (typeof classRef !== 'function') {
+      if (Array.isArray(classRef)) {
+        return classRef.map(item => this.registerModuleItem(url, item))
+          .flat()
+          .filter(item => item);
       }
 
-      return result;
-    }));
+      return;
+    }
 
-    return result.flat();
+    const isClass = /^class\s/.test(Function.prototype.toString.call(classRef));
+    if (!isClass) {
+      return this.registerModuleItem(url, classRef());
+    }
+    
+    const elementClass = classRef.name;
+    const fqcn = url + '/' + elementClass;
+    if (registry[fqcn]) {
+      return registry[fqcn];
+    }
+    
+    if (classRef.import) {
+      let importUrls = Array.isArray(classRef.import) ?
+        classRef.import : [ classRef.import ];
+
+      for (let importUrl of importUrls) {
+        if (importUrl.startsWith('.'))
+          importUrl = getPath(url) + '/' + importUrl;
+        
+        await this.importAsync(importUrl);
+      }
+    }
+
+    return this.registerClass({
+      elementClass,
+      classRef,
+      url,
+      fqcn,
+    });
   }
 
   static async importForDataAsync(data) {

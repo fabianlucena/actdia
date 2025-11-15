@@ -1,10 +1,6 @@
 import Element from './element.js';
 import { isEqual } from './utils.js';
 
-export function isItem(item) {
-  return item instanceof Item || item.constructor.name === 'Item';
-}
-
 export default class Item extends Element {
   shapes = [];
 

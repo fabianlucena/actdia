@@ -1,9 +1,5 @@
 import Item from './item.js';
 
-export function isConnection(item) {
-  return item instanceof Connection || item.constructor.name === 'Connection';
-}
-
 export default class Connection extends Item {
   draggable = false;
 

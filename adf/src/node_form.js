@@ -1,5 +1,5 @@
 import Form from './form.js';
-import { isNode } from '../actdia/node.js';
+import { isNode } from '../actdia/type.js';
 import { _ } from '../actdia/locale.js';
 import { getValueByPath, setValueByPath, deletePropertyByPath } from '../actdia/utils.js';
 
