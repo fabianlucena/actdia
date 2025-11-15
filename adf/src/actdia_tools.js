@@ -1,5 +1,5 @@
 import Item from '../actdia/item.js';
-import { encodeHTML } from '../actdia/utils.js';
+import { escapeHTML } from '../actdia/utils.js';
 import Dialog from './dialog.js';
 import { _ } from '../actdia/locale.js';
 import { pushNotification } from './notistack.js';
@@ -374,9 +374,9 @@ export default class ActDiaTools {
     const options = { sx: 18, sy: 18 };
     const svgList = this.tools.map(tool => 
       '<div'
-        + ` id="${encodeHTML(tool.id)}"`
+        + ` id="${escapeHTML(tool.id)}"`
         + ' class="button actdia-tool-button"'
-        + ` data-id="${encodeHTML(tool.id)}"`
+        + ` data-id="${escapeHTML(tool.id)}"`
         + ` title="${tool.description ? tool.name + ':\n' + tool.description : tool.name}"`
       + '>'
         + '<svg xmlns="http://www.w3.org/2000/svg"'

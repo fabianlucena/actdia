@@ -113,7 +113,7 @@ export function setValueByPath(obj, path, value) {
   current[lastPart] = value;
 }
 
-export function encodeHTML(text) {
+export function escapeHTML(text) {
   if (!text)
     return text;
   

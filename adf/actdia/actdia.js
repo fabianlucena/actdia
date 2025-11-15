@@ -6,7 +6,7 @@ import Node from './node.js';
 import Connection from './node.js';
 import { isItem, isNode, isConnection } from './type.js';
 import {
-  encodeHTML,
+  escapeHTML,
   getNumber,
   isNumber,
   isHTMLElement,
@@ -450,7 +450,7 @@ export default class ActDia {
     this.#items.sort((a, b) => (dict[a.type] ?? 99) - (dict[b.type] ?? 99));
 
     result.forEach(item => {
-      const textSVG = this.getItemSVG(item)
+      const textSVG = this.getItemSVG(item, { escapeHTML: true });
       let node;
       if (isNode(item)) {
         node = this.nodesLayerSVG;
@@ -689,13 +689,13 @@ export default class ActDia {
     const url = item.getElementClassUrl();
 
     const svg = options.prefix + '<g'
-        + (item.id && (childOptions.prefix + `id="${encodeHTML(item.id)}"`) || '')
-        + (item.name && (childOptions.prefix + `name="${encodeHTML(item.name)}"`) || '')
+        + (item.id && (childOptions.prefix + `id="${escapeHTML(item.id)}"`) || '')
+        + (item.name && (childOptions.prefix + `name="${escapeHTML(item.name)}"`) || '')
         + childOptions.prefix + `class="${classList.join(' ')}"`
-        + (item.description && (childOptions.prefix + `description="${encodeHTML(item.description)}"`) || '')
+        + (item.description && (childOptions.prefix + `description="${escapeHTML(item.description)}"`) || '')
         + transform
-        + childOptions.prefix + `data-item-class="${encodeHTML(item.getElementClass())}"`
-        + (url && childOptions.prefix + `data-url="${encodeHTML(item.getElementClassUrl())}"` || '')
+        + childOptions.prefix + `data-item-class="${escapeHTML(item.getElementClass())}"`
+        + (url && childOptions.prefix + `data-url="${escapeHTML(item.getElementClassUrl())}"` || '')
       + options.prefix + '>'
         + components.join('')
       + options.prefix + '</g>';
@@ -983,6 +983,10 @@ export default class ActDia {
     };
 
     const attributePrefix = childOptions.prefix;
+    const cData = svgData.cData ?
+      attributePrefix + (options.escapeHTML ? escapeHTML(svgData.cData) : svgData.cData)
+      : '';
+
     const svg = options.prefix + `<${svgData.tag}`
       + (classList.length ? attributePrefix + `class="${classList.join(' ')}"` : '')
       + (svgData.attributes && Object.entries(svgData.attributes)
@@ -990,7 +994,7 @@ export default class ActDia {
         .join('') || '')
       + options.prefix + '>'
       + (svgData.children?.length ? svgData.children.map(child => this.getShapeSVGFromSVGData(child, childOptions)).join('') : '')
-      + (svgData.cData ? attributePrefix + svgData.cData : '')
+      + cData
       + options.prefix + `</${svgData.tag}>`;
 
     return svg;
@@ -1324,7 +1328,7 @@ export default class ActDia {
       return {
         tag: 'tspan',
         attributes: { x, dy },
-        cData: encodeHTML(line),
+        cData: line,
       };
     });
 
