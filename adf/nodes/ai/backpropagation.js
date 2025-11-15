@@ -31,7 +31,8 @@ export default class Backpropagation extends Node {
   };
 
   connectors = [
-    { name: 'i', type: 'in', x: 0, y: 1, direction: 'left',  extends: 'tiny' },
+    { name: 'i0', type: 'in',  x: 0.293, y: 0.293, direction:  135,  extends: 'tiny' },
+    { name: 'i1', type: 'in',  x: 0.293, y: 1.707, direction: -135,  extends: 'tiny' },
   ];
 
   updateStatus(options = {}) {

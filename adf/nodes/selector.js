@@ -18,7 +18,7 @@ export default class Selector extends Node {
         x: 0,
         width: 4,
         height: 4,
-        text: '*',
+        text: '%',
         fontSize: .6,
       },
       {
