@@ -1283,6 +1283,9 @@ export default class ActDia {
     y ??= 0;
     width = getNumber(width, 0);
     height = getNumber(height, 0);
+
+    let lineSpacing = style.lineSpacing ?? 0,
+      lineHeight = (style.fontSize ?? 1) + lineSpacing;
   
     if (style.textAnchor === 'right') {
       x += width - style.margin.right;
@@ -1299,7 +1302,7 @@ export default class ActDia {
       y += style.margin.top;
     } else {
       height += style.margin.top + style.margin.bottom;
-      y += height / 2;
+      y += (height - ((shape.text.split('\n').length ?? 1) - 1) * lineHeight) / 2;
     }
 
     if (shape.textDecoration)
@@ -1307,7 +1310,7 @@ export default class ActDia {
 
     return {
       x, y, width, height,
-      lineSpacing: (style.lineSpacing ?? 0),
+      lineSpacing,
       style: { ...style, x: undefined, y: undefined },
     };
   }
