@@ -399,8 +399,8 @@ export default class ActDia {
   }
 
   async load(data, options = {}) {
-    await this.importElements(...data.imports.filter(u => u));
     await loadLocales(data.locales);
+    await this.importElements(...data.imports.filter(u => u));
 
     this.#items = [];
     this.nodesLayerSVG.innerHTML = '';
