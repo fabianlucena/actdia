@@ -1,23 +1,24 @@
-import Xor from './xor.js';
+export default async function create({ actdia, baseUrl }) {
+  const Xor = await actdia.importSingleElement(baseUrl + '/xor.js', 'Xor');
+  return class IEEEXor extends Xor {
+    static label = 'IEEE Xor';
 
-export default class IEEEXor extends Xor {
-  static label = 'IEEE Xor';
-
-  shape = {
-    shapes: [
-      {
-        shape: 'rect',
-        x: 0,
-        width: 4, 
-        height: 4,
-      },
-      {
-        shape: 'text',
-        x: 0,
-        width: 4,
-        height: 4,
-        text: '=1',
-      },
-    ],
+    shape = {
+      shapes: [
+        {
+          shape: 'rect',
+          x: 0,
+          width: 4, 
+          height: 4,
+        },
+        {
+          shape: 'text',
+          x: 0,
+          width: 4,
+          height: 4,
+          text: '=1',
+        },
+      ],
+    };
   };
 }

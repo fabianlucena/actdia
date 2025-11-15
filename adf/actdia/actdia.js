@@ -215,11 +215,8 @@ export default class ActDia {
   constructor(options) {
     this.create(...arguments);
 
-    const creationData = this.getElementCreationData();
-
     loadLocale('.', 'es')
-      .then(() => Element.importAsync(
-        creationData,
+      .then(() => this.importElements(
         './node.js',
         './connection.js',
         './text.js',
@@ -245,11 +242,23 @@ export default class ActDia {
     return {
       actdia: this,
       _,
+      getPath,
       Element,
       Item,
       Node,
       Connection,
     };
+  }
+
+  async importElements(...urls) {
+    return Element.importAsync(this.getElementCreationData(), ...urls);
+  }
+
+  async importSingleElement(url, elementClass) {
+    const classesInfo = await this.importElements(url);
+    return classesInfo
+      .find(e => e.elementClass === elementClass)
+      .classRef;
   }
 
   create(options) {
@@ -389,7 +398,7 @@ export default class ActDia {
   }
 
   async load(data, options = {}) {
-    await Item.importAsync(this.getElementCreationData(), ...data.imports.filter(u => u));
+    await this.importElements(...data.imports.filter(u => u));
     await loadLocales(data.locales);
 
     this.#items = [];

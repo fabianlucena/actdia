@@ -43,10 +43,6 @@ export default class Element {
   }
 
   static async registerModuleItem(creationData, url, classRef) {
-    if (typeof creationData === 'string') {
-      console.trace();
-    }
-
     if (typeof classRef !== 'function') {
       if (Array.isArray(classRef)) {
         return classRef.map(item => this.registerModuleItem(creationData, url, item))
@@ -59,7 +55,7 @@ export default class Element {
 
     const isClass = /^class\s/.test(Function.prototype.toString.call(classRef));
     if (!isClass) {
-      return this.registerModuleItem(creationData, url, classRef(creationData));
+      return this.registerModuleItem(creationData, url, await classRef({ ...creationData, baseUrl: getPath(url), url }));
     }
     
     const elementClass = classRef.name;

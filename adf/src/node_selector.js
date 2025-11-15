@@ -76,7 +76,7 @@ export default class NodeSelector extends Dialog {
   async loadCategory({ path, previousBreadcrumbs = [] }) {
     try {
       this.classesContainer.innerHTML = _('Loading...');
-      const categoriesData = (await import(`${path}/categories.js`)).default;
+      const categoriesData = (await import(`${path}/index.js`)).default;
       if (categoriesData.locale) {
         await loadLocale(path, ...categoriesData.locale);
       }
@@ -120,9 +120,10 @@ export default class NodeSelector extends Dialog {
     };
 
     const urls = this.nodesClasses.map(c => `${path}/${c}`);
-    const clasesInfo = await Item.importAsync(this.actdia.getElementCreationData(), ...urls);
 
-    this.classesContainer.innerHTML = clasesInfo
+    const classesInfo = await this.actdia.importElements(...urls);
+
+    this.classesContainer.innerHTML = classesInfo
       .map(classInfo => {
         const itemOptions = {};
         const item = Item.create(classInfo);

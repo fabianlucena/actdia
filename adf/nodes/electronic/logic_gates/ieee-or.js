@@ -1,23 +1,24 @@
-import Or from './or.js';
+export default async function create({ actdia, baseUrl }) {
+  const Or = await actdia.importSingleElement(baseUrl + '/or.js', 'Or');
+  return class IEEEOr extends Or {
+    static label = 'IEEE Or';
 
-export default class IEEEOr extends Or {
-  static label = 'IEEE Or';
-
-  shape = {
-    shapes: [
-      {
-        shape: 'rect',
-        x: 0,
-        width: 4, 
-        height: 4,
-      },
-      {
-        shape: 'text',
-        x: 0,
-        width: 4,
-        height: 4,
-        text: '≥1',
-      },
-    ],
+    shape = {
+      shapes: [
+        {
+          shape: 'rect',
+          x: 0,
+          width: 4, 
+          height: 4,
+        },
+        {
+          shape: 'text',
+          x: 0,
+          width: 4,
+          height: 4,
+          text: '≥1',
+        },
+      ],
+    };
   };
 }

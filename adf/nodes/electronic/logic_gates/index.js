@@ -20,6 +20,6 @@ export default {
     'ieee-not.js',
     'ieee-nand.js',
     'ieee-nor.js',
-    'ieee-xnor.js',
+    //'ieee-xnor.js',
   ],
 };
