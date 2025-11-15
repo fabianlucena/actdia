@@ -254,11 +254,12 @@ export default class ActDia {
     return Element.importAsync(this.getElementCreationData(), ...urls);
   }
 
-  async importSingleElement(url, elementClass) {
+  async importElementClass(url) {
     const classesInfo = await this.importElements(url);
-    return classesInfo
-      .find(e => e.elementClass === elementClass)
-      .classRef;
+    return classesInfo.reduce((map, ci) => {
+      map[ci.elementClass] = ci.classRef;
+      return map;
+    }, {});
   }
 
   create(options) {

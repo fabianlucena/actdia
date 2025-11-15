@@ -1,5 +1,5 @@
 export default async function create({ actdia, baseUrl }) {
-  const Not = await actdia.importSingleElement(baseUrl + '/not.js', 'Not');
+  const { Not } = await actdia.importElementClass(baseUrl + '/not.js');
   return class IEEENot extends Not {
     static label = 'IEEE Not';
 

@@ -1,5 +1,5 @@
 export default async function create({ actdia, baseUrl }) {
-  const Buffer = await actdia.importSingleElement(baseUrl + '/buffer.js', 'Buffer');
+  const { Buffer } = await actdia.importElementClass(baseUrl + '/buffer.js');
   return class IEEEBuffer extends Buffer {
     static label = 'IEEE Buffer';
 

@@ -1,5 +1,5 @@
 export default async function create({ actdia, baseUrl }) {
-  const Xor = await actdia.importSingleElement(baseUrl + '/xor.js', 'Xor');
+  const { Xor } = await actdia.importElementClass(baseUrl + '/xor.js');
   return class IEEEXor extends Xor {
     static label = 'IEEE Xor';
 
