@@ -120,7 +120,7 @@ export default class NodeSelector extends Dialog {
     };
 
     const urls = this.nodesClasses.map(c => `${path}/${c}`);
-    const clasesInfo = await Item.importAsync(...urls);
+    const clasesInfo = await Item.importAsync(this.actdia.getElementCreationData(), ...urls);
 
     this.classesContainer.innerHTML = clasesInfo
       .map(classInfo => {

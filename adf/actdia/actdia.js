@@ -2,6 +2,8 @@ import actdiaItemsCss from './actdia-items.css?raw';
 import './actdia.css';
 import Element from './element.js';
 import Item from './item.js';
+import Node from './node.js';
+import Connection from './node.js';
 import { isItem, isNode, isConnection } from './type.js';
 import {
   encodeHTML,
@@ -11,7 +13,6 @@ import {
   getPath,
 } from './utils.js';
 import { _, loadLocale, getLocales, loadLocales } from './locale.js';
-import { transformPathD } from './path2d.js';
 import { DIRECTIONS } from './connector.js';
 
 export default class ActDia {
@@ -214,16 +215,19 @@ export default class ActDia {
   constructor(options) {
     this.create(...arguments);
 
+    const creationData = this.getElementCreationData();
+
     loadLocale('.', 'es')
+      .then(() => Element.importAsync(
+        creationData,
+        './node.js',
+        './connection.js',
+        './text.js',
+        './connector-in.js',
+        './connector-out.js'
+      ))
       .then(() => {
         this.pushNotification(_('Welcome to ActDia!'), 'info');
-        return Element.importAsync('./node.js');
-      })
-      .then(() => Element.importAsync('./connection.js'))
-      .then(() => Element.importAsync('./text.js'))
-      .then(() => Element.importAsync('./connector-in.js'))
-      .then(() => Element.importAsync('./connector-out.js'))
-      .then(() => {
         if (window.location.hash) {
           const data = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
           this.load(data);
@@ -235,6 +239,17 @@ export default class ActDia {
 
   pushNotification(message, options = {}) {
     console.log(message);
+  }
+
+  getElementCreationData() {
+    return {
+      actdia: this,
+      _,
+      Element,
+      Item,
+      Node,
+      Connection,
+    };
   }
 
   create(options) {
@@ -374,7 +389,7 @@ export default class ActDia {
   }
 
   async load(data, options = {}) {
-    await Item.importAsync(...data.imports.filter(u => u));
+    await Item.importAsync(this.getElementCreationData(), ...data.imports.filter(u => u));
     await loadLocales(data.locales);
 
     this.#items = [];

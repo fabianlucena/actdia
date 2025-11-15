@@ -29,23 +29,27 @@ export default class Element {
     return Object.values(registry);
   }
 
-  static async importAsync(...urls) {
-    const result = await Promise.all(urls.map(url => this.importSingleAsync(url)));
+  static async importAsync(creationData, ...urls) {
+    const result = await Promise.all(urls.map(url => this.importSingleAsync(creationData, url)));
     return result.flat();
   }
 
-  static async importSingleAsync(url) {
+  static async importSingleAsync(creationData, url) {
     const module = await import(url);
     const items = Object.values(module);
-    return items.map(item => this.registerModuleItem(url, item))
+    return (await Promise.all(items.map(item => this.registerModuleItem(creationData, url, item))))
       .flat()
       .filter(item => item);
   }
 
-  static async registerModuleItem(url, classRef) {
+  static async registerModuleItem(creationData, url, classRef) {
+    if (typeof creationData === 'string') {
+      console.trace();
+    }
+
     if (typeof classRef !== 'function') {
       if (Array.isArray(classRef)) {
-        return classRef.map(item => this.registerModuleItem(url, item))
+        return classRef.map(item => this.registerModuleItem(creationData, url, item))
           .flat()
           .filter(item => item);
       }
@@ -55,7 +59,7 @@ export default class Element {
 
     const isClass = /^class\s/.test(Function.prototype.toString.call(classRef));
     if (!isClass) {
-      return this.registerModuleItem(url, classRef());
+      return this.registerModuleItem(creationData, url, classRef(creationData));
     }
     
     const elementClass = classRef.name;
@@ -72,7 +76,7 @@ export default class Element {
         if (importUrl.startsWith('.'))
           importUrl = getPath(url) + '/' + importUrl;
         
-        await this.importAsync(importUrl);
+        await this.importAsync(creationData, importUrl);
       }
     }
 
@@ -89,7 +93,7 @@ export default class Element {
     let classRef = registry[fqcn]?.classRef;
     if (!classRef) {
       if (data.url) {
-        await this.importAsync(data.url);
+        await this.importAsync(creationData, data.url);
       }
     }
 
