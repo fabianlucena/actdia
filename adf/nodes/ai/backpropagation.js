@@ -32,36 +32,38 @@ export default function create({ Node }) {
       { name: 'clk', type: 'in',  x: 0.293, y: 1.707, direction: -135,  extends: 'tiny' },
     ];
 
-    clkStatus = 0;
+    #clkStatus = 0;
+    #input = null;
+    #clk = null;
 
     init() {
       super.init(...arguments);
 
       if (this.connectors) {
-        this.input = this.connectors.find(c => c.name === 'i');
-        this.clk = this.connectors.find(c => c.name === 'clk');
+        this.#input = this.connectors.find(c => c.name === 'i');
+        this.#clk = this.connectors.find(c => c.name === 'clk');
       }
     }
 
     updateStatus(options = {}) {
-      if (!this.input || !this.clk)
+      if (!this.#input || !this.#clk)
         return;
 
-      if (this.clk.status > 0.5) {
-        if (this.clkStatus !== 1)
-          this.clkStatus = 1;
+      if (this.#clk.status > 0.5) {
+        if (this.#clkStatus !== 1)
+          this.#clkStatus = 1;
 
         return;
       }
 
-      if (this.clk.status <= 0.5) {
-        if (this.clkStatus === 0)
+      if (this.#clk.status <= 0.5) {
+        if (this.#clkStatus === 0)
           return;
-
-        this.clkStatus = 0;
+        
+        this.#clkStatus = 0;
       }
 
-      this.setBackStatus(this.input.status, options);
+      this.setBackStatus(this.#input.status, options);
     }
   };
 }

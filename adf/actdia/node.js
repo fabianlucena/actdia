@@ -129,7 +129,7 @@ export default class Node extends Item {
   getDefaultConnectorsData() {
     const classInfo = this.getElementClassInfo();
     if (!classInfo.defaultConnectorsData) {
-      const defaultItem = this.getDefaultObject()
+      const defaultItem = this.getDefaultObject();
       classInfo.defaultConnectorsData = defaultItem.connectors;
     }
 
@@ -143,7 +143,7 @@ export default class Node extends Item {
     const defaultConnectorsData = this.getDefaultConnectorsData();
 
     const connectors = this.connectors.map(connector => {
-      const { id, connections, item, index, ...currentData } = connector;
+      const { id, connections, item, index, actdia, status, ...currentData } = connector;
       let defaultConnector = defaultConnectorsData?.[index];
       if (!defaultConnector) {
         const { id, connections, item, index, ...data } =
@@ -171,7 +171,7 @@ export default class Node extends Item {
       ...options,
       skip: [
         ...(options?.skip || []),
-        'connectors', 'actdia', 'items', 'skipProperties', 'defaultConnector',
+        'connectors', 'svgConnectors', 'actdia', 'items', 'skipProperties', 'defaultConnector',
         ...(this.skipProperties || [])
       ],
     });

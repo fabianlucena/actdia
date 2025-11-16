@@ -133,14 +133,14 @@ export default class Element {
     const classInfo = this.getElementClassInfo(fqcn);
     if (!classInfo.defaultItem) {
       classInfo.defaultItem = new classInfo.classRef();
+      classInfo.defaultItem.init();
     }
 
     return classInfo.defaultItem;
   }
 
   constructor(options) {
-    if (arguments.length > 0)
-      this.init(...arguments);
+    this.init(...arguments);
   }
 
   init(options) {

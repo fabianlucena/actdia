@@ -203,12 +203,12 @@ export default class Dialog {
 
   updatePosition() {
     if (isNaN(this.x))
-      this.element.style.left = (document.body.clientWidth - this.element.offsetWidth) / 2 + 'px';
+      this.element.style.left = Math.max(0, Math.floor((document.body.clientWidth - this.element.offsetWidth) / 2)) + 'px';
     else
       this.element.style.left = this.x + 'px';
 
     if (isNaN(this.y))
-      this.element.style.top = (document.body.clientHeight - this.element.offsetHeight) / 2 + 'px';
+      this.element.style.top = Math.max(0, Math.floor((document.body.clientHeight - this.element.offsetHeight) / 2)) + 'px';
     else
       this.element.style.top = this.y + 'px';
   }
