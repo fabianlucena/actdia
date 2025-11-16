@@ -172,12 +172,14 @@ export default class Connection extends Item {
   }
 
   setStatus(status, options) {
-    if (!options.connectors.has(this.from.connector)) {
-      this.from.connector.setStatus(status, options);
-    }
-
     if (!options.connectors.has(this.to.connector) && this.to !== 'mouse') {
       this.to.connector.setStatus(status, options);
+    }
+  }
+
+  setBackStatus(backStatus, options) {
+    if (!options.connectors.has(this.from.connector)) {
+      this.from.connector.setBackStatus(backStatus, options);
     }
   }
 }

@@ -100,7 +100,9 @@ export default class Connector extends Element {
   setBackStatus(backStatus, options = {}) {
     this.backStatus = backStatus;
     if (this.type === 'out' && this.item)
-      this.item.backStatusUpdated(options);
+      this.item.updateBackStatus(options);
+
+    this.backpropagate(options);
   }
 
   propagate(options = {}) {
@@ -114,6 +116,20 @@ export default class Connector extends Element {
     this.connections.forEach(connection => {
       options.connectors = new Set([...connectors, this]);
       connection.setStatus(this.status, options);
+    });
+  }
+
+  backpropagate(options = {}) {
+    options ??= {};
+    const connectors = new Set([...options.connectors || []]);
+    if (connectors?.has(this)) {
+      //this.actdia?.pushNotification(_('Circular backpropagation detected, stopping.'), 'warning');
+      //return;
+    }
+    
+    this.connections.forEach(connection => {
+      options.connectors = new Set([...connectors, this]);
+      connection.setBackStatus(this.backStatus, options);
     });
   }
 }

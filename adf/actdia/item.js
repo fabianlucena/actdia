@@ -167,7 +167,6 @@ export default class Item extends Element {
 
     this.status = status;
     this.statusUpdated(options);
-    this.update(options);
   }
 
   setBackStatus(backStatus, options = {}) {
@@ -176,7 +175,6 @@ export default class Item extends Element {
 
     this.backStatus = backStatus;
     this.backStatusUpdated(options);
-    this.updateBackStatus(options);
   }
 
   statusUpdated() {}

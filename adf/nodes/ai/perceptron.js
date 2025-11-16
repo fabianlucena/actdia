@@ -176,7 +176,10 @@ export default function create({ Node, _ }) {
     weights = [];
     #activationFunction = 'relu';
     #func = activationFunctions.relu.func;
+    #inputs = [];
+    #output = null;
     #derived = activationFunctions.relu.derived;
+    #learningRate = 0.1;
 
     set activationFunction(funcName) {
       const funcData = activationFunctions[funcName];
@@ -203,7 +206,10 @@ export default function create({ Node, _ }) {
     }
 
     update() {
-      const inputs = this.connectors.filter(c => c.type === 'in'),
+      this.#inputs = this.connectors.filter(c => c.type === 'in');
+      this.#output = this.connectors.find(c => c.type === 'out');
+
+      const inputs = this.#inputs,
         l = inputs.length - 1,
         z = 15,
         n = l > z ? l : 1 + (z - 1) * Math.pow(l / z, 0.7),
@@ -226,6 +232,8 @@ export default function create({ Node, _ }) {
           this.weights.push(Math.random() * 10 - 5);
         }
       }
+
+      this.#inputs = inputs;
 
       super.update();
     }
