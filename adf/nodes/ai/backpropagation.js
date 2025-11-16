@@ -28,18 +28,40 @@ export default function create({ Node }) {
     };
 
     connectors = [
-      { name: 'i0', type: 'in',  x: 0.293, y: 0.293, direction:  135,  extends: 'tiny' },
-      { name: 'i1', type: 'in',  x: 0.293, y: 1.707, direction: -135,  extends: 'tiny' },
+      { name: 'i', type: 'in',  x: 0.293, y: 0.293, direction:  135,  extends: 'tiny' },
+      { name: 'clk', type: 'in',  x: 0.293, y: 1.707, direction: -135,  extends: 'tiny' },
     ];
 
+    clkStatus = 0;
+
+    init() {
+      super.init(...arguments);
+
+      if (this.connectors) {
+        this.input = this.connectors.find(c => c.name === 'i');
+        this.clk = this.connectors.find(c => c.name === 'clk');
+      }
+    }
+
     updateStatus(options = {}) {
-      const inputs = this.connectors
-        .filter(c => c.type === 'in')
-        .map(i => i.status);
+      if (!this.input || !this.clk)
+        return;
 
-      let status = inputs[1] - inputs[0];
+      if (this.clk.status > 0.5) {
+        if (this.clkStatus !== 1)
+          this.clkStatus = 1;
 
-      this.setStatus(status, options);
+        return;
+      }
+
+      if (this.clk.status <= 0.5) {
+        if (this.clkStatus === 0)
+          return;
+
+        this.clkStatus = 0;
+      }
+
+      this.setBackStatus(this.input.status, options);
     }
   };
 }

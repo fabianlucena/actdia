@@ -97,6 +97,12 @@ export default class Connector extends Element {
     this.propagate(options);
   }
 
+  setBackStatus(backStatus, options = {}) {
+    this.backStatus = backStatus;
+    if (this.type === 'out' && this.item)
+      this.item.backStatusUpdated(options);
+  }
+
   propagate(options = {}) {
     options ??= {};
     const connectors = new Set([...options.connectors || []]);

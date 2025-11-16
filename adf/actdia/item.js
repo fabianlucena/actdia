@@ -170,7 +170,18 @@ export default class Item extends Element {
     this.update(options);
   }
 
+  setBackStatus(backStatus, options = {}) {
+    if (JSON.stringify(this.backStatus) === JSON.stringify(backStatus))
+      return;
+
+    this.backStatus = backStatus;
+    this.backStatusUpdated(options);
+    this.updateBackStatus(options);
+  }
+
   statusUpdated() {}
+
+  backStatusUpdated() {}
 
   moveTo(to) {
     this.x = to.x;
@@ -203,6 +214,13 @@ export default class Item extends Element {
   }
 
   update(options = {}) {
+    if (!options.skipNotification) {
+      this.updateTransform();
+      this.actdia?.updateItem(this);
+    }
+  }
+
+  updateBackStatus(options = {}) {
     if (!options.skipNotification) {
       this.updateTransform();
       this.actdia?.updateItem(this);

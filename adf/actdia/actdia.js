@@ -211,6 +211,7 @@ export default class ActDia {
   #items = [];
   dragging = null;
   selectedConnections = [];
+  onPushNotification = null;
 
   constructor(options) {
     this.create(...arguments);
@@ -235,7 +236,10 @@ export default class ActDia {
   }
 
   pushNotification(message, options = {}) {
-    console.log(message);
+    if (this.onPushNotification)
+      this.onPushNotification(message, options);
+    else
+      console.log(message);
   }
 
   getElementCreationData() {

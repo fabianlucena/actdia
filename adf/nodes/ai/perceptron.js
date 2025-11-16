@@ -94,6 +94,7 @@ export default function create({ Node, _ }) {
         },
         {
           shape: 'text',
+          fontSize: 1.2,
           text: 'Σ',
         },
       ],

@@ -187,9 +187,19 @@ export default class Node extends Item {
     this.propagate(options);
   }
 
+  backStatusUpdated(options) {
+    this.backpropagate(options);
+  }
+
   propagate(options = {}) {
     this.connectors
       .filter(c => c.type === 'out')
       .forEach(connector => connector.setStatus(this.status, options));
+  }
+
+  backpropagate(options = {}) {
+    this.connectors
+      .filter(c => c.type === 'in')
+      .forEach(connector => connector.setBackStatus(this.status, options));
   }
 }

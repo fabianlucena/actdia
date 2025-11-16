@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   nodeSelector = new NodeSelector({ actdia, container });
   nodeSelector.onSelectNode = onSelectNode;
 
-  actdia.pushNotification = pushNotification;
+  actdia.onPushNotification = pushNotification;
 
   new ActDiaTools({ container, actdia });
 
