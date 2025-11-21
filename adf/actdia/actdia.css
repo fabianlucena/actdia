@@ -67,7 +67,13 @@
 }
 
 .actdia-grid {
-  fill: #656565;
+  fill: none;
+  stroke: rgba(100, 100, 100, 0.25);
+}
+
+.actdia-grid .major-grid {
+  stroke-dasharray: 0.1 0.2;
+  stroke: rgba(192, 192, 192, 0.5);
 }
 
 .print .actdia-grid {

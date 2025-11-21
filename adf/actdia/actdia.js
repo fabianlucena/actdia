@@ -28,10 +28,6 @@ export default class ActDia {
       height: 210,
     },
 
-    grid: {
-      dotSize: 1,
-    },
-
     node: {
     },
 
@@ -352,7 +348,7 @@ export default class ActDia {
       .map(node => node.getData());
 
     const connections = items
-      .filter(item => isConnection(item))  
+      .filter(isConnection)  
       .map(connection => connection.getData());
 
     const imports = [...new Set([
@@ -534,40 +530,45 @@ export default class ActDia {
     options.tab ??= ' ';
 
     const
-      layersOptions = { ...options, prefix: options.prefix + options.tab },
+      baseOptions = { ...options, prefix: options.prefix + options.tab },
+      layersOptions = { ...options, prefix: baseOptions.prefix + baseOptions.tab },
       itemsOptions = { ...options, prefix: layersOptions.prefix + options.tab };
 
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${this.svg.clientWidth}" height="${this.svg.clientHeight}">`
         + (options.includeStyles && this.getSVGStyles(layersOptions) || '')
-        + layersOptions.prefix + '<g'
-          + itemsOptions.prefix + 'class="actdia-connections-layer"'
-        + layersOptions.prefix + '>'
-          + items
-            .filter(item => item.type === 'connection')
-            .map(item => this.getItemSVG(item, itemsOptions))
-            .filter(e => e)
-            .join('')
-        + layersOptions.prefix + '</g>'
-        + layersOptions.prefix + '<g'
-          + itemsOptions.prefix + 'class="actdia-nodes-layer"'
-        + layersOptions.prefix + '>'
-          + items
-            .filter(item => item.type === 'node')
-            .map(item => this.getItemSVG(item, itemsOptions))
-            .filter(e => e)
-            .join('')
-        + layersOptions.prefix + '</g>'
-        + layersOptions.prefix + '<g'
-          + itemsOptions.prefix + 'class="actdia-others-layer"'
-        + layersOptions.prefix + '>'
-          + items
-            .filter(item => item.type !== 'node' && item.type !== 'connection')
-            .map(item => this.getItemSVG(item, itemsOptions))
-            .filter(e => e)
-            .join('')
-        + layersOptions.prefix + '</g>'
+        + baseOptions.prefix + '<g'
+          + layersOptions.prefix + `transform="scale(${this.style.sx},${this.style.sy})"`
+        + baseOptions.prefix + '>'
+          + layersOptions.prefix + '<g'
+            + itemsOptions.prefix + 'class="actdia-connections-layer"'
+          + layersOptions.prefix + '>'
+            + items
+              .filter(isConnection)
+              .map(item => this.getItemSVG(item, itemsOptions))
+              .filter(e => e)
+              .join('')
+          + layersOptions.prefix + '</g>'
+          + layersOptions.prefix + '<g'
+            + itemsOptions.prefix + 'class="actdia-nodes-layer"'
+          + layersOptions.prefix + '>'
+            + items
+              .filter(isNode)
+              .map(item => this.getItemSVG(item, itemsOptions))
+              .filter(e => e)
+              .join('')
+          + layersOptions.prefix + '</g>'
+          + layersOptions.prefix + '<g'
+            + itemsOptions.prefix + 'class="actdia-others-layer"'
+          + layersOptions.prefix + '>'
+            + items
+              .filter(item => !isConnection(item) && !isNode(item))
+              .map(item => this.getItemSVG(item, itemsOptions))
+              .filter(e => e)
+              .join('')
+          + layersOptions.prefix + '</g>'
+        + baseOptions.prefix + '</g>'
       + options.prefix + '</svg>';
-      
+
     return svg;
   }
 
@@ -583,29 +584,36 @@ export default class ActDia {
   }
 
   getGridSVG(options) {
-    const style = this.style.grid,
-      { sx, sy } = this.style,
-      dots = [],
-      dotSizeX = (style.dotSize ?? 1) / sx,
-      dotSizeY = (style.dotSize ?? 1) / sy;
-
-    for (let x = -dotSizeX / 2; x < this.pixelsWidth / sx + dotSizeX; x++) {
-      for (let y = -dotSizeY / 2; y < this.pixelsHeight / sy + dotSizeY; y++) {
-        dots.push(
-          `<rect x="${x}" y="${y}" width="${dotSizeX}" height="${dotSizeY}" vector-effect="non-scaling-stroke"></rect>`
-        );
-      }
-    }
-
     return `<g class="actdia-grid">
-      ${dots.join('')}
-    </g>`;
+        <defs>
+          <pattern id="dots" x="-.09" y="-.09" width="1" height="1" patternUnits="userSpaceOnUse">
+            <path
+              d="M .2 .1 H 0 M .1 0 V .2"
+            />
+          </pattern>
+
+          <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+            <path
+              d="M 10 0 L 0 0 0 10" 
+              class="major-grid"
+            />
+          </pattern>
+        </defs>
+
+        <rect x="0" y="0" width="${this.pixelsWidth}" height="${this.pixelsHeight}" fill="url(#dots)" />
+        <rect
+          x="0"
+          y="0"
+          width="${this.pixelsWidth}"
+          height="${this.pixelsHeight}"
+          fill="url(#grid)"
+        />
+      </g>`;
   }
 
   getPageSVG(options) {
     return `<rect class="actdia-page" x="0" y="0"
         width="${this.pageWidth}" height="${this.pageHeight}"
-        vector-effect="non-scaling-stroke"
       />`;
   }
 
@@ -839,8 +847,6 @@ export default class ActDia {
     if (style.skewX) transform += ` skewX(${style.skewX})`;
     if (style.skewY) transform += ` skewY(${style.skewY})`;
     if (transform) attributes.transform = ((attributes.transform ? attributes.transform + ' ' : '') + transform).trim();
-
-    attributes['vector-effect'] = 'non-scaling-stroke';
 
     return attributes;
   }
@@ -1503,7 +1509,6 @@ export default class ActDia {
         + attributePrefix + `y="${y}"`
         + attributePrefix + `width="${width}"`
         + attributePrefix + `height="${height}"`
-        + attributePrefix + `vector-effect="non-scaling-stroke"`
       + options.prefix + '/>';
   }
 

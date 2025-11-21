@@ -1,39 +1,67 @@
-document.body.addEventListener('mousedown', mouseDownHandler);
-document.body.addEventListener('mouseup', mouseUpHandler, true);
-document.body.addEventListener('mousemove', mouseMoveHandler);
+window.addEventListener('mousedown', mouseDownHandler);
+window.addEventListener('mouseup', mouseUpHandler, true);
+window.addEventListener('mousemove', mouseMoveHandler, true);
+window.addEventListener('keydown', keyDownHandler, true);
 
-let draggable = null,
+let draggingElement = null,
   from = { x: 0, y: 0 },
   mouse = { x: 0, y: 0 },
   init = { x: 0, y: 0 };
 
 function mouseDownHandler(evt) {
-  draggable = evt.target?.closest('.draggable');
-  if (!draggable)
+  if (evt.buttons !== 1) {
     return;
+  }
+
+  draggingElement = evt.target?.closest('.draggable');
+  if (!draggingElement) {
+    return;
+  }
+
+  evt.stopPropagation();
+  evt.preventDefault();
   
-  draggable.classList.add('dragging');
+  draggingElement.classList.add('dragging');
   from = { x: evt.clientX, y: evt.clientY };
 
-  const rect = draggable.getBoundingClientRect();
+  const rect = draggingElement.getBoundingClientRect();
   init = { x: rect.left, y: rect.top };
 }
 
 function mouseUpHandler(evt) {
-  if (!draggable)
+  if (!draggingElement) {
     return;
+  }
+
+  evt.stopPropagation();
+  evt.preventDefault();
   
-  draggable.classList.remove('dragging');
-  draggable = null;
+  draggingElement.classList.remove('dragging');
+  draggingElement = null;
 }
 
 function mouseMoveHandler(evt) {
-  if (!draggable)
+  if (!draggingElement) {
     return;
+  }
+
+  evt.stopPropagation();
+  evt.preventDefault();
 
   mouse = { x: evt.clientX, y: evt.clientY };
 
-  const rect = draggable.getBoundingClientRect();
-  draggable.style.left = mouse.x - from.x + init.x + 'px';
-  draggable.style.top = mouse.y - from.y + init.y + 'px';
+  let top = Math.min(window.innerHeight - draggingElement.offsetHeight, Math.max(0, initial.y + (mouse.y - from.y)));
+  let left = Math.min(window.innerWidth - draggingElement.offsetWidth, Math.max(0, initial.x + (mouse.x - from.x)));
+  
+  draggingElement.style.left = left + 'px';
+  draggingElement.style.top = top + 'px';
+}
+
+function keyDownHandler(evt) {
+  if (!draggingElement) {
+    return;
+  }
+
+  evt.stopPropagation();
+  evt.preventDefault();
 }

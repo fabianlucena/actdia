@@ -501,7 +501,7 @@ export default class ActDiaTools {
   
   async downloadSvg(options) {
     const exportable = this.getExportableItems(options);
-    const svgText = await this.getSVG(exportable);
+    const svgText = await this.actdia.getSVG(exportable);
     const blob = new Blob([svgText], { type: 'image/svg+xml' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
