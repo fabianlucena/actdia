@@ -6,7 +6,7 @@ window.addEventListener('keydown', keyDownHandler, true);
 let draggingElement = null,
   from = { x: 0, y: 0 },
   mouse = { x: 0, y: 0 },
-  init = { x: 0, y: 0 };
+  initial = { x: 0, y: 0 };
 
 function mouseDownHandler(evt) {
   if (evt.buttons !== 1) {
@@ -25,7 +25,7 @@ function mouseDownHandler(evt) {
   from = { x: evt.clientX, y: evt.clientY };
 
   const rect = draggingElement.getBoundingClientRect();
-  init = { x: rect.left, y: rect.top };
+  initial = { x: rect.left, y: rect.top };
 }
 
 function mouseUpHandler(evt) {
@@ -64,4 +64,13 @@ function keyDownHandler(evt) {
 
   evt.stopPropagation();
   evt.preventDefault();
+
+  let top = Math.min(window.innerHeight - draggingElement.offsetHeight, Math.max(0, initial.y));
+  let left = Math.min(window.innerWidth - draggingElement.offsetWidth, Math.max(0, initial.x));
+  
+  draggingElement.style.left = left + 'px';
+  draggingElement.style.top = top + 'px';
+  
+  draggingElement.classList.remove('dragging');
+  draggingElement = null;
 }

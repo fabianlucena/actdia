@@ -1654,10 +1654,7 @@ export default class ActDia {
   cancelDrag() {
     if (this.dragging) {
       if (this.dragging.items?.length) {
-        this.dragging.items.forEach(item => {
-          item.item.x = item.from.x;
-          item.item.y = item.from.y;
-        });
+        this.dragging.items.forEach(item => item.item.moveTo(item.from));
       }
 
       this.dragging = null;
