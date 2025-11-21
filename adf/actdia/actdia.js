@@ -843,7 +843,15 @@ export default class ActDia {
 
     if (!isNaN(style.sx) || !isNaN(style.sy)) transform += ` scale(${style.sx ?? 1}, ${style.sy ?? 1})`;
     if ((!isNaN(style.x) && style.x) || (!isNaN(style.y) && style.y)) transform += ` translate(${style.x ?? 0}, ${style.y ?? 0})`;
-    if (style.rotation) transform += ` rotate(${style.rotation} ${style.rotationX || 0} ${style.rotationY || 0})`;
+    if (style.rotation) {
+      let rotation = style.rotation;
+      if (Array.isArray(rotation))
+        rotation = rotation.join(' ');
+      else
+        rotation = `${rotation} ${style.rotationX || 0} ${style.rotationY || 0}`;
+
+      transform += ` rotate(${rotation})`;
+    }
     if (style.skewX) transform += ` skewX(${style.skewX})`;
     if (style.skewY) transform += ` skewY(${style.skewY})`;
     if (transform) attributes.transform = ((attributes.transform ? attributes.transform + ' ' : '') + transform).trim();
@@ -936,8 +944,14 @@ export default class ActDia {
           attributes.transform += ` translate(${(x ?? 0)}, ${(y ?? 0)})`;
         }
 
-        if (!isNaN(rotation)) {
-          attributes.transform += ` rotate(${rotation} ${rotationX || 0} ${rotationY || 0})`;
+        if (rotation) {
+          let rotate = rotation;
+          if (Array.isArray(rotate))
+            rotate = rotate.join(' ');
+          else
+            rotate = `${rotate} ${rotationX || 0} ${rotationY || 0}`;
+
+          attributes.transform += ` rotate(${rotate})`;
         }
 
         if (!isNaN(sx) || !isNaN(sy)) {
