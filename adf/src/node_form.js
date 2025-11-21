@@ -39,8 +39,8 @@ export default class NodeForm extends Form {
         type: 'text',
       },
       {
-        name: 'rotate',
-        _label: 'Rotate',
+        name: 'rotation',
+        _label: 'Rotation',
         type: 'select',
         options: [
           { value: 0, label: '0°' },

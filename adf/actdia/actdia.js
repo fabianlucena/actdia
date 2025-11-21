@@ -843,7 +843,7 @@ export default class ActDia {
 
     if (!isNaN(style.sx) || !isNaN(style.sy)) transform += ` scale(${style.sx ?? 1}, ${style.sy ?? 1})`;
     if ((!isNaN(style.x) && style.x) || (!isNaN(style.y) && style.y)) transform += ` translate(${style.x ?? 0}, ${style.y ?? 0})`;
-    if (style.rotate) transform += ` rotate(${style.rotate})`;
+    if (style.rotation) transform += ` rotate(${style.rotation})`;
     if (style.skewX) transform += ` skewX(${style.skewX})`;
     if (style.skewY) transform += ` skewY(${style.skewY})`;
     if (transform) attributes.transform = ((attributes.transform ? attributes.transform + ' ' : '') + transform).trim();
@@ -929,15 +929,15 @@ export default class ActDia {
           throw new Error('Unknown shape: ' + shape.shape);
         }
 
-        const { shape: shape1, shapes, x, y, sx, sy, rotate, skewX, skewY, ...attributes } = shape;
+        const { shape: shape1, shapes, x, y, sx, sy, rotation, skewX, skewY, ...attributes } = shape;
         attributes.transform = '';
 
         if (!isNaN(x) || !isNaN(y)) {
           attributes.transform += ` translate(${(x ?? 0)}, ${(y ?? 0)})`;
         }
 
-        if (!isNaN(rotate)) {
-          attributes.transform += ` rotate(${rotate})`;
+        if (!isNaN(rotation)) {
+          attributes.transform += ` rotate(${rotation})`;
         }
 
         if (!isNaN(sx) || !isNaN(sy)) {
@@ -1367,7 +1367,7 @@ export default class ActDia {
   }
 
   getConnectorShapeData(connector, node, options) {
-    const style = this.getStyle({ item: node, shape: { ...connector, rotate: -connector.direction }, type: connector.type || 'connector', options });
+    const style = this.getStyle({ item: node, shape: { ...connector, rotation: -connector.direction }, type: connector.type || 'connector', options });
     let shape = connector.shape ?? style.shape;
 
     if (!shape) {
@@ -1383,7 +1383,7 @@ export default class ActDia {
       x: connector.x,
       y: connector.y,
       id: connector.id,
-      rotate: -connector.direction,
+      rotation: -connector.direction,
       shapes: [...shape.shapes],
     };
 
@@ -1407,7 +1407,7 @@ export default class ActDia {
           sy: 0.7,
           textAnchor: 'middle',
           dominantBaseline: 'middle',
-          rotate: connector.direction,
+          rotation: connector.direction,
         };
 
         if (connector.textDecoration)

@@ -33,7 +33,7 @@ export default {
   'Node properties': 'Propiedades del nodo',
   'None': 'Ninguno',
   'OK': 'Aceptar',
-  'Rotate': 'Rotar',
+  'Rotation': 'Rotación',
   'Save': 'Guardar',
   'Saves the diagram.': 'Guarda el diagrama.',
   'Share': 'Compartir',

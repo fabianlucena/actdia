@@ -2,6 +2,9 @@ import Element from './element.js';
 import { isEqual } from './utils.js';
 
 export default class Item extends Element {
+  dx = 0;
+  dy = 0;
+  
   shapes = [];
 
   box = {
@@ -107,12 +110,12 @@ export default class Item extends Element {
     this.updateTransform();
   }
 
-  get rotate() {
-    return this._rotate || 0;
+  get rotation() {
+    return this._rotation || 0;
   }
 
-  set rotate(angle) {
-    this._rotate = angle;
+  set rotation(value) {
+    this._rotation = value;
     this.updateTransform();
   }
 
@@ -182,15 +185,15 @@ export default class Item extends Element {
   backStatusUpdated() {}
 
   moveTo(to) {
-    this.x = to.x;
-    this.y = to.y;
+    this.x = this.dx + to.x;
+    this.y = this.dy + to.y;
     this.updateTransform();
   }
 
   updateTransform() {
     let transform = `translate(${this.x}, ${this.y})`;
-    if (this.rotate) {
-      transform += ` rotate(${this.rotate})`;
+    if (this.rotation) {
+      transform += ` rotate(${this.rotation})`;
     }
 
     if ((!isNaN(this.sx) && this.sx) || (!isNaN(this.sy) && this.sy)) {
