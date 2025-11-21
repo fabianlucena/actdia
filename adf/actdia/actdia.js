@@ -2008,21 +2008,26 @@ export default class ActDia {
       }
     }
 
-    const { item } = this.getEventItem(evt);
+    const { item, shape } = this.getEventItem(evt);
     if (item) {
-      if (this.itemMouseDownHandler(evt, item) === false) {
+      if (this.itemMouseDownHandler(evt, item, shape) === false) {
         return false;
       }
     }
   }
 
-  itemMouseDownHandler(evt, item) {
+  itemMouseDownHandler(evt, item, shape) {
     if (!item) {
       return true;
     }
 
-    evt.preventDefault();
+    if (item.onMouseDown) {
+      item.onMouseDown({ evt, item, shape });
+    }
 
+    if (evt.defaultPrevented)
+      return false;
+    
     if (evt.ctrlKey) {
       this.startDrag(...this.#items.filter(i => i.selected && i.draggable !== false));
     } else if (evt.button === 0) {
@@ -2041,6 +2046,14 @@ export default class ActDia {
   }
 
   mouseUpHandler(evt) {
+    const { item, shape } = this.getEventItem(evt);
+    if (item?.onMouseUp) {
+      item.onMouseUp({ evt, item, shape });
+    }
+
+    if (evt.defaultPrevented)
+      return false;
+
     if (this.dragging) {
       this.mouse.down = null;
       this.endDrag();
