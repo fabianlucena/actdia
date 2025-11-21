@@ -17,9 +17,6 @@ function mouseDownHandler(evt) {
   if (!draggingElement) {
     return;
   }
-
-  evt.stopPropagation();
-  evt.preventDefault();
   
   draggingElement.classList.add('dragging');
   from = { x: evt.clientX, y: evt.clientY };
