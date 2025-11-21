@@ -197,7 +197,7 @@ export default class Dialog {
         this.element.style.height = maxHeight + 'px';
     }
 
-    this.onClick = this.onClick;
+    this.onMouseClick = this.onMouseClick;
     this.element.focus();
   }
 
@@ -290,8 +290,8 @@ export default class Dialog {
   }
 
   clickHandler(evt) {
-    if (this.onClick
-      && this.onClick(evt)
+    if (this.onMouseClick
+      && this.onMouseClick(evt)
       && evt.defaultPrevented
     )
       return;

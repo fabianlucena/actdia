@@ -7,10 +7,11 @@ export default {
     'oscillograph.js',
     'pulse_generator.js',
     'switch.js',
+    'pushbutton.js',
+    'slider.js',
     'viewer.js',
     'json_data.js',
     'selector.js',
-    'slider.js',
   ],
   categories: [
     { url: 'electronic', _label: 'Electronic' },

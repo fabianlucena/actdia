@@ -8,6 +8,7 @@ export default {
   'No data': 'Sin datos',
   'Oscillograph': 'Oscilógrafo',
   'Pulse generator': 'Generador de pulsos',
+  'Pushbutton': 'Pulsador',
   'Rotated': 'Rotado',
   'Switch': 'Interruptor',
   'Unbus': 'Descanalizar',

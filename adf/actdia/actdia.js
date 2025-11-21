@@ -1860,8 +1860,8 @@ export default class ActDia {
       return;
     }
 
-    if (item.onClick) {
-      if (item.onClick({ evt, item, shape }) === false)
+    if (item.onMouseClick) {
+      if (item.onMouseClick({ evt, item, shape }) === false)
         evt.preventDefault();
 
       if (evt.defaultPrevented)
