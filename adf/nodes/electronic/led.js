@@ -1,18 +1,20 @@
 export default function create({ Node }) {
   return class Led extends Node {
+    dx = 0;
+    dy = 0;
+    rotationX = -.5;
+
     shape = {
       shapes: [
         {
           shape: 'circle',
-          x: 0.5,
-          y: 1.0,
           r: .4,
+          x: -.5,
         },
         {
           shape: 'circle',
-          x: 0.5,
-          y: 1.0,
           r: .4,
+          x: -.5,
           fill: '#FF0000',
           opacity: 0.2,
         },
@@ -20,14 +22,14 @@ export default function create({ Node }) {
     };
 
     box = {
-      x: 0,
-      y: 0.5,
+      x: -1,
+      y: -.5,
       width: 1,
       height: 1,
     };
 
     connectors = [
-      { name: 'i0', type: 'in', x: 0, y: 1, direction: 'left', extends: 'tiny' },
+      { name: 'i0', type: 'in', x: -1, y: 0, direction: 'left', extends: 'tiny' },
     ];
 
     formDefinition = [

@@ -2,6 +2,9 @@ export default function create({ Node }) {
   return class Switch extends Node {
     static label = 'Switch';
 
+    dx = .5;
+    dy = 1;
+
     shape = {
       shapes: [
         {
@@ -33,9 +36,6 @@ export default function create({ Node }) {
         },
       ],
     };
-
-    dx = .5;
-    dy = 1;
 
     box = {
       x: -.5,

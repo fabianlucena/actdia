@@ -193,7 +193,7 @@ export default class Item extends Element {
   updateTransform() {
     let transform = `translate(${this.x}, ${this.y})`;
     if (this.rotation) {
-      transform += ` rotate(${this.rotation})`;
+      transform += ` rotate(${this.rotation} ${this.rotationX || 0} ${this.rotationY || 0})`;
     }
 
     if ((!isNaN(this.sx) && this.sx) || (!isNaN(this.sy) && this.sy)) {
