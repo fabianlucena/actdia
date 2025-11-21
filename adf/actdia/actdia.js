@@ -1560,8 +1560,9 @@ export default class ActDia {
     }
 
     Object.entries(data.attributes).forEach(([key, value]) => {
-      if (svgElement.getAttribute(key) != value)
+      if (svgElement.getAttribute(key) != value) {
         svgElement.setAttribute(key, value);
+      }
     });
 
     if (data.cData) {
