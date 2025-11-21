@@ -109,11 +109,12 @@ export default class Connector extends Element {
     options ??= {};
     const connectors = new Set([...options.connectors || []]);
     if (connectors?.has(this)) {
-      //this.actdia?.pushNotification(_('Circular propagation detected, stopping.'), 'warning');
-      //return;
+      this.actdia?.pushNotification(_('Circular propagation detected, stopping.'), 'warning');
+      return;
     }
 
     this.connections.forEach(connection => {
+      options.from = this;
       options.connectors = new Set([...connectors, this]);
       connection.setStatus(this.status, options);
     });
@@ -121,13 +122,15 @@ export default class Connector extends Element {
 
   backpropagate(options = {}) {
     options ??= {};
+    options.from = this;
     const connectors = new Set([...options.connectors || []]);
     if (connectors?.has(this)) {
-      //this.actdia?.pushNotification(_('Circular backpropagation detected, stopping.'), 'warning');
-      //return;
+      this.actdia?.pushNotification(_('Circular backpropagation detected, stopping.'), 'warning');
+      return;
     }
     
     this.connections.forEach(connection => {
+      options.from = this;
       options.connectors = new Set([...connectors, this]);
       connection.setBackStatus(this.backStatus, options);
     });

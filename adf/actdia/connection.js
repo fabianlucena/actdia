@@ -172,14 +172,34 @@ export default class Connection extends Item {
   }
 
   setStatus(status, options) {
-    if (!options.connectors.has(this.to.connector) && this.to !== 'mouse') {
-      this.to.connector.setStatus(status, options);
+    let to;
+    if (options.from === this.from.connector)
+      to = this.to;
+    else if (options.from === this.to.connector)
+      to = this.from;
+
+    if (to
+      && to !== 'mouse'
+      && to.connector.type === 'in'
+      && !options.connectors.has(to.connector)
+    ) {
+      to.connector.setStatus(status, options);
     }
   }
 
   setBackStatus(backStatus, options) {
-    if (!options.connectors.has(this.from.connector)) {
-      this.from.connector.setBackStatus(backStatus, options);
+        let to;
+    if (options.from === this.from.connector)
+      to = this.to;
+    else if (options.from === this.to.connector)
+      to = this.from;
+
+    if (to
+      && to !== 'mouse'
+      && to.connector.type === 'out'
+      && !options.connectors.has(to.connector)
+    ) {
+      to.connector.setBackStatus(backStatus, options);
     }
   }
 }
