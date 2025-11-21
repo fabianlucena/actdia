@@ -10,6 +10,7 @@ export default {
     'viewer.js',
     'json_data.js',
     'selector.js',
+    'slider.js',
   ],
   categories: [
     { url: 'electronic', _label: 'Electronic' },
