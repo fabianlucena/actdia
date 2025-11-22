@@ -6,4 +6,11 @@ export default {
     'seven-segment_display.js',
     'bcd_to_7_segments.js',
   ],
+  examples: [
+    {
+      _label: 'BCD Display Counter',
+      url: './bcd.json',
+      image: './bcd.svg',
+    },
+  ],
 };
