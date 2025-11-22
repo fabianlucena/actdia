@@ -22,6 +22,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   nodeSelector = new NodeSelector({ actdia, container });
   nodeSelector.onSelectNode = onSelectNode;
+  nodeSelector.onSelectExample = onSelectExample;
 
   actdia.onPushNotification = pushNotification;
 
@@ -64,6 +65,14 @@ function onSelectNode({ evt, fqcn, }) {
   });
 
   nodeSelector.close();
+}
+
+async function onSelectExample({ evt, url }) {
+  evt.stopPropagation();
+  evt.preventDefault();
+
+  const data = await import(url);
+  actdia.load(data);
 }
 
 function keyDownHandler(evt) {
