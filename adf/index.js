@@ -73,6 +73,8 @@ async function onSelectExample({ evt, url }) {
 
   const data = await import(url);
   actdia.load(data);
+  
+  nodeSelector.close();
 }
 
 function keyDownHandler(evt) {
