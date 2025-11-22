@@ -73,14 +73,17 @@ async function onSelectExample({ evt, url }) {
   evt.preventDefault();
 
   try {
-    const json = await import(url);
-    actdia.load(json, { skipNotification: true });
-    pushNotification(_('Example diagram loaded.'), 'success');
+    const response = await fetch(url + 5);
+    if (!response.ok)
+      throw new Error(_('Can\'t load the file: %s.', url));
+
+    const json = await response.json();
+    await this.actdia.load(json, { skipNotification: true });
+    pushNotification(_('Diagram loaded from JSON file.'), 'success');
   } catch (err) {
     console.error(err);
     pushNotification(_('Invalid JSON file.'), 'error');
   }
-  
   
   nodeSelector.close();
 }
