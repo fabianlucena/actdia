@@ -32,4 +32,5 @@ export default {
   'Swish / Sigmoid Linear Unit: f(x) = x / (1 + e^(-x))': 'Swish / Unidad lineal sigmoide: f(x) = x / (1 + e^(-x))',
   'Tanh': 'Tanh',
   'Weights': 'Pesos',
+  'XOR with Perceptron': 'XOR con Perceptrón',
 };
