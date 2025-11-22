@@ -828,11 +828,11 @@ export default class ActDia {
     options?.id && (attributes.id = options.id);
     (style.name || options?.name) && (attributes.name = style.name ?? options.name);
     classList.length && (attributes.className = classList.join(' '));
-    style.fill && (attributes.fill = style.fill);
+    ('fill' in style) && (attributes.fill = style.fill);
     style.fill === false && (attributes.fill = 'none');
-    style.stroke && (attributes.stroke = style.stroke);
+    ('stroke' in style) && (attributes.stroke = style.stroke);
     style.stroke === false && (attributes.stroke = 'none');
-    style.strokeWidth && (attributes['stroke-width'] = style.strokeWidth);
+    ('strokeWidth' in style) && (attributes['stroke-width'] = style.strokeWidth);
     Array.isArray(style.dash) && style.dash.length && (attributes['stroke-dasharray'] = style.dash.join(' '));
     style.lineCap && (attributes['stroke-linecap'] = style.lineCap);
     style.lineJoin && (attributes['stroke-linejoin'] = style.lineJoin);
@@ -1560,7 +1560,9 @@ export default class ActDia {
     }
 
     Object.entries(data.attributes).forEach(([key, value]) => {
-      if (svgElement.getAttribute(key) != value) {
+      if (value === null || typeof value === 'undefined') {
+        svgElement.removeAttribute(key);
+      } else if (svgElement.getAttribute(key) != value) {
         svgElement.setAttribute(key, value);
       }
     });
@@ -1723,7 +1725,7 @@ export default class ActDia {
       if (name) {
         if (item?.shape?.name === name) {
           shape = item.shape;
-        } else if (item.shape.shapes?.length) {
+        } else if (item.shape?.shapes?.length) {
           shape = this.getShapeByKeyValue(item.shape.shapes, 'name', name);
         }
       }
