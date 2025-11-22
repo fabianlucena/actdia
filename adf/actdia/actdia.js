@@ -537,6 +537,7 @@ export default class ActDia {
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${this.svg.clientWidth}" height="${this.svg.clientHeight}">`
         + (options.includeStyles && this.getSVGStyles(layersOptions) || '')
         + baseOptions.prefix + '<g'
+          + layersOptions.prefix + `class="actdia"`
           + layersOptions.prefix + `transform="scale(${this.style.sx},${this.style.sy})"`
         + baseOptions.prefix + '>'
           + layersOptions.prefix + '<g'
