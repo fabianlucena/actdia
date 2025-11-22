@@ -1711,7 +1711,7 @@ export default class ActDia {
     const attributes = shapeSVG.attributes;
     const id = attributes?.id?.value;
     if (id) {
-      if (item.shape.id === id) {
+      if (item?.shape?.id === id) {
         shape = item.shape;
       } else if (item.shape.shapes?.length) {
         shape = this.getShapeByKeyValue(item.shape.shapes, 'id', id);
@@ -1721,7 +1721,7 @@ export default class ActDia {
     if (!shape) {
       const name = attributes?.name?.value;
       if (name) {
-        if (item.shape.name === name) {
+        if (item?.shape?.name === name) {
           shape = item.shape;
         } else if (item.shape.shapes?.length) {
           shape = this.getShapeByKeyValue(item.shape.shapes, 'name', name);
@@ -1746,7 +1746,7 @@ export default class ActDia {
     return result;
   }
 
-  getUntransformedPosition(position) {
+  getUntransformedPosition(position, options = {}) {
     if (!position)
       return null;
 
@@ -1754,7 +1754,7 @@ export default class ActDia {
       x = position.x / this.style.sx,
       y = position.y / this.style.sy;
     
-    if (this.style.snap) {
+    if (options.snap || (options.snap !== false && this.style.snap)) {
       x = Math.round(x);
       y = Math.round(y);
     }
@@ -1770,11 +1770,11 @@ export default class ActDia {
 
     if (this.dragging?.items?.length) {
       evt.preventDefault();
-
       let
         ix = this.mouse.x - this.dragging.start.x,
         iy = this.mouse.y - this.dragging.start.y;
       const dd = this.getUntransformedPosition({ x: ix, y: iy });
+
       this.dragging.items.forEach(dragging => {
         const item = dragging.item;
         if (isItem(item)) {
@@ -1815,6 +1815,17 @@ export default class ActDia {
       
       return;
     }
+
+    const { item, shape } = this.getEventItem(evt);
+    item?.onMouseMove?.({
+      evt,
+      item,
+      shape,
+      mouse: this.getUntransformedPosition(this.mouse, { snap: false }),
+    });
+
+    if (evt.defaultPrevented)
+      return false;
   }
 
   mouseOverHandler(evt) {
@@ -2021,9 +2032,12 @@ export default class ActDia {
       return true;
     }
 
-    if (item.onMouseDown) {
-      item.onMouseDown({ evt, item, shape });
-    }
+    item.onMouseDown?.({
+      evt,
+      item,
+      shape,    
+      mouse: this.getUntransformedPosition(this.mouse, { snap: false }),
+    });
 
     if (evt.defaultPrevented)
       return false;
@@ -2047,9 +2061,12 @@ export default class ActDia {
 
   mouseUpHandler(evt) {
     const { item, shape } = this.getEventItem(evt);
-    if (item?.onMouseUp) {
-      item.onMouseUp({ evt, item, shape });
-    }
+    item?.onMouseUp?.({
+      evt,
+      item,
+      shape, 
+      mouse: this.getUntransformedPosition(this.mouse, { snap: false }),
+    });
 
     if (evt.defaultPrevented)
       return false;

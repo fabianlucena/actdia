@@ -164,11 +164,20 @@ export default class Item extends Element {
 
   removeReferences() {}
 
-  setStatus(status, options = {}) {
-    if (JSON.stringify(this.status) === JSON.stringify(status))
+  #status = 0;
+  get status() {
+    return this.#status;
+  }
+  
+  set status(value) {
+    this.setStatus(value);
+  }
+
+  setStatus(value, options = {}) {
+    if (JSON.stringify(this.status) === JSON.stringify(value))
       return;
 
-    this.status = status;
+    this.#status = value;
     this.statusUpdated(options);
   }
 
