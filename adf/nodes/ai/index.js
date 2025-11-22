@@ -11,7 +11,7 @@ export default {
     {
       _label: 'XOR with Perceptron',
       locale: ['es'],
-      url: './perceptron_xor.js',
+      url: './perceptron_xor.json',
       image : './perceptron_xor.svg',
     },
   ],
