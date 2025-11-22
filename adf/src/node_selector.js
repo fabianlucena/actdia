@@ -159,11 +159,12 @@ export default class NodeSelector extends Dialog {
     this.classesContainer.innerHTML += this.examples
       .map(example => {
         let html = `<div
-            class="node-class"
+            class="example"
+            data-url="${path}/${example.url}"
           >
             <img src="${path}/${example.image}" alt="Gráfico SVG" width="${options.width}" height="${options.height}" />
             <div
-              class="node-class-name"
+              class="example-name"
             >
               ${_(example._label)}
             </div>
@@ -175,16 +176,22 @@ export default class NodeSelector extends Dialog {
   }
 
   classesClickHandler(evt) {
-    if (!this.onSelectNode) {
-      return;
+    if (this.onSelectNode) {
+      const classDiv = evt.target.closest('.node-class');
+      const fqcn = classDiv?.dataset?.fqcn;
+      if (fqcn) {
+        this.onSelectNode({ evt, fqcn });
+        return;
+      }
     }
 
-    const classDiv = evt.target.closest('.node-class');
-    const fqcn = classDiv?.dataset?.fqcn;
-    if (!fqcn) {
-      return;
+    if (this.onSelectExample) {
+      const exampleDiv = evt.target.closest('.example');
+      const url = exampleDiv?.dataset?.url;
+      if (url) {
+        this.onSelectExample({ evt, url });
+        return;
+      }
     }
-
-    this.onSelectNode({ evt, fqcn });
   }
 }
