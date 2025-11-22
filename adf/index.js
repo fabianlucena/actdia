@@ -15,6 +15,7 @@ let container = null,
 window.addEventListener('DOMContentLoaded', async () => {
   createNotificationContainer();
 
+  await loadLocale(getPath(import.meta.url), 'es');
   await loadLocale(getPath(import.meta.url) + '/src', 'es');
 
   container = document.querySelector('#actdia');
@@ -71,8 +72,15 @@ async function onSelectExample({ evt, url }) {
   evt.stopPropagation();
   evt.preventDefault();
 
-  const data = await import(url);
-  actdia.load(data);
+  try {
+    const json = await import(url);
+    actdia.load(json, { skipNotification: true });
+    pushNotification(_('Example diagram loaded.'), 'success');
+  } catch (err) {
+    console.error(err);
+    pushNotification(_('Invalid JSON file.'), 'error');
+  }
+  
   
   nodeSelector.close();
 }

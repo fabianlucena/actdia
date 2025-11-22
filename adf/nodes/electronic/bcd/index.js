@@ -9,8 +9,8 @@ export default {
   examples: [
     {
       _label: 'BCD Display Counter',
-      url: './bcd.json',
-      image: './bcd.svg',
+      url: './examples/bcd.json',
+      image: './examples/bcd.svg',
     },
   ],
 };

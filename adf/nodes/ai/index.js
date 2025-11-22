@@ -10,8 +10,8 @@ export default {
   examples: [
     {
       _label: 'XOR with Perceptron',
-      url: './perceptron_xor.json',
-      image : './perceptron_xor.svg',
+      url: './examples/perceptron_xor.json',
+      image : './examples/perceptron_xor.svg',
     },
   ],
 };

@@ -412,11 +412,11 @@ export default class ActDia {
     if (options.skipNotification !== true)
       this.pushNotification(_('Diagram loaded.'), 'success');
 
-    this.#items.forEach(item => {
+    /*this.#items.forEach(item => {
       if (isNode(item) && item.autoPropagate) {
         item.propagate();
       }
-    });
+    });*/
   }
 
   async addItem(...items) {
@@ -1723,10 +1723,10 @@ export default class ActDia {
     
     if (!shape) {
       const name = attributes?.name?.value;
-      if (name) {
-        if (item?.shape?.name === name) {
+      if (name && item?.shape) {
+        if (item.shape.name === name) {
           shape = item.shape;
-        } else if (item.shape?.shapes?.length) {
+        } else if (item.shape.shapes?.length) {
           shape = this.getShapeByKeyValue(item.shape.shapes, 'name', name);
         }
       }
