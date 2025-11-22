@@ -19,7 +19,13 @@ export default class NodeForm extends Form {
   }
 
   updateFormDefinition() {
-    this.formDefinition = JSON.parse(JSON.stringify([
+    this.formDefinition = [
+      {
+        name: 'class',
+        _label: 'Class',
+        disabled: true,
+        get: () => this.node.constructor.name,
+      },
       {
         name: 'id',
         _label: 'ID',
@@ -85,10 +91,13 @@ export default class NodeForm extends Form {
         nullable: true,
       },
       ...this.node.formDefinition || []
-    ]));    
+    ];    
   }
 
   getValue(field) {
+    if (field.get)
+      return field.get();
+
     return getValueByPath(this.node, field.name);
   }
 

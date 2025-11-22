@@ -3,6 +3,7 @@ export default {
   'Are you sure you want to close this dialog? Unsaved changes will be lost.': '¿Está seguro de que desea cerrar este diálogo? Los cambios no guardados se perderán.',
   'Both': 'Ambos',
   'Cancel': 'Cancelar',
+  'Class': 'Clase',
   'Close': 'Cerrar',
   'Copies the diagram data to the clipboard in JSON format.': 'Copia los datos del diagrama al portapapeles en formato JSON.',
   'Copies the diagram image to the clipboard in SVG format.': 'Copia la imagen del diagrama al portapapeles en formato SVG.',
