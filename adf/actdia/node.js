@@ -166,15 +166,28 @@ export default class Node extends Item {
     return connectors;
   }
 
+  saveStatus = false;
+  saveFormDefinition = false;
+  get skipExport() {
+    const skip = super.skipExport;
+    skip.push(
+      'connectors',
+      'svgConnectors',
+      'items',
+      'defaultConnector',
+    );
+
+    if (!this.saveStatus)
+      skip.push('status');
+
+    if (!this.saveFormDefinition)
+      skip.push('formDefinition');
+    
+    return skip;
+  }
+
   getData(options = {}) {
-    const data = super.getData({
-      ...options,
-      skip: [
-        ...(options?.skip || []),
-        'connectors', 'svgConnectors', 'actdia', 'items', 'skipProperties', 'defaultConnector',
-        ...(this.skipProperties || [])
-      ],
-    });
+    const data = super.getData(options);
 
     const connectors = this.getConnectorsData();
     if (connectors?.length)
