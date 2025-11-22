@@ -91,6 +91,7 @@ export default class NodeSelector extends Dialog {
 
       this.categories = categoriesData.categories || [];
       this.nodesClasses = categoriesData.nodesClasses || [];
+      this.examples = categoriesData.examples || [];
 
       this.update({ path });
     } catch (err) {
@@ -148,6 +149,23 @@ export default class NodeSelector extends Dialog {
               class="node-class-name"
             >
               ${_(classInfo._label)}
+            </div>
+          </div>`;
+        return html;
+      })
+      .filter(html => html)
+      .join('');
+
+    this.classesContainer.innerHTML += this.examples
+      .map(example => {
+        let html = `<div
+            class="node-class"
+          >
+            <img src="${path}/${example.image}" alt="Gráfico SVG" width="${options.width}" height="${options.height}" />
+            <div
+              class="node-class-name"
+            >
+              ${_(example._label)}
             </div>
           </div>`;
         return html;

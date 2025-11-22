@@ -7,4 +7,12 @@ export default {
     'cost.js',
     'backpropagation.js',
   ],
+  examples: [
+    {
+      _label: 'XOR with Perceptron',
+      locale: ['es'],
+      url: './perceptron_xor.js',
+      image : './perceptron_xor.svg',
+    },
+  ],
 };
