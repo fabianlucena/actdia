@@ -10,12 +10,12 @@ export default function create({ Node }) {
           x: 0,
           y: 0,
           width: 6,
-          height: 9,
+          height: 10,
           fill: '#222',
         },
         {
           x: 1.5,
-          y: 1.0,
+          y: 1.3,
           skewX: -10,
           fill: '#C00000',
           stroke: '#400000',
@@ -75,14 +75,14 @@ export default function create({ Node }) {
     };
 
     connectors = [
-      { name: 'a', label: true, type: 'in', x: 1, y: 0, direction: 'top', extends: 'tiny' },
-      { name: 'b', label: true, type: 'in', x: 2, y: 0, direction: 'top', extends: 'tiny' },
-      { name: 'c', label: true, type: 'in', x: 3, y: 0, direction: 'top', extends: 'tiny' },
-      { name: 'd', label: true, type: 'in', x: 4, y: 0, direction: 'top', extends: 'tiny' },
-      { name: 'e', label: true, type: 'in', x: 1, y: 9, direction: 'bottom', extends: 'tiny' },
-      { name: 'f', label: true, type: 'in', x: 2, y: 9, direction: 'bottom', extends: 'tiny' },
-      { name: 'g', label: true, type: 'in', x: 3, y: 9, direction: 'bottom', extends: 'tiny' },
-      { name: 'p', label: true, type: 'in', x: 4, y: 9, direction: 'bottom', extends: 'tiny' },
+      { name: 'a', label: true, type: 'in', x: 1, y:  0, direction: 'top', extends: 'tiny' },
+      { name: 'b', label: true, type: 'in', x: 2, y:  0, direction: 'top', extends: 'tiny' },
+      { name: 'c', label: true, type: 'in', x: 3, y:  0, direction: 'top', extends: 'tiny' },
+      { name: 'd', label: true, type: 'in', x: 4, y:  0, direction: 'top', extends: 'tiny' },
+      { name: 'e', label: true, type: 'in', x: 1, y: 10, direction: 'bottom', extends: 'tiny' },
+      { name: 'f', label: true, type: 'in', x: 2, y: 10, direction: 'bottom', extends: 'tiny' },
+      { name: 'g', label: true, type: 'in', x: 3, y: 10, direction: 'bottom', extends: 'tiny' },
+      { name: 'p', label: true, type: 'in', x: 4, y: 10, direction: 'bottom', extends: 'tiny' },
     ];
 
     updateStatus() {
