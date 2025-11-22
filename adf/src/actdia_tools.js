@@ -480,6 +480,7 @@ export default class ActDiaTools {
           await this.actdia.load(json, { skipNotification: true });
           pushNotification(_('Diagram loaded from JSON file.'), 'success');
         } catch (err) {
+          console.error(err);
           pushNotification(_('Invalid JSON file.'), 'error');
         }
       };
