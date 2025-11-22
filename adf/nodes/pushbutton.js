@@ -66,7 +66,7 @@ export default function create({ Node }) {
     onMouseUp({ evt, item, shape }) {
       if (!this.status
         || !item.actdia
-        || evt.buttons !== 1
+        || evt.button !== 0
         || evt.ctrlKey
         || evt.shiftKey
         || evt.altKey
@@ -83,7 +83,7 @@ export default function create({ Node }) {
 
     onMouseClick({ evt, item, shape }) {
       if (!item.actdia
-        || evt.buttons !== 1
+        || evt.button !== 0
         || evt.ctrlKey
         || evt.shiftKey
         || evt.altKey
