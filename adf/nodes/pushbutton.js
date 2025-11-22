@@ -48,7 +48,7 @@ export default function create({ Node }) {
     onMouseDown({ evt, item, shape }) {
       if (this.status
         || !item.actdia
-        || evt.button !== 0
+        || evt.buttons !== 1
         || evt.ctrlKey
         || evt.shiftKey
         || evt.altKey
@@ -66,7 +66,7 @@ export default function create({ Node }) {
     onMouseUp({ evt, item, shape }) {
       if (!this.status
         || !item.actdia
-        || evt.button !== 0
+        || evt.buttons !== 1
         || evt.ctrlKey
         || evt.shiftKey
         || evt.altKey
@@ -83,7 +83,7 @@ export default function create({ Node }) {
 
     onMouseClick({ evt, item, shape }) {
       if (!item.actdia
-        || evt.button !== 0
+        || evt.buttons !== 1
         || evt.ctrlKey
         || evt.shiftKey
         || evt.altKey
