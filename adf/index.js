@@ -73,7 +73,7 @@ async function onSelectExample({ evt, url }) {
   evt.preventDefault();
 
   try {
-    const response = await fetch(url + 5);
+    const response = await fetch(url);
     if (!response.ok)
       throw new Error(_('Can\'t load the file: %s.', url));
 
