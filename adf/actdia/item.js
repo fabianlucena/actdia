@@ -29,14 +29,20 @@ export default class Item extends Element {
   }
 
   get skipExport() {
-    return [
+    const skip =[
+      'skipExport',
       'shape',
       'svgElement',
       'svgShape',
       'svgSelectionBox',
       'actdia',
-      'status'
     ];
+
+    if (this.constructor.skipExport) {
+      skip.push(...this.constructor.skipExport);
+    }
+
+    return skip;
   }
 
   get coords() {
@@ -128,6 +134,38 @@ export default class Item extends Element {
     return new this.constructor(this);
   }
 
+  getDataPropertyNames(options) {
+    let props = [];
+    let current = this;
+
+    while (current && current !== Object.prototype) {
+      const newProps = Object.getOwnPropertyDescriptors(current);
+      for (const propName in newProps) {
+        if (!this.skipExport.includes(propName)
+          && !options.skip?.includes(propName)
+        ) {
+          const prop = newProps[propName];
+          if (prop.enumerable
+            && !props.includes(propName)
+          ) {
+            props.push(propName);
+          } else if (
+            typeof prop.value !== 'function'
+            && !props.includes(propName)
+            && prop.get
+            && prop.set
+          ) {
+            props.push(propName);
+          }
+        }
+      }
+
+      current = Object.getPrototypeOf(current);
+    }
+
+    return props;
+  }
+
   getData(options = {}) {
     const elementClass = this.constructor.name;
     const data = {
@@ -137,14 +175,8 @@ export default class Item extends Element {
     };
 
     const defaultItem = this.getDefaultObject();
-    for (const key in this) {
-      if (this.skipExport.includes(key)
-        || options.skip?.includes(key)
-        || key === 'id'
-        || key === 'elementClass'
-      )
-        continue;
-
+    const keys = this.getDataPropertyNames(options);
+    for (const key of keys) {
       const value = this[key];
       const defaultValue = defaultItem[key];
 
