@@ -194,7 +194,7 @@ export default class Node extends Item {
   propagate(options = {}) {
     this.connectors
       .filter(c => c.type === 'out')
-      .forEach(connector => connector.setStatus(this.status, options));
+      .forEach(connector => connector?.setStatus?.(this.status, options));
   }
 
   backpropagate(options = {}) {
