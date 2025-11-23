@@ -175,7 +175,7 @@ export default class Connection extends Item {
     this.actdia.tryUpdateShape(this, this.svgElement?.children[0], this.shape);
   }
 
-  setStatus(status, options) {
+  statusUpdated(options) {
     let to;
     if (options.from === this.from?.connector)
       to = this.to;
@@ -187,7 +187,7 @@ export default class Connection extends Item {
       && to.connector.type === 'in'
       && !options.connectors.has(to.connector)
     ) {
-      to.connector.setStatus(status, options);
+      to.connector.setStatus(this.status, options);
     }
   }
 

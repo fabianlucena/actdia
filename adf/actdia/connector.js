@@ -84,8 +84,12 @@ export default class Connector extends Element {
     this.connections ||= [];
     this.connections.push(item);
 
-    if (this.type === 'out' && this.connections?.length) {
-      this.propagate();
+    if (this.connections?.length) {
+      if (this.type === 'out') {
+        this.propagate();
+      } else if (this.type === 'in') {
+        this.setStatus(this.connections[0].status);
+      }
     }
   }
 
