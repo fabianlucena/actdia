@@ -6,6 +6,7 @@ export default {
     'unbus.js',
     'oscillograph.js',
     'pulse_generator.js',
+    'single_pulse.js',
     'switch.js',
     'pushbutton.js',
     'slider.js',
