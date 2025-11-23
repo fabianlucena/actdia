@@ -85,11 +85,13 @@ export default class Element {
   }
 
   static async importForDataAsync(data) {
-    const fqcn = data.fqcn ?? data.url + '/' + data.elementClass;
+    const allData = {};
+    Object.assign(allData, ...arguments);
+    const fqcn = allData.fqcn ?? allData.url + '/' + allData.elementClass;
     let classRef = registry[fqcn]?.classRef;
     if (!classRef) {
-      if (data.url) {
-        await this.importAsync(creationData, data.url);
+      if (allData.url) {
+        await this.importAsync(creationData, allData.url);
       }
     }
 
@@ -111,22 +113,24 @@ export default class Element {
   }
 
   static create(data) {
-    data.fqcn ??= data.url + '/' + data.elementClass;
-    const classRef = Element.getElementClassRef(data.fqcn);
+    const allData = {};
+    Object.assign(allData, ...arguments);
+    allData.fqcn ??= allData.url + '/' + allData.elementClass;
+    const classRef = Element.getElementClassRef(allData.fqcn);
 
     if (!classRef) {
-      throw new Error(`Element class ${data.fqcn} not found`);
+      throw new Error(`Element class ${allData.fqcn} not found`);
     }
 
     const obj = new classRef();
-    obj.init(data, ...[...arguments].slice(1));
+    obj.init(...arguments);
 
     return obj;
   }
 
   static async loadAndCreateAsync(data) {
-    await Element.importForDataAsync(data);
-    return Element.create(data);
+    await Element.importForDataAsync(...arguments);
+    return Element.create(...arguments);
   }
 
   static getDefaultObject(fqcn) {

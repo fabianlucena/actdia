@@ -60,6 +60,8 @@ export default function create({ Node }) {
       },
     ];
 
+    saveStatus = true;
+
     #variant = 'vertical';
 
     get variant() {
@@ -104,6 +106,11 @@ export default function create({ Node }) {
       }
 
       this.update();
+    }
+
+    statusUpdated() {
+      super.statusUpdated();
+      this.updateKnob();
     }
 
     updateKnob() {

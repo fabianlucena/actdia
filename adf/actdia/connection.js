@@ -12,7 +12,11 @@ export default class Connection extends Item {
   noSelectionBox = true;
   noNameText = true;
 
-  init({ from, to, items, ...rest } = {}) {
+  init(data) {
+    const allData = {};
+    Object.assign(allData, ...arguments);
+    const { from, to, items, ...rest } = allData;
+
     from && this.setFrom(from, items);
     to && this.setTo(to, items);
 

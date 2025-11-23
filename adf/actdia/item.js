@@ -221,6 +221,10 @@ export default class Item extends Element {
     this.backStatusUpdated(options);
   }
 
+  getStatusText() {
+    return String(this.status);
+  }
+
   statusUpdated() {}
 
   backStatusUpdated() {}

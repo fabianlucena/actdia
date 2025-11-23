@@ -97,6 +97,10 @@ export default class Connector extends Element {
     this.propagate(options);
   }
 
+  getStatusText() {
+    return String(this.status);
+  }
+
   setBackStatus(backStatus, options = {}) {
     this.backStatus = backStatus;
     if (this.type === 'out' && this.item)
