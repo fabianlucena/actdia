@@ -84,15 +84,16 @@ export default function create({ Node }) {
     propagate(options = {}) {
       let outs = this.connectors.filter(c => c.type === 'out');
 
-      const q0 = this.status % 2,
-            q1 = (this.status % 4) >= 2,
-            q2 = (this.status % 8) >= 4,
-            q3 = this.status >= 8;
+      const
+        q0 = this.status % 2,
+        q1 = (this.status % 4) >= 2,
+        q2 = (this.status % 8) >= 4,
+        q3 = this.status >= 8;
 
-      if (q0 != outs[0].status) outs[0].setStatus(q0, options);
-      if (q1 != outs[1].status) outs[1].setStatus(q1, options);
-      if (q2 != outs[2].status) outs[2].setStatus(q2, options);
-      if (q3 != outs[3].status) outs[3].setStatus(q3, options);
+      if (q0 !== outs[0].status) outs[0].setStatus(q0, options);
+      if (q1 !== outs[1].status) outs[1].setStatus(q1, options);
+      if (q2 !== outs[2].status) outs[2].setStatus(q2, options);
+      if (q3 !== outs[3].status) outs[3].setStatus(q3, options);
     }
   };
 }

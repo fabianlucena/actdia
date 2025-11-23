@@ -86,7 +86,7 @@ export default function create({ Node }) {
     ];
 
     updateStatus() {
-      const s = this.connectors.map(c => Math.min(Math.max(c.status, 0), 1));
+      const s = this.connectors.map(c => Math.min(Math.max(c.status >= 0.5 ? 1 : 0, 0), 1));
       s.forEach((v, i) => {
         const shape = this.shape.shapes[1].shapes[i];
         shape.opacity = v * .9 + .1;

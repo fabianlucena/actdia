@@ -69,13 +69,13 @@ export default function create({ Node }) {
 
       const segments = segmentMap[decimal] || [0, 0, 0, 0, 0, 0, 0];
 
-      this.connectors.find(c => c.name === 'a').setStatus(segments[0], {});
-      this.connectors.find(c => c.name === 'b').setStatus(segments[1], {});
-      this.connectors.find(c => c.name === 'c').setStatus(segments[2], {});
-      this.connectors.find(c => c.name === 'd').setStatus(segments[3], {});
-      this.connectors.find(c => c.name === 'e').setStatus(segments[4], {});
-      this.connectors.find(c => c.name === 'f').setStatus(segments[5], {});
-      this.connectors.find(c => c.name === 'g').setStatus(segments[6], {});
+      this.connectors.find(c => c.name === 'a').setStatus(segments[0]);
+      this.connectors.find(c => c.name === 'b').setStatus(segments[1]);
+      this.connectors.find(c => c.name === 'c').setStatus(segments[2]);
+      this.connectors.find(c => c.name === 'd').setStatus(segments[3]);
+      this.connectors.find(c => c.name === 'e').setStatus(segments[4]);
+      this.connectors.find(c => c.name === 'f').setStatus(segments[5]);
+      this.connectors.find(c => c.name === 'g').setStatus(segments[6]);
     }
   };
 }
