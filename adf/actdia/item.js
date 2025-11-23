@@ -230,8 +230,8 @@ export default class Item extends Element {
   backStatusUpdated() {}
 
   moveTo(to) {
-    this.x = this.dx + to.x;
-    this.y = this.dy + to.y;
+    this.x = to.x;
+    this.y = to.y;
     this.updateTransform();
   }
 
