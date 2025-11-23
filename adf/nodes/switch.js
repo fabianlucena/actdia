@@ -109,8 +109,8 @@ export default function create({ Node }) {
     }
 
     statusUpdated() {
-      super.statusUpdated();
       this.updateKnob();
+      super.statusUpdated();
     }
 
     updateKnob() {
