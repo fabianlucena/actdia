@@ -1,6 +1,6 @@
 import Element from './element.js';
 import { _ } from './locale.js';
-import { doesExtend } from './utils.js';
+import { doesExtend, getStatusText } from './utils.js';
 
 export const DIRECTIONS = {
   RIGHT: 0,
@@ -98,7 +98,7 @@ export default class Connector extends Element {
   }
 
   getStatusText() {
-    return String(this.status);
+    return getStatusText(this.status);
   }
 
   setBackStatus(backStatus, options = {}) {

@@ -1,5 +1,5 @@
 import Element from './element.js';
-import { isEqual } from './utils.js';
+import { isEqual, getStatusText } from './utils.js';
 
 export default class Item extends Element {
   dx = 0;
@@ -222,7 +222,7 @@ export default class Item extends Element {
   }
 
   getStatusText() {
-    return String(this.status);
+    return getStatusText(this.status);
   }
 
   statusUpdated() {}

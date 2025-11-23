@@ -1817,7 +1817,7 @@ export default class ActDia {
       const { connector } = this.getEventItemConnector(evt);
       if (connector) {
         if (this.capturedItem.from.connector?.accepts?.includes(connector.type)) {
-          this.showLabel(_('Connector "%s"<br>Status: %s<br>Click to connect.', connector.name, connector.getStatusText()));
+          this.showLabel(_('Connector: %s<br>Status: %s<br>Click to connect', connector.name, connector.getStatusText()));
         } else {
           this.showLabel(_('The connector "%s" does not accept connections of type: "%s".', connector.type, this.capturedItem.from.connector.type));
         }
@@ -1843,7 +1843,7 @@ export default class ActDia {
       let { item, connector } = this.getEventItemConnector(evt);
       if (this.editable) {
         if (connector) {
-          this.showLabel(_('Connector "%s"<br>Status: %s<br>Click to connect.', connector.name, connector.getStatusText()));
+          this.showLabel(_('Connector: %s<br>Status: %s<br>Click to connect', connector.name, connector.getStatusText()));
           return;
         }
       }
@@ -1853,7 +1853,7 @@ export default class ActDia {
 
       this.showLabel(
         (item.description || item.id || item.constructor.name)
-        + '<br>' + _(`Status: %s.`, item.getStatusText()),
+        + '<br>' + _(`Status: %s`, item.getStatusText()),
       );
     }
   }
