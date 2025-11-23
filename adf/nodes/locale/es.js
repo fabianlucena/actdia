@@ -18,6 +18,7 @@ export default {
   'Quadratic': 'Cuadrática',
   'Quadratic Root': 'Raíz cuadrada',
   'Rotated': 'Rotado',
+  'Single pulse': 'Pulso único',
   'Sinusoidal': 'Sinusoidal',
   'Size': 'Tamaño',
   'Status': 'Estado',

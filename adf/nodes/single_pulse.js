@@ -1,5 +1,7 @@
 export default function create({ Node }) {
   return class SinglePulse extends Node {
+    static label = 'Single pulse';
+
     rotationX = 1.5;
     rotationY = 1.5;
 
