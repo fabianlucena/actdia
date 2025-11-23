@@ -9,6 +9,7 @@
     "../nodes/electronic/led.js",
     "../nodes/pulse_generator.js",
     "../nodes/pushbutton.js",
+    "../nodes/single_pulse.js",
     "../nodes/switch.js",
     "./connection.js"
   ],
@@ -17,6 +18,12 @@
       "es"
     ],
     "../nodes": [
+      "es"
+    ],
+    "../nodes/electronic": [
+      "es"
+    ],
+    "../nodes/electronic/bcd": [
       "es"
     ]
   },
@@ -28,6 +35,10 @@
       "x": 16,
       "y": 15,
       "fqcn": "../nodes/electronic/bcd/bcd_counter.js/BCDCounter",
+      "coords": [
+        16,
+        15
+      ],
       "connectors": [
         {
           "id": "ff8b53de-8538-438a-a03a-668d4b49322f"
@@ -62,6 +73,10 @@
       "x": 28,
       "y": 10,
       "fqcn": "../nodes/electronic/led.js/Led",
+      "coords": [
+        28,
+        10
+      ],
       "connectors": [
         {
           "id": "86af0cc6-9266-406c-bd15-c91145833582"
@@ -75,6 +90,10 @@
       "x": 27,
       "y": 10,
       "fqcn": "../nodes/electronic/led.js/Led",
+      "coords": [
+        27,
+        10
+      ],
       "connectors": [
         {
           "id": "94fd4385-ac30-4b40-9451-1f07b3f6dcfc"
@@ -88,6 +107,10 @@
       "x": 26,
       "y": 10,
       "fqcn": "../nodes/electronic/led.js/Led",
+      "coords": [
+        26,
+        10
+      ],
       "connectors": [
         {
           "id": "ab29f4d9-e76b-4c4f-9f54-754c61da8e80"
@@ -101,6 +124,10 @@
       "x": 25,
       "y": 10,
       "fqcn": "../nodes/electronic/led.js/Led",
+      "coords": [
+        25,
+        10
+      ],
       "connectors": [
         {
           "id": "98e43889-b8b5-4f8b-a4f4-7a1f43e52be4"
@@ -111,39 +138,16 @@
       "elementClass": "Switch",
       "url": "../nodes/switch.js",
       "id": "75362cd0-ac01-4cff-ae3b-d9bb370510b4",
-      "formDefinition": [
-        {
-          "name": "variant",
-          "type": "select",
-          "_label": "Variant",
-          "options": [
-            {
-              "value": "vertical",
-              "_label": "Vertical"
-            },
-            {
-              "value": "horizontal",
-              "_label": "Horizontal"
-            },
-            {
-              "value": "inverted",
-              "_label": "Inverted"
-            },
-            {
-              "value": "rotated",
-              "_label": "Rotated"
-            }
-          ],
-          "label": "Variante",
-          "id": "variant",
-          "previousValue": "vertical"
-        }
-      ],
       "x": 11.5,
       "y": 24,
       "fqcn": "../nodes/switch.js/Switch",
       "class": "Switch",
       "_rotation": 0,
+      "coords": [
+        11.5,
+        24
+      ],
+      "status": true,
       "connectors": [
         {
           "id": "88737ca7-9445-4f62-9237-916767ee9a06"
@@ -154,10 +158,15 @@
       "elementClass": "PulseGenerator",
       "url": "../nodes/pulse_generator.js",
       "id": "e0717f26-e4a2-4971-9d98-c7ae33a31c6f",
+      "active": true,
       "interval": 11,
-      "x": 10,
-      "y": 14,
+      "x": 7,
+      "y": 18,
       "fqcn": "../nodes/pulse_generator.js/PulseGenerator",
+      "coords": [
+        7,
+        18
+      ],
       "connectors": [
         {
           "id": "18f799ba-1703-4f6e-aa13-b4d78bb44578"
@@ -171,6 +180,10 @@
       "x": 49,
       "y": 21,
       "fqcn": "../nodes/electronic/bcd/seven-segment_display.js/SevenSegmentDisplay",
+      "coords": [
+        49,
+        21
+      ],
       "connectors": [
         {
           "id": "ee51c731-d493-4675-b7df-41d40b3800d6"
@@ -205,6 +218,10 @@
       "x": 28,
       "y": 14,
       "fqcn": "../nodes/electronic/bcd/bcd_to_7_segments.js/BCTo7Segments",
+      "coords": [
+        28,
+        14
+      ],
       "connectors": [
         {
           "id": "13fc1803-7381-4332-8746-ff62c31124b9"
@@ -248,6 +265,10 @@
       "x": 43,
       "y": 21,
       "fqcn": "../nodes/electronic/bcd/seven-segment_display.js/SevenSegmentDisplay",
+      "coords": [
+        43,
+        21
+      ],
       "connectors": [
         {
           "id": "83bc9bae-b2b9-43a4-a764-c667bc79bd28"
@@ -282,6 +303,10 @@
       "x": 20,
       "y": 26,
       "fqcn": "../nodes/electronic/bcd/bcd_counter.js/BCDCounter",
+      "coords": [
+        20,
+        26
+      ],
       "connectors": [
         {
           "id": "cb01e83c-5e06-4f59-b920-ad662a068d51"
@@ -316,6 +341,10 @@
       "x": 28,
       "y": 25,
       "fqcn": "../nodes/electronic/bcd/bcd_to_7_segments.js/BCTo7Segments",
+      "coords": [
+        28,
+        25
+      ],
       "connectors": [
         {
           "id": "27844e71-8379-49ac-a3c6-305f618dd283"
@@ -359,9 +388,51 @@
       "fqcn": "../nodes/pushbutton.js/Pushbutton",
       "x": 11,
       "y": 26,
+      "coords": [
+        11,
+        26
+      ],
       "connectors": [
         {
           "id": "46796cf7-d8a4-4ab1-8cc7-d3857627efa6"
+        }
+      ]
+    },
+    {
+      "elementClass": "SinglePulse",
+      "url": "../nodes/single_pulse.js",
+      "id": "98a83977-04d3-4a4c-a18a-213d20b2fe77",
+      "fqcn": "../nodes/single_pulse.js/SinglePulse",
+      "x": 10,
+      "y": 29,
+      "coords": [
+        10,
+        29
+      ],
+      "connectors": [
+        {
+          "id": "51754cb6-81d9-4d9d-93b7-ca506e5dc4ec"
+        },
+        {
+          "id": "603c0f3d-98d1-454c-88f7-14648a6b1cab",
+          "textDecoration": "overline"
+        }
+      ]
+    },
+    {
+      "elementClass": "Led",
+      "url": "../nodes/electronic/led.js",
+      "id": "15338325-5b63-4281-92ff-062dfd75ad3f",
+      "fqcn": "../nodes/electronic/led.js/Led",
+      "x": 0,
+      "y": 0,
+      "coords": [
+        0,
+        0
+      ],
+      "connectors": [
+        {
+          "id": "ed74b0b1-8f57-4aaf-92f5-ead0c5396f8c"
         }
       ]
     }
@@ -417,19 +488,6 @@
       "to": {
         "connector": "98e43889-b8b5-4f8b-a4f4-7a1f43e52be4",
         "item": "7703106d-4422-4dfd-b887-5f802b44e57c"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
-      "id": "bf2ffae0-def0-4d85-a666-fabb8b0265b3",
-      "from": {
-        "connector": "18f799ba-1703-4f6e-aa13-b4d78bb44578",
-        "item": "e0717f26-e4a2-4971-9d98-c7ae33a31c6f"
-      },
-      "to": {
-        "connector": "ff8b53de-8538-438a-a03a-668d4b49322f",
-        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
       }
     },
     {
@@ -586,19 +644,6 @@
       "to": {
         "connector": "3e252675-021b-430f-960e-585e8b0a3c94",
         "item": "d6585a91-009e-4c85-b515-7822ec37619a"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
-      "id": "46ffca8e-d28c-4ba7-9205-a5016019fd71",
-      "from": {
-        "connector": "cc858340-deea-4864-a943-6c9256401c76",
-        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
-      },
-      "to": {
-        "connector": "cb01e83c-5e06-4f59-b920-ad662a068d51",
-        "item": "b3d90567-fb41-411c-94db-5eafa5e4f8e9"
       }
     },
     {
@@ -781,6 +826,58 @@
       "to": {
         "connector": "198b42a0-e105-4926-89e9-c2eaa7ee53d4",
         "item": "b3d90567-fb41-411c-94db-5eafa5e4f8e9"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "f9340393-c8e9-4b59-9e0a-40d089ad7905",
+      "from": {
+        "connector": "18f799ba-1703-4f6e-aa13-b4d78bb44578",
+        "item": "e0717f26-e4a2-4971-9d98-c7ae33a31c6f"
+      },
+      "to": {
+        "connector": "ff8b53de-8538-438a-a03a-668d4b49322f",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "c080a3dd-925c-4131-b911-5507f238d303",
+      "from": {
+        "connector": "cc858340-deea-4864-a943-6c9256401c76",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      },
+      "to": {
+        "connector": "cb01e83c-5e06-4f59-b920-ad662a068d51",
+        "item": "b3d90567-fb41-411c-94db-5eafa5e4f8e9"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "a3dba4e1-e0a9-4605-9f70-c940c0800a56",
+      "from": {
+        "connector": "603c0f3d-98d1-454c-88f7-14648a6b1cab",
+        "item": "98a83977-04d3-4a4c-a18a-213d20b2fe77"
+      },
+      "to": {
+        "connector": "198b42a0-e105-4926-89e9-c2eaa7ee53d4",
+        "item": "b3d90567-fb41-411c-94db-5eafa5e4f8e9"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "88bb51ec-4a89-4182-a585-ad02dbcb749c",
+      "from": {
+        "connector": "603c0f3d-98d1-454c-88f7-14648a6b1cab",
+        "item": "98a83977-04d3-4a4c-a18a-213d20b2fe77"
+      },
+      "to": {
+        "connector": "8311db90-a83d-4c2c-bdfc-ea1da723ce72",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
       }
     }
   ]
