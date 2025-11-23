@@ -144,7 +144,9 @@ export default class Element {
   }
 
   constructor(options) {
-    this.init(...arguments);
+    if (arguments.length) {
+      this.init(...arguments);
+    }
   }
 
   init(options) {
