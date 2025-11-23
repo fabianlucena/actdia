@@ -83,6 +83,10 @@ export default class Connector extends Element {
   addConnection(item) {
     this.connections ||= [];
     this.connections.push(item);
+
+    if (this.type === 'out' && this.connections?.length) {
+      this.propagate();
+    }
   }
 
   removeConnection(item) {

@@ -66,6 +66,10 @@ export default class Node extends Item {
       this.connectors[index].item = this;
       this.connectors[index].index = index;
     });
+
+    if (this.connectors?.length) {
+      this.propagate();
+    }
   }
 
   getNewConnector(connector) {
