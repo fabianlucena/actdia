@@ -2,7 +2,7 @@ import ActDia from './actdia/actdia.js';
 import NodeSelector from './src/node_selector.js';
 import NodeForm from './src/node_form.js';
 import { _, loadLocale } from './actdia/locale.js';
-import { pushNotification } from './src/notistack.js';
+import { pushNotification, container as notificationContainer } from './src/notistack.js';
 import './src/drag.js';
 import { getPath } from './actdia/utils.js';
 import ActDiaTools from './src/actdia_tools.js';
@@ -11,6 +11,9 @@ let container = null,
   actdia = null,
   nodeSelector = null,
   mouseSelectOn;
+
+window.addEventListener('beforeprint', () => notificationContainer.style.display = 'none');
+window.addEventListener('afterprint', () => notificationContainer.style.display = '');
 
 window.addEventListener('DOMContentLoaded', async () => {
   await loadLocale(getPath(import.meta.url), 'es');

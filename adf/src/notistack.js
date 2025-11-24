@@ -1,10 +1,10 @@
 import './notistack.css';
 
-let container;
+export let container;
 
 window.addEventListener('DOMContentLoaded', createNotificationContainer);
 
-function createNotificationContainer(options = {}) {
+export function createNotificationContainer(options = {}) {
   if (!container) {
     container = document.getElementById('notistack-container');
     if (!container) {

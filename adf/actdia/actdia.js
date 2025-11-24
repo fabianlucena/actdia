@@ -318,8 +318,8 @@ export default class ActDia {
     this.svg.addEventListener('dblclick', evt => this.mouseDblClickHandler(evt));
     this.svg.addEventListener('mousedown', evt => this.mouseDownHandler(evt));
     this.svg.addEventListener('mouseup', evt => this.mouseUpHandler(evt));
-    window.addEventListener('beforeprint', () => this.svg.classList.add('print'));
-    window.addEventListener('afterprint', evt => this.svg.classList.remove('print'));
+    window.addEventListener('beforeprint', () => this.container.classList.add('print'));
+    window.addEventListener('afterprint', () => this.container.classList.remove('print'));
   }
 
   addEventListener(eventName, handler, bubbles) {

@@ -1,3 +1,4 @@
+import './actdia-tools.css';
 import Item from '../actdia/item.js';
 import { escapeHTML } from '../actdia/utils.js';
 import Dialog from './dialog.js';
