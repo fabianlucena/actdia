@@ -22,7 +22,7 @@ export default function create({ Node }) {
           name: 'start',
           shape: 'path',
           x: 0.6,
-          y: 2.5,
+          y: 2,
           width: .5,
           height: .5,
           d: 'M 0 0 L 0.5 .4 L 0 0.8 Z',
@@ -32,7 +32,7 @@ export default function create({ Node }) {
           name: 'stop',
           shape: 'rect',
           x: 1.6,
-          y: 2.5,
+          y: 2,
           width: .8,
           height: .8,
           stroke: false,
@@ -40,7 +40,7 @@ export default function create({ Node }) {
         {
           shape: 'path',
           x: 1.6,
-          y: 2.5,
+          y: 2,
           width: .5,
           height: .5,
           shape: 'path',
@@ -59,12 +59,14 @@ export default function create({ Node }) {
     };
 
     connectors = [
-      { name: 'q',  label: true, type: 'out', x: 4, y: 1, direction: 'right', extends: 'tiny' },
-      { name: '!q', label: true, type: 'out', x: 4, y: 3, direction: 'right', extends: 'tiny' },
+      { name: 'q',  label: true, type: 'out', x: 4, y: 1, direction: 'right',  extends: 'tiny' },
+      { name: '!q', label: true, type: 'out', x: 4, y: 3, direction: 'right',  extends: 'tiny' },
+      { name: 'x',  label: true, type: 'in',  x: 1, y: 4, direction: 'bottom', extends: 'tiny' },
     ];
 
-    rate = 0.3;
+    rate = 1;
     #interval = null;
+    #factor = 1;
 
     constructor(...args) {
       super(...args);
@@ -79,14 +81,12 @@ export default function create({ Node }) {
     }
 
     updateButtons() {
-      if (this.active && this.rate) {
+      if (this.active && this.rate && this.factor) {
         this.shape.shapes[2].fill = '#40FF40FF';
         this.shape.shapes[4].fill = '#80808001';
 
         if (!this.#interval) {
-          this.#interval = setInterval(() => {
-            this.setStatus(!this.status);
-          }, this.rate * 1000);
+          this.updateInterval();
         }
       } else {
         if (this.shape.shapes[2])
@@ -95,10 +95,7 @@ export default function create({ Node }) {
         if (this.shape.shapes[3])
           this.shape.shapes[4].fill = '#800000FF';
 
-        if (this.#interval) {
-          clearInterval(this.#interval);
-          this.#interval = null;
-        }
+        this.clearInterval(this.#interval);
       }
 
       this.actdia.tryUpdateShape(this, this.svgShape?.children?.[2], this.shape.shapes[2]);
@@ -125,6 +122,33 @@ export default function create({ Node }) {
         this.updateButtons();
         evt.preventDefault();
       }
+    }
+
+    clearInterval() {
+      if (this.#interval) {
+        clearInterval(this.#interval);
+        this.#interval = null;
+      }
+    }
+
+    updateInterval() {
+      this.clearInterval();
+      if (this.#interval) {
+        clearInterval(this.#interval);
+      }
+
+      const rate = this.rate * 2 * this.#factor;
+      if (rate > 0) {
+        this.#interval = setInterval(() => {
+          this.setStatus(!this.status);
+        }, 1000 / rate);
+      }
+    }
+
+    updateStatus() {
+      this.#factor = this.connectors.find(c => c.name === 'm').status;
+      this.updateInterval();
+      super.updateStatus(...arguments);
     }
   };
 }
