@@ -146,7 +146,7 @@ export default function create({ Node }) {
     }
 
     updateStatus() {
-      this.#factor = this.connectors.find(c => c.name === 'm').status;
+      this.#factor = this.connectors.find(c => c.name === 'x').status;
       this.updateInterval();
       super.updateStatus(...arguments);
     }
