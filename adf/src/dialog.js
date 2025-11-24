@@ -202,15 +202,21 @@ export default class Dialog {
   }
 
   updatePosition() {
-    if (isNaN(this.x))
-      this.element.style.left = Math.max(0, Math.floor((document.body.clientWidth - this.element.offsetWidth) / 2)) + 'px';
-    else
-      this.element.style.left = this.x + 'px';
+    const maxLeft = document.body.clientWidth - this.element.offsetWidth;
+    let left = this.x;
+    if (isNaN(left))
+      left = maxLeft / 2;
 
-    if (isNaN(this.y))
-      this.element.style.top = Math.max(0, Math.floor((document.body.clientHeight - this.element.offsetHeight) / 2)) + 'px';
-    else
-      this.element.style.top = this.y + 'px';
+    left = Math.max(0, Math.min(maxLeft, left));
+    this.element.style.left = left + 'px';
+
+    const maxTop = document.body.clientHeight - this.element.offsetHeight;
+    let top = this.y;
+    if (isNaN(top))
+      top = maxTop / 2;
+
+    top = Math.max(0, Math.min(maxTop, top));
+    this.element.style.top = top  + 'px';
   }
 
   showError(content, options) {
