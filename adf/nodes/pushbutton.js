@@ -1,6 +1,10 @@
 export default function create({ Node }) {
   return class Pushbutton extends Node {
     shape = {
+      x: 0,
+      y: -.5,
+      width: 1,
+      height: 1,
       shapes: [
         {
           shape: 'rect',
@@ -23,13 +27,13 @@ export default function create({ Node }) {
 
     box = {
       x: 0,
-      y: 0,
+      y: -.5,
       width: 1,
       height: 1,
     };
 
     connectors = [
-      { name: 'o0', type: 'out', x: 1, y: .5, direction: 'right', extends: 'tiny' },
+      { name: 'o0', type: 'out', x: 1, y: 0, direction: 'right', extends: 'tiny' },
     ];
 
     updateKnob() {

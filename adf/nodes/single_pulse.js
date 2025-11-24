@@ -16,7 +16,7 @@ export default function create({ Node }) {
         },
         {
           shape: 'path',
-          d: 'M 0.5 3 H 1 V 1 H 1.5',
+          d: 'M 0.5 3 H .8 V .9 H 1.0 V 3 H 1.5',
         },
       ],
     };
@@ -28,7 +28,9 @@ export default function create({ Node }) {
       height: 4,
     };
 
-    #delay = 300;
+    #delay = 200;
+    #pulseWidth = 100;
+    #pulsed = false;
 
     connectors = [
       { name: 'q',  label: true, type: 'out', x: 3, y: 1, direction: 'right', extends: 'tiny' },
@@ -37,9 +39,20 @@ export default function create({ Node }) {
 
     init() {
       super.init(...arguments);
+      if (!this.#pulsed) {
+        this.pulse();
+      }
+    }
 
+    pulse() {
+      this.#pulsed = true;
       this.setStatus(0);
-      setTimeout(() => this.setStatus(1), this.#delay);
+      setTimeout(() => {
+        this.setStatus(1);
+        setTimeout(() => {
+          this.setStatus(0);
+        }, this.#pulseWidth);
+      }, this.#delay);
     }
 
     propagate() {
