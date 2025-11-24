@@ -16,7 +16,25 @@ export default function create({ Node }) {
         },
         {
           shape: 'path',
-          d: 'M 0.5 3 H .8 V .9 H 1.0 V 3 H 1.5',
+          d: 'M 0.5 1.5 H .8 V .9 H 1.0 V 1.5 H 1.5',
+        },
+        {
+          x: .5,
+          y: 2.5,
+          shape: 'rect',
+          width: 1,
+          height: 1,
+          rx: .2,
+          ry: .2,
+        },
+        {
+          name: 'knob',
+          shape: 'circle',
+          x: 1.0,
+          y: 3,
+          r: .35,
+          fill: 'darkred',
+          stroke: 'darkred',
         },
       ],
     };
@@ -31,6 +49,7 @@ export default function create({ Node }) {
     #delay = 200;
     #pulseWidth = 100;
     #pulsed = false;
+    #timeout = null;
 
     connectors = [
       { name: 'q',  label: true, type: 'out', x: 3, y: 1, direction: 'right', extends: 'tiny' },
@@ -40,25 +59,92 @@ export default function create({ Node }) {
     init() {
       super.init(...arguments);
       if (!this.#pulsed) {
-        this.pulse();
+        this.firstPulse();
       }
     }
 
-    pulse() {
+    firstPulse() {
       this.#pulsed = true;
       this.setStatus(0);
-      setTimeout(() => {
-        this.setStatus(1);
-        setTimeout(() => {
-          this.setStatus(0);
-        }, this.#pulseWidth);
+      if (this.#timeout) {
+        clearTimeout(this.#timeout);
+        this.#timeout = null;
+      }
+
+      this.#timeout = setTimeout(() => {
+        if (this.#timeout) {
+          clearTimeout(this.#timeout);
+          this.#timeout = null;
+        }
+
+        this.pulse();
       }, this.#delay);
+    }
+
+    pulse() {
+      this.setStatus(1);
+      this.#timeout = setTimeout(() => {
+        if (this.#timeout) {
+          clearTimeout(this.#timeout);
+          this.#timeout = null;
+        }
+
+        this.setStatus(0);
+      }, this.#pulseWidth);
     }
 
     propagate() {
       const status = this.status >= 0.5 ? 1 : 0;
       this.connectors.find(c => c.name === 'q').setStatus(status);
       this.connectors.find(c => c.name === '!q').setStatus(1 - status);
+    }
+
+    statusUpdated() {
+      super.statusUpdated(...arguments);
+      this.updateKnob();
+    }
+
+    updateKnob() {
+      const shape = this.shape.shapes[3] ??= {};
+      if (this.status) {
+        shape.fill = 'lightgreen';
+        shape.stroke = 'darkgreen';
+      } else {
+        shape.fill = '#800000';
+        shape.stroke = '#400000';
+      }
+
+      this.actdia?.tryUpdateShape(this, this.svgShape?.children?.[3], this.shape.shapes[3]);
+    }
+
+    onMouseDown({ evt, item, shape }) {
+      if (!item.actdia
+        || evt.button !== 0
+        || evt.ctrlKey
+        || evt.shiftKey
+        || evt.altKey
+        || shape?.name !== 'knob'
+      )
+        return;
+
+      this.pulse();
+
+      evt.preventDefault();
+      evt.stopPropagation();
+    }
+
+    onMouseClick({ evt, item, shape }) {
+      if (!item.actdia
+        || evt.button !== 0
+        || evt.ctrlKey
+        || evt.shiftKey
+        || evt.altKey
+        || shape?.name !== 'knob'
+      )
+        return;
+
+      evt.preventDefault();
+      evt.stopPropagation();
     }
  };
 }
