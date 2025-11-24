@@ -1,8 +1,6 @@
 export default function create({ Node }) {
   return class Led extends Node {
-    dx = 0;
-    dy = 0;
-    rotationX = -.5;
+    rotationCenterX = -.5;
 
     shape = {
       shapes: [

@@ -2,8 +2,8 @@ export default function create({ Node }) {
   return class SinglePulse extends Node {
     static label = 'Single pulse';
 
-    rotationX = 1.5;
-    rotationY = 1.5;
+    rotationCenterX = 1.5;
+    rotationCenterY = 1.5;
 
     shape = {
       shapes: [

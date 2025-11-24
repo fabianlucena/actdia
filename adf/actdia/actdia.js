@@ -909,7 +909,7 @@ export default class ActDia {
       if (Array.isArray(rotation))
         rotation = rotation.join(' ');
       else
-        rotation = `${rotation} ${style.rotationX || 0} ${style.rotationY || 0}`;
+        rotation = `${rotation} ${style.rotationCenterX || 0} ${style.rotationCenterY || 0}`;
 
       transform += ` rotate(${rotation})`;
     }
@@ -997,7 +997,7 @@ export default class ActDia {
           throw new Error('Unknown shape: ' + shape.shape);
         }
 
-        const { shape: shape1, shapes, x, y, sx, sy, rotation, rotationX, rotationY, skewX, skewY, ...attributes } = shape;
+        const { shape: shape1, shapes, x, y, sx, sy, rotation, rotationCenterX, rotationCenterY, skewX, skewY, ...attributes } = shape;
         attributes.transform = '';
 
         if (!isNaN(x) || !isNaN(y)) {
@@ -1009,7 +1009,7 @@ export default class ActDia {
           if (Array.isArray(rotate))
             rotate = rotate.join(' ');
           else
-            rotate = `${rotate} ${rotationX || 0} ${rotationY || 0}`;
+            rotate = `${rotate} ${rotationCenterX || 0} ${rotationCenterY || 0}`;
 
           attributes.transform += ` rotate(${rotate})`;
         }

@@ -1,8 +1,5 @@
 export default function create({ Node }) {
   return class Switch extends Node {
-    dx = .5;
-    dy = 1;
-
     shape = {
       shapes: [
         {

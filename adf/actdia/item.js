@@ -2,9 +2,6 @@ import Element from './element.js';
 import { isEqual, getStatusText } from './utils.js';
 
 export default class Item extends Element {
-  dx = 0;
-  dy = 0;
-  
   shapes = [];
 
   box = {
@@ -246,7 +243,7 @@ export default class Item extends Element {
       if (Array.isArray(rotation))
         rotation = rotation.join(' ');
       else
-        rotation = `${rotation} ${this.rotationX || 0} ${this.rotationY || 0}`;
+        rotation = `${rotation} ${this.rotationCenterX || 0} ${this.rotationCenterY || 0}`;
 
       transform += ` rotate(${this.rotation})`;
     }
