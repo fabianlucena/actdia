@@ -152,8 +152,9 @@ export default class Element {
   init(options) {
     for (let argument of arguments) {
       for (let key in argument) {
-        if (key === 'classRef')
+        if (key === 'classRef') {
           continue;
+        }
         
         this[key] = argument[key];
       }

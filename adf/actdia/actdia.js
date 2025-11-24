@@ -447,9 +447,12 @@ export default class ActDia {
         item.id = crypto.randomUUID();
       }
 
+      this.autoNameForItem(item);
+
       item.update({ skipNotification: true });
       
       result.push(item);
+      this.#items.push(item);
     }
 
     const dict = {
@@ -457,7 +460,6 @@ export default class ActDia {
       node: 1,
     };
     
-    this.#items.push(...result);
     this.#items.sort((a, b) => (dict[a.type] ?? 99) - (dict[b.type] ?? 99));
 
     result.forEach(item => {
@@ -479,6 +481,45 @@ export default class ActDia {
     });
 
     return result.length === 1 ? result[0] : result;
+  }
+
+  autoNameForItem(item) {
+    if (item.name) {
+      return;
+    }
+
+    let rootName;
+    if (item.constructor._label) {
+      rootName = _(item.constructor._label);
+    } else if (item.constructor.label) {
+      rootName = _(item.constructor.label);
+    } else {
+      rootName = item.constructor.name;
+    }
+
+    let sanitizedId = item.id.replace(/[^a-zA-Z0-9]/g, '');
+    let name;
+    let index = 1;
+    do {
+      let coda = sanitizedId.substring(index, index + 5);
+      if (!coda) {
+        break;
+      }
+
+      if (coda.length < 5) {
+        coda += randomString(5 - coda.length);
+      }
+
+      name = rootName + ' - ' + coda;
+    } while (this.items?.find(i => i.name === name));
+
+    index = 1;
+    while (this.items.find(i => i.name === name)) {
+      name = rootName + ' - ' + String(index).padStart(5, '0');
+      index++;
+    }
+
+    item.name = name;
   }
 
   updateItemShape(shape) {
@@ -1899,7 +1940,7 @@ export default class ActDia {
       return;
 
     this.showLabel(
-      (item.description || item.id || item.constructor.name)
+      (item.name || item.description || item.id || item.constructor.name)
       + '<br>' + _(`Status: %s`, item.getStatusText()),
     );
   }
