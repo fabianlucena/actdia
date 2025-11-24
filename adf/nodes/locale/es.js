@@ -9,6 +9,7 @@ export default {
   'Horizontal': 'Horizontal',
   'Inverted': 'Invertido',
   'Json Data': 'Datos JSON',
+  'Label': 'Etiqueta',
   'Linear': 'Lineal',
   'Maximum': 'Máximo',
   'Minimum': 'Mínimo',

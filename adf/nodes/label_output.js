@@ -1,12 +1,12 @@
 export default function create({ Node, actdia }) {
   actdia.globalData ??= {};
   actdia.globalData.labeledStatus ??= {};
-  actdia.globalData.labeledStatusUpdated ??= name => {
+  actdia.globalData.labeledStatusUpdated ??= label => {
     const outputs = actdia.items
-      .filter(i => i.elementClass === 'LabelOutput' && i.name === name);
+      .filter(i => i.elementClass === 'LabelOutput' && i.label === label);
 
     
-    const status = actdia.globalData.labeledStatus[name];
+    const status = actdia.globalData.labeledStatus[label];
     outputs.forEach(item => {
       item.updateStatus(status);
     });
@@ -28,12 +28,12 @@ export default function create({ Node, actdia }) {
           x: 0,
           width: 4.5,
           height: 1,
-          text: 'No name',
+          text: 'No label',
         }
       ],
     };
 
-    name = 'No name';
+    label = 'No label';
 
     box = {
       x: 0,
@@ -46,13 +46,21 @@ export default function create({ Node, actdia }) {
       { name: 'o', type: 'out', x: 5, y: 0, direction: 'right', extends: 'tiny' },
     ];
 
+    formDefinition = [
+      {
+        name: 'label',
+        type: 'text',
+        _label: 'Label',
+      },
+    ];
+
     construct() {
       super.construct();
-      window.labeledStatus[this.name] = null;
+      window.labeledStatus[this.label] = null;
     }
 
     update() {
-      this.shape.shapes[1].text = this.name;
+      this.shape.shapes[1].text = this.label;
       this.actdia.tryUpdateShape(this, this.svgShape?.children?.[1], this.shape.shapes[1]);
     }
 

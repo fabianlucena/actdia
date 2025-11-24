@@ -18,12 +18,12 @@ export default function create({ Node, actdia }) {
           x: .5,
           width: 4.5,
           height: 1,
-          text: 'No name',
+          text: 'No label',
         }
       ],
     };
 
-    name = 'No name';
+    label = 'No label';
 
     box = {
       x: 0,
@@ -36,8 +36,16 @@ export default function create({ Node, actdia }) {
       { name: 'i', type: 'in', x: 0, y: 0, direction: 'left', extends: 'tiny' },
     ];
 
+    formDefinition = [
+      {
+        name: 'label',
+        type: 'text',
+        _label: 'Label',
+      },
+    ];
+    
     update() {
-      this.shape.shapes[1].text = this.name;
+      this.shape.shapes[1].text = this.label;
       this.actdia.tryUpdateShape(this, this.svgShape?.children?.[1], this.shape.shapes[1]);
     }
 
@@ -48,8 +56,8 @@ export default function create({ Node, actdia }) {
     statusUpdated() {
       super.statusUpdated();
       this.updateForStatus();
-      actdia.globalData.labeledStatus[this.name] = this.status;
-      actdia.globalData.labeledStatusUpdated?.(this.name);
+      actdia.globalData.labeledStatus[this.label] = this.status;
+      actdia.globalData.labeledStatusUpdated?.(this.label);
     }
 
     updateForStatus() {
