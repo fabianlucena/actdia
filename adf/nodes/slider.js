@@ -112,6 +112,8 @@ export default function create({ Node, _ }) {
     min = 0;
     max = 1;
     #function = 'linear';
+    #draggingKnob = false;
+    #draggingFrom = null;
 
     get size() {
       return this.#size;
@@ -183,7 +185,7 @@ export default function create({ Node, _ }) {
 
     updateKnob() {
       const shape = this.shape.shapes.find(s => s.name === 'knob') ?? {};
-      if (this.draggingKnob) {
+      if (this.#draggingKnob) {
         shape.fill = '#808080';
       } else {
         shape.fill = null;
@@ -216,14 +218,14 @@ export default function create({ Node, _ }) {
         || item.shapes?.some(s => s.connector)
         || shape?.name !== 'knob'
       ) {
-        this.draggingKnob = false;
+        this.#draggingKnob = false;
         this.updateKnob();
         return;
       }
 
       evt.preventDefault();
-      this.draggingKnob = true;
-      this.draggingFrom = {
+      this.#draggingKnob = true;
+      this.#draggingFrom = {
         x: mouse.x - (isNaN(shape.x)? 0 : (shape.x ?? 0)),
         y: mouse.y - (isNaN(shape.y)? 0 : (shape.y ?? 0)),
       };
@@ -231,12 +233,12 @@ export default function create({ Node, _ }) {
     }
 
     onMouseUp({ evt, item, shape }) {
-      this.draggingKnob = false;
+      this.#draggingKnob = false;
       this.updateKnob();
     }
 
     onMouseMove({ evt, item, shape, mouse }) {
-      if (!this.draggingKnob)
+      if (!this.#draggingKnob)
         return;
 
       if (!item.actdia
@@ -246,15 +248,15 @@ export default function create({ Node, _ }) {
         || evt.altKey
         || item.shapes?.some(s => s.connector)
       ) {
-        this.draggingKnob = false;
+        this.#draggingKnob = false;
         this.updateKnob();
         return;
       }
 
       evt.preventDefault();
 
-      const dx = mouse.x - this.draggingFrom.x;
-      const dy = mouse.y - this.draggingFrom.y;
+      const dx = mouse.x - this.#draggingFrom.x;
+      const dy = mouse.y - this.#draggingFrom.y;
 
       const ux = Math.cos(this.rotation / 180 * Math.PI);
       const uy = Math.sin(this.rotation / 180 * Math.PI);
