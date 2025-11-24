@@ -38,6 +38,7 @@ export default function create({ Node }) {
           stroke: false,
         },
         {
+          name: 'stop',
           shape: 'path',
           x: 1.6,
           y: 2,
@@ -81,7 +82,7 @@ export default function create({ Node }) {
     }
 
     updateButtons() {
-      if (this.active && this.rate && this.factor) {
+      if (this.active && this.rate && this.#factor) {
         this.shape.shapes[2].fill = '#40FF40FF';
         this.shape.shapes[4].fill = '#80808001';
 
@@ -103,6 +104,7 @@ export default function create({ Node }) {
     }
 
     onMouseClick({ evt, item, shape }) {
+      console.log(shape);
       if (!item.actdia
         || evt.button !== 0
         || evt.ctrlKey
