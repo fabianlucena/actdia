@@ -52,7 +52,7 @@ export default function create({ Node }) {
     onMouseDown({ evt, item, shape }) {
       if (this.status
         || !item.actdia
-        || evt.buttons !== 1
+        || evt.button !== 0
         || evt.ctrlKey
         || evt.shiftKey
         || evt.altKey

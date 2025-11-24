@@ -195,7 +195,7 @@ export default function create({ Node, _ }) {
 
     onMouseClick({ evt, item, shape }) {
       if (!item.actdia
-        || evt.buttons !== 1
+        || evt.button !== 0
         || evt.ctrlKey
         || evt.shiftKey
         || evt.altKey
@@ -209,7 +209,7 @@ export default function create({ Node, _ }) {
 
     onMouseDown({ evt, item, shape, mouse }) {
       if (!item.actdia
-        || evt.buttons !== 1
+        || evt.button !== 0
         || evt.ctrlKey
         || evt.shiftKey
         || evt.altKey

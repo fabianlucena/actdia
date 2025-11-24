@@ -9,7 +9,7 @@ let draggingElement = null,
   initial = { x: 0, y: 0 };
 
 function mouseDownHandler(evt) {
-  if (evt.buttons !== 1) {
+  if (evt.button !== 0) {
     return;
   }
 
