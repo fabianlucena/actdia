@@ -1593,8 +1593,6 @@ export default class ActDia {
 
     const classList = [];
     if (data.attributes) {
-      console.log(classList.className);
-
       data.attributes?.class && classList.push(data.attributes.class);
       data.attributes?.className && classList.push(data.attributes.className);
       data.attributes?.classList && classList.push(...data.attributes.classList);
