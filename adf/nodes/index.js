@@ -13,6 +13,8 @@ export default {
     'viewer.js',
     'json_data.js',
     'selector.js',
+    'label_input.js',
+    'label_output.js',
   ],
   categories: [
     { url: 'electronic', _label: 'Electronic' },
