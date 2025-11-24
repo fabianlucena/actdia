@@ -186,8 +186,6 @@ export default class Dialog {
         this.element.style.width = maxWidth + 'px';
     }
 
-    this.updatePosition();
-
     if (typeof this.height !== 'undefined')
       this.element.style.height = this.height;
     else {
@@ -196,6 +194,8 @@ export default class Dialog {
       if (this.element.offsetHeight > maxHeight)
         this.element.style.height = maxHeight + 'px';
     }
+
+    this.updatePosition();
 
     this.onMouseClick = this.onMouseClick;
     this.element.focus();
@@ -210,7 +210,7 @@ export default class Dialog {
     left = Math.max(0, Math.min(maxLeft, left));
     this.element.style.left = left + 'px';
 
-    const maxTop = document.body.clientHeight - this.element.offsetHeight;
+    const maxTop = document.body.clientHeight - this.element.scrollHeight;
     let top = this.y;
     if (isNaN(top))
       top = maxTop / 2;
