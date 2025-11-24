@@ -59,5 +59,21 @@ export default function create({ Node, actdia }) {
     updateStatus(newStatus, options = {}) {
       this.setStatus(newStatus, options);
     }
+
+    statusUpdated() {
+      super.statusUpdated(...arguments);
+      this.updateForStatus();
+    }
+
+    updateForStatus() {
+      const shape = this.shape.shapes[0] ??= {};
+      if (this.status) {
+        shape.fill = '#284028';
+      } else {
+        shape.fill = '#402828';
+      }
+
+      this.actdia?.tryUpdateShape(this, this.svgShape?.children?.[0], this.shape.shapes[0]);
+    }
  };
 }
