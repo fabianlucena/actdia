@@ -187,6 +187,7 @@ export default class Connection extends Item {
       && to.connector.type === 'in'
       && !options.connectors.has(to.connector)
     ) {
+      options = { ...options, connectors: new Set([...options.connectors]) };
       to.connector.setStatus(this.status, options);
     }
   }
