@@ -73,7 +73,7 @@ export default class Node extends Item {
   }
 
   getNewConnector(connector) {
-    const index = connector?.index ?? this.length ?? this.connectors.length;
+    const index = connector?.index ?? this.connectors.length;
     const newConnector = Connector.create(
       this.defaultConnector,
       {
