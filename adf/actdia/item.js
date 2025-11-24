@@ -116,12 +116,13 @@ export default class Item extends Element {
     this.updateTransform();
   }
 
+  #rotation = 0;
   get rotation() {
-    return this._rotation || 0;
+    return this.#rotation || 0;
   }
 
   set rotation(value) {
-    this._rotation = value;
+    this.#rotation = value;
     this.updateTransform();
   }
 
