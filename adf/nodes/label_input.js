@@ -54,10 +54,20 @@ export default function create({ Node, actdia }) {
 
     updateForStatus() {
       const shape = this.shape.shapes[0] ??= {};
-      if (this.status) {
-        shape.fill = '#284028';
+      if (isNaN(this.status)) {
+        shape.className = 'updated';
+        setTimeout(() => {
+          if (shape.className === 'updated') {
+            shape.className = '';
+            this.actdia?.tryUpdateShape(this, this.svgShape?.children?.[0], this.shape.shapes[0]);
+          }
+        }, 250);
       } else {
-        shape.fill = '#402828';
+        if (this.status > 0.5) {
+          shape.className = 'hi';
+        } else {
+          shape.className = 'lo';
+        }
       }
 
       this.actdia?.tryUpdateShape(this, this.svgShape?.children?.[0], this.shape.shapes[0]);
