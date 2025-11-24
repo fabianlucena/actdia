@@ -34,7 +34,6 @@
       "elementClass": "BCDCounter",
       "url": "../nodes/electronic/bcd/bcd_counter.js",
       "id": "18b98f4f-559b-4267-83d2-ca9e18a286cc",
-      "previousClockStatus": 1,
       "x": 14,
       "y": 15,
       "fqcn": "../nodes/electronic/bcd/bcd_counter.js/BCDCounter",
@@ -145,7 +144,6 @@
       "y": 3,
       "fqcn": "../nodes/switch.js/Switch",
       "class": "Switch",
-      "_rotation": 0,
       "coords": [
         7.5,
         3
@@ -438,7 +436,6 @@
       "x": 9,
       "y": 11,
       "description": "",
-      "_rotation": "0",
       "sx": 1,
       "sy": 1,
       "coords": [
@@ -461,7 +458,6 @@
       "x": 7,
       "y": 19,
       "description": "",
-      "_rotation": "0",
       "sx": 1,
       "sy": 1,
       "coords": [
@@ -484,7 +480,6 @@
       "x": 9,
       "y": 3,
       "description": "",
-      "_rotation": "0",
       "sx": 1,
       "sy": 1,
       "coords": [
@@ -507,7 +502,6 @@
       "x": 7,
       "y": 20,
       "description": "",
-      "_rotation": "0",
       "sx": 1,
       "sy": 1,
       "coords": [
@@ -530,7 +524,6 @@
       "x": 13,
       "y": 31,
       "description": "",
-      "_rotation": "0",
       "sx": 1,
       "sy": 1,
       "coords": [
@@ -553,7 +546,6 @@
       "x": 9,
       "y": 6,
       "description": "",
-      "_rotation": "0",
       "sx": 1,
       "sy": 1,
       "coords": [
@@ -576,7 +568,6 @@
       "x": 7,
       "y": 21,
       "description": "",
-      "_rotation": "0",
       "sx": 1,
       "sy": 1,
       "coords": [
@@ -599,7 +590,6 @@
       "x": 13,
       "y": 32,
       "description": "",
-      "_rotation": "0",
       "sx": 1,
       "sy": 1,
       "coords": [
@@ -620,20 +610,14 @@
       "min": 0.1,
       "max": 50,
       "fqcn": "../nodes/slider.js/Slider",
-      "x": 4,
+      "x": 3,
       "y": 23,
-      "draggingKnob": false,
-      "_rotation": "270",
-      "draggingFrom": {
-        "x": 2.075,
-        "y": 22.675
-      },
       "name": "",
       "description": "",
       "sx": 1,
       "sy": 1,
       "coords": [
-        4,
+        3,
         23
       ],
       "rotation": "270",
@@ -642,7 +626,7 @@
           "id": "a0578c6c-b39d-42f9-aa9d-0ab5c92814c1"
         }
       ],
-      "status": 2.3455000000000057,
+      "status": 3.5930000000000044,
       "function": "linear",
       "size": 6
     }
@@ -1106,7 +1090,7 @@
     {
       "elementClass": "Connection",
       "url": "./connection.js",
-      "id": "c38e9b40-725d-4738-bb5e-32c863a0e90a",
+      "id": "51f5f8a5-ad41-45d9-b6fa-9d21f2b12ef4",
       "from": {
         "connector": "a0578c6c-b39d-42f9-aa9d-0ab5c92814c1",
         "item": "fd24eb9e-0e30-41b5-a644-e0aaed19dbec"
