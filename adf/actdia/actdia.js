@@ -663,6 +663,16 @@ export default class ActDia {
       childOptions,
     ));
     if (!item.noNameText) {
+      const textStyle = {
+        item,
+        shape: item.box,
+        className: 'actdia-node-name',
+        options: childOptions,
+      };
+
+      if (item.showName)
+        textStyle.display = 'block';
+
       components.push(this.getShapeSVG(
         {
           shape: 'text',
@@ -672,12 +682,7 @@ export default class ActDia {
         item,
         {
           ...childOptions,
-          style: this.getStyle({
-            item,
-            shape: item.box,
-            className: 'actdia-node-name',
-            options: childOptions,
-          })
+          style: this.getStyle(textStyle),
         },
       ));
     }
@@ -723,7 +728,7 @@ export default class ActDia {
     return svg;
   }
 
-  getStyle({ style, className, classList, item, shape, type, options }) {
+  getStyle({ style, className, classList, item, shape, type, options, ...styles }) {
     style = {
       ...style,
       ...this.style.item,
@@ -822,6 +827,8 @@ export default class ActDia {
       };
     }
 
+    Object.assign(style, styles);
+
     return style;
   }
 
@@ -846,6 +853,7 @@ export default class ActDia {
     style.lineJoin && (attributes['stroke-linejoin'] = style.lineJoin);
     style.miter && (attributes['stroke-miterlimit'] = style.miter);
     (style.opacity || style.opacity === 0) && (attributes.opacity = style.opacity);
+    (options.style?.display) && (attributes.style = { ...attributes.style, display: options.style.display });
 
     let transform = '';
 
@@ -869,7 +877,7 @@ export default class ActDia {
 
   getFontStyleSVGAttributes(style) {
     const attributes = {};
-    const styleAttribute = [];
+    const styleAttribute = {};
     let fontSize = isNaN(style.fontSize)? 1: style.fontSize;
 
     let textAnchor = style.textAnchor;
@@ -895,14 +903,13 @@ export default class ActDia {
     typeof style.fontfill !== 'undefined' && style.fontfill !== null && (attributes.fill = style.fontfill);
     typeof fontSize !== 'undefined' && fontSize !== null && (attributes['font-size'] = `${fontSize}`);
     typeof style.fontFamily !== 'undefined' && style.fontFamily !== null && (attributes.fontFamily = style.fontFamily);
-    typeof textAnchor !== 'undefined' && textAnchor !== null && (styleAttribute.push(`text-anchor: ${textAnchor}`));
-    typeof dominantBaseline !== 'undefined' && dominantBaseline !== null && (styleAttribute.push(`dominant-baseline: ${dominantBaseline}`));
+    typeof textAnchor !== 'undefined' && textAnchor !== null && (styleAttribute['text-anchor'] = textAnchor);
+    typeof dominantBaseline !== 'undefined' && dominantBaseline !== null && (styleAttribute['dominant-baseline'] = dominantBaseline);
 
     if (style.textDecoration)
-      styleAttribute.push(`text-decoration: ${style.textDecoration}`);
-
-    if (styleAttribute.length) {
-      attributes.style = styleAttribute.join('; ') + ';';
+      styleAttribute['text-decoration'] = style.textDecoration;
+    if (Object.keys(styleAttribute).length) {
+      attributes.style = styleAttribute;
     }
 
     return attributes;
@@ -1007,6 +1014,13 @@ export default class ActDia {
       delete svgData.attributes.class;
       delete svgData.attributes.className;
       delete svgData.attributes.classList;
+
+      if (svgData.attributes.style) {
+        svgData.attributes.style = Object.entries(svgData.attributes.style)
+          .map(([key, value]) => `${key}: ${value};`)
+          .join(' ');
+          
+      }
     }
 
     const childOptions = {
@@ -1350,12 +1364,18 @@ export default class ActDia {
   getTextSVGData(shape, item, options) {
     const { x, y, style } = this.getTextData(shape, item, options?.style, options);
     const lines = shape.text.split('\n');
+    const commonAttributes = this.getStyleSVGAttributes(style, options);
+    const fontAttibutes = this.getFontStyleSVGAttributes(style);
     const attributes = {
       classList: [ ...(style.classList || [])],
       x,
       y,
-      ...this.getStyleSVGAttributes(style, options),
-      ...this.getFontStyleSVGAttributes(style),
+      ...commonAttributes,
+      ...fontAttibutes,
+      style: {
+        ...commonAttributes.style,
+        ...fontAttibutes.style,
+      }
     };
 
     const children = lines.map((line, index) => {
@@ -1565,6 +1585,12 @@ export default class ActDia {
       options.parent.appendChild(svgElement);
     } else if (svgElement.tagName.toLowerCase() !== data.tag.toLowerCase()) {
       return false;
+    }
+
+    if (data.attributes.style) {
+      data.attributes.style = Object.entries(data.attributes.style)
+        .map(([key, value]) => `${key}: ${value};`)
+        .join(' ');
     }
 
     Object.entries(data.attributes).forEach(([key, value]) => {
