@@ -2,7 +2,7 @@ import './notistack.css';
 
 let container;
 
-window.addEventListener('DOMContentLoaded', createNotificationContainer());
+window.addEventListener('DOMContentLoaded', createNotificationContainer);
 
 function createNotificationContainer(options = {}) {
   if (!container) {
