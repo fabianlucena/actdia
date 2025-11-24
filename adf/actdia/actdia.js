@@ -1591,12 +1591,26 @@ export default class ActDia {
       return false;
     }
 
-    if (data.attributes.style) {
-      data.attributes.style = Object.entries(data.attributes.style)
-        .map(([key, value]) => `${key}: ${value};`)
-        .join(' ');
-    }
+    const classList = [];
+    if (data.attributes) {
+      console.log(classList.className);
 
+      data.attributes?.class && classList.push(data.attributes.class);
+      data.attributes?.className && classList.push(data.attributes.className);
+      data.attributes?.classList && classList.push(...data.attributes.classList);
+
+      delete data.attributes.className;
+      delete data.attributes.classList;
+
+      if (data.attributes.style) {
+        data.attributes.style = Object.entries(data.attributes.style)
+          .map(([key, value]) => `${key}: ${value};`)
+          .join(' ');
+      }
+
+      data.attributes.class = classList.join(' ');
+    }
+    
     Object.entries(data.attributes).forEach(([key, value]) => {
       if (value === null || typeof value === 'undefined') {
         svgElement.removeAttribute(key);

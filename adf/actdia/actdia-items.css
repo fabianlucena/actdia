@@ -76,3 +76,14 @@
   stroke-width: calc(var(--stroke-width, 0.06) * 2);
   stroke-dasharray: calc(var(--stroke-width, 0.06) * 1.5) calc(var(--stroke-width, 0.06) * 3);
 }
+
+.actdia-item .hi {
+  fill: #284028;
+}
+.actdia-item .lo {
+  fill: #402828;
+}
+
+.actdia-item .updated {
+  fill: #282840;
+}
