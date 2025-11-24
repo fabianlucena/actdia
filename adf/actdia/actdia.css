@@ -93,3 +93,14 @@
   border: .15em solid #464646;
   border-radius: .3em;
 }
+
+.actdia-item .hi {
+  fill: #284028;
+}
+.actdia-item .lo {
+  fill: #402828;
+}
+
+.actdia-item .updated {
+  fill: #282860;
+}

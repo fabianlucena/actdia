@@ -78,12 +78,25 @@
 }
 
 .actdia-item .hi {
-  fill: #284028;
+  fill: #80D080;
 }
 .actdia-item .lo {
-  fill: #402828;
+  fill: #D08080;
 }
 
 .actdia-item .updated {
-  fill: #282860;
+  fill: #8080D0;
+}
+
+.print {
+  .actdia-item .hi {
+    fill: #80D080;
+  }
+  .actdia-item .lo {
+    fill: #D08080;
+  }
+
+  .actdia-item .updated {
+    fill: #8080D0;
+  }
 }
