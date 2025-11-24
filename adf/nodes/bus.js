@@ -34,38 +34,40 @@ export default function create({ Node }) {
 
     formDefinition = [
       {
-        name: 'length',
+        name: 'channelWidth',
         type: 'number',
         min: 1,
-        _label: 'Length',
+        _label: 'Channel width',
       },
     ];
 
-    get length() {
+    get channelWidth() {
       return this.connectors.filter(c => c.type === 'in').length;
     }
 
-    set length(value) {
-      const newLength = this.length;
-      if (value > newLength) {
-        for (let i = newLength; i < value; i++) {
+    set channelWidth(value) {
+      const newChannelWidth = this.channelWidth;
+      if (value > newChannelWidth) {
+        for (let i = newChannelWidth; i < value; i++) {
           this.addConnector();
         }
-      } else if (value < newLength) {
-        for (let i = value; i < newLength; i++) {
+      } else if (value < newChannelWidth) {
+        for (let i = value; i < newChannelWidth; i++) {
           this.removeLastInput();
         }
       }
     }
 
     update() {
-      const height = Math.max(this.length, 1);
+      const height = Math.max(this.channelWidth, 1);
       this.box.height = height;
       this.shape.height = height;
       super.update();
     }
 
     getNewConnector(connector) {
+      connector ??= {};
+      connector.index ??= this.channelWidth;
       const newConnector = super.getNewConnector(connector);
       newConnector.y ??= newConnector.index + 1;
       newConnector.name ??= `i${newConnector.index}`;
