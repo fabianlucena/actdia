@@ -225,6 +225,8 @@ export default class Item extends Element {
     return getStatusText(this.status);
   }
 
+  updateStatus() {}
+
   statusUpdated() {}
 
   backStatusUpdated() {}
