@@ -109,7 +109,7 @@ export default function create({ Node, _ }) {
     }
 
     #size = 6;
-    min = -1;
+    min = 0;
     max = 1;
     #function = 'linear';
 
@@ -253,7 +253,14 @@ export default function create({ Node, _ }) {
 
       evt.preventDefault();
 
-      let delta = (mouse.x - this.draggingFrom.x - .2) / (this.size - 1);
+      const dx = mouse.x - this.draggingFrom.x;
+      const dy = mouse.y - this.draggingFrom.y;
+
+      const ux = Math.cos(this.rotation / 180 * Math.PI);
+      const uy = Math.sin(this.rotation / 180 * Math.PI);
+
+      let delta = (dx * ux + dy * uy - 0.2) / (this.size - 1);
+
       if (delta < 0)
         delta = 0;
       if (delta > 1)
