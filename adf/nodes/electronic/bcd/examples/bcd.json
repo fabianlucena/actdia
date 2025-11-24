@@ -7,9 +7,11 @@
     "../nodes/electronic/bcd/bcd_to_7_segments.js",
     "../nodes/electronic/bcd/seven-segment_display.js",
     "../nodes/electronic/led.js",
+    "../nodes/label_input.js",
+    "../nodes/label_output.js",
     "../nodes/pulse_generator.js",
-    "../nodes/pushbutton.js",
     "../nodes/single_pulse.js",
+    "../nodes/slider.js",
     "../nodes/switch.js",
     "./connection.js"
   ],
@@ -32,11 +34,12 @@
       "elementClass": "BCDCounter",
       "url": "../nodes/electronic/bcd/bcd_counter.js",
       "id": "18b98f4f-559b-4267-83d2-ca9e18a286cc",
-      "x": 16,
+      "previousClockStatus": 1,
+      "x": 14,
       "y": 15,
       "fqcn": "../nodes/electronic/bcd/bcd_counter.js/BCDCounter",
       "coords": [
-        16,
+        14,
         15
       ],
       "connectors": [
@@ -138,14 +141,14 @@
       "elementClass": "Switch",
       "url": "../nodes/switch.js",
       "id": "75362cd0-ac01-4cff-ae3b-d9bb370510b4",
-      "x": 11.5,
-      "y": 24,
+      "x": 7.5,
+      "y": 3,
       "fqcn": "../nodes/switch.js/Switch",
       "class": "Switch",
       "_rotation": 0,
       "coords": [
-        11.5,
-        24
+        7.5,
+        3
       ],
       "status": true,
       "connectors": [
@@ -160,16 +163,23 @@
       "id": "e0717f26-e4a2-4971-9d98-c7ae33a31c6f",
       "active": true,
       "interval": 11,
-      "x": 7,
-      "y": 18,
+      "x": 4,
+      "y": 10,
       "fqcn": "../nodes/pulse_generator.js/PulseGenerator",
       "coords": [
-        7,
-        18
+        4,
+        10
       ],
       "connectors": [
         {
           "id": "18f799ba-1703-4f6e-aa13-b4d78bb44578"
+        },
+        {
+          "id": "84959673-2f82-4919-9cf5-689e242b83e0",
+          "textDecoration": "overline"
+        },
+        {
+          "id": "995a7c0e-47d3-40b7-95db-8c283a85a5b7"
         }
       ]
     },
@@ -215,11 +225,11 @@
       "elementClass": "BCTo7Segments",
       "url": "../nodes/electronic/bcd/bcd_to_7_segments.js",
       "id": "d8b410d3-a5a4-487f-ac4c-0ea3458343f1",
-      "x": 28,
+      "x": 29,
       "y": 14,
       "fqcn": "../nodes/electronic/bcd/bcd_to_7_segments.js/BCTo7Segments",
       "coords": [
-        28,
+        29,
         14
       ],
       "connectors": [
@@ -300,11 +310,11 @@
       "elementClass": "BCDCounter",
       "url": "../nodes/electronic/bcd/bcd_counter.js",
       "id": "b3d90567-fb41-411c-94db-5eafa5e4f8e9",
-      "x": 20,
+      "x": 21,
       "y": 26,
       "fqcn": "../nodes/electronic/bcd/bcd_counter.js/BCDCounter",
       "coords": [
-        20,
+        21,
         26
       ],
       "connectors": [
@@ -338,11 +348,11 @@
       "elementClass": "BCTo7Segments",
       "url": "../nodes/electronic/bcd/bcd_to_7_segments.js",
       "id": "e7e2a6ec-feea-4c5d-988f-3c0a3c226cff",
-      "x": 28,
+      "x": 29,
       "y": 25,
       "fqcn": "../nodes/electronic/bcd/bcd_to_7_segments.js/BCTo7Segments",
       "coords": [
-        28,
+        29,
         25
       ],
       "connectors": [
@@ -382,32 +392,15 @@
       ]
     },
     {
-      "elementClass": "Pushbutton",
-      "url": "../nodes/pushbutton.js",
-      "id": "b470a990-4cc3-4396-8ac4-52a45e39ec35",
-      "fqcn": "../nodes/pushbutton.js/Pushbutton",
-      "x": 11,
-      "y": 26,
-      "coords": [
-        11,
-        26
-      ],
-      "connectors": [
-        {
-          "id": "46796cf7-d8a4-4ab1-8cc7-d3857627efa6"
-        }
-      ]
-    },
-    {
       "elementClass": "SinglePulse",
       "url": "../nodes/single_pulse.js",
       "id": "98a83977-04d3-4a4c-a18a-213d20b2fe77",
       "fqcn": "../nodes/single_pulse.js/SinglePulse",
-      "x": 10,
-      "y": 29,
+      "x": 5,
+      "y": 5,
       "coords": [
-        10,
-        29
+        5,
+        5
       ],
       "connectors": [
         {
@@ -435,6 +428,223 @@
           "id": "ed74b0b1-8f57-4aaf-92f5-ead0c5396f8c"
         }
       ]
+    },
+    {
+      "elementClass": "LabelInput",
+      "url": "../nodes/label_input.js",
+      "id": "ff3566a0-caba-4dfa-9d0a-e0ed11350361",
+      "name": "clk",
+      "fqcn": "../nodes/label_input.js/LabelInput",
+      "x": 9,
+      "y": 11,
+      "description": "",
+      "_rotation": "0",
+      "sx": 1,
+      "sy": 1,
+      "coords": [
+        9,
+        11
+      ],
+      "rotation": "0",
+      "connectors": [
+        {
+          "id": "7a010d47-bd5b-4472-8ee3-786e1a2fff79"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelOutput",
+      "url": "../nodes/label_output.js",
+      "id": "ac657088-d7d2-4706-ba25-92796f31925f",
+      "name": "clk",
+      "fqcn": "../nodes/label_output.js/LabelOutput",
+      "x": 7,
+      "y": 19,
+      "description": "",
+      "_rotation": "0",
+      "sx": 1,
+      "sy": 1,
+      "coords": [
+        7,
+        19
+      ],
+      "rotation": "0",
+      "connectors": [
+        {
+          "id": "490f3d07-fca5-4189-b902-1fe56cfd555f"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelInput",
+      "url": "../nodes/label_input.js",
+      "id": "758f4c0c-705d-4bf7-a76d-d9d95e95ab4f",
+      "name": "enable",
+      "fqcn": "../nodes/label_input.js/LabelInput",
+      "x": 9,
+      "y": 3,
+      "description": "",
+      "_rotation": "0",
+      "sx": 1,
+      "sy": 1,
+      "coords": [
+        9,
+        3
+      ],
+      "rotation": "0",
+      "connectors": [
+        {
+          "id": "2270a799-eab5-481d-91b7-c4eb0e159a75"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelOutput",
+      "url": "../nodes/label_output.js",
+      "id": "b9315fd4-f554-48c2-8c2d-78d33469df83",
+      "name": "enable",
+      "fqcn": "../nodes/label_output.js/LabelOutput",
+      "x": 7,
+      "y": 20,
+      "description": "",
+      "_rotation": "0",
+      "sx": 1,
+      "sy": 1,
+      "coords": [
+        7,
+        20
+      ],
+      "rotation": "0",
+      "connectors": [
+        {
+          "id": "6a2549fe-0af0-44d7-8230-58ee1595ae0c"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelOutput",
+      "url": "../nodes/label_output.js",
+      "id": "c9aa7e99-f1a6-4da4-a19e-e87999ed4257",
+      "name": "enable",
+      "fqcn": "../nodes/label_output.js/LabelOutput",
+      "x": 13,
+      "y": 31,
+      "description": "",
+      "_rotation": "0",
+      "sx": 1,
+      "sy": 1,
+      "coords": [
+        13,
+        31
+      ],
+      "rotation": "0",
+      "connectors": [
+        {
+          "id": "bc62880c-61a5-464d-8fb8-cef5500bb500"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelInput",
+      "url": "../nodes/label_input.js",
+      "id": "08664414-0ab5-4f06-aaab-5466e5b0d47b",
+      "name": "reset",
+      "fqcn": "../nodes/label_input.js/LabelInput",
+      "x": 9,
+      "y": 6,
+      "description": "",
+      "_rotation": "0",
+      "sx": 1,
+      "sy": 1,
+      "coords": [
+        9,
+        6
+      ],
+      "rotation": "0",
+      "connectors": [
+        {
+          "id": "47e097bd-0879-449f-b49d-94d13010816d"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelOutput",
+      "url": "../nodes/label_output.js",
+      "id": "cf666975-339e-4417-9c3e-25880e934eca",
+      "name": "reset",
+      "fqcn": "../nodes/label_output.js/LabelOutput",
+      "x": 7,
+      "y": 21,
+      "description": "",
+      "_rotation": "0",
+      "sx": 1,
+      "sy": 1,
+      "coords": [
+        7,
+        21
+      ],
+      "rotation": "0",
+      "connectors": [
+        {
+          "id": "64c2f4fc-86f7-47c1-9110-daff1b74420d"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelOutput",
+      "url": "../nodes/label_output.js",
+      "id": "47aaf4a7-7c26-41cd-9a1a-73e44553caf7",
+      "name": "reset",
+      "fqcn": "../nodes/label_output.js/LabelOutput",
+      "x": 13,
+      "y": 32,
+      "description": "",
+      "_rotation": "0",
+      "sx": 1,
+      "sy": 1,
+      "coords": [
+        13,
+        32
+      ],
+      "rotation": "0",
+      "connectors": [
+        {
+          "id": "6699c973-30bb-446b-8777-e92c9045a829"
+        }
+      ]
+    },
+    {
+      "elementClass": "Slider",
+      "url": "../nodes/slider.js",
+      "id": "fd24eb9e-0e30-41b5-a644-e0aaed19dbec",
+      "min": 0.1,
+      "max": 50,
+      "fqcn": "../nodes/slider.js/Slider",
+      "x": 4,
+      "y": 23,
+      "draggingKnob": false,
+      "_rotation": "270",
+      "draggingFrom": {
+        "x": 2.075,
+        "y": 22.675
+      },
+      "name": "",
+      "description": "",
+      "sx": 1,
+      "sy": 1,
+      "coords": [
+        4,
+        23
+      ],
+      "rotation": "270",
+      "connectors": [
+        {
+          "id": "a0578c6c-b39d-42f9-aa9d-0ab5c92814c1"
+        }
+      ],
+      "status": 2.3455000000000057,
+      "function": "linear",
+      "size": 6
     }
   ],
   "connections": [
@@ -488,19 +698,6 @@
       "to": {
         "connector": "98e43889-b8b5-4f8b-a4f4-7a1f43e52be4",
         "item": "7703106d-4422-4dfd-b887-5f802b44e57c"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
-      "id": "b9a5ea26-b2de-4cf1-be3f-c90add9b4bbb",
-      "from": {
-        "connector": "88737ca7-9445-4f62-9237-916767ee9a06",
-        "item": "75362cd0-ac01-4cff-ae3b-d9bb370510b4"
-      },
-      "to": {
-        "connector": "940638ec-32d9-412c-ad4d-a2a58b4ab539",
-        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
       }
     },
     {
@@ -649,19 +846,6 @@
     {
       "elementClass": "Connection",
       "url": "./connection.js",
-      "id": "22f8077a-ab93-443d-b679-6072bba4ded9",
-      "from": {
-        "connector": "88737ca7-9445-4f62-9237-916767ee9a06",
-        "item": "75362cd0-ac01-4cff-ae3b-d9bb370510b4"
-      },
-      "to": {
-        "connector": "850e6da4-1d25-4ea8-9016-f264c4043432",
-        "item": "b3d90567-fb41-411c-94db-5eafa5e4f8e9"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
       "id": "bbe98b1c-d418-476d-b329-08d450f13526",
       "from": {
         "connector": "edbee1e4-7d11-493e-9a04-72daf077531e",
@@ -805,45 +989,6 @@
     {
       "elementClass": "Connection",
       "url": "./connection.js",
-      "id": "251a45d8-9513-4b11-8b3c-008d537a903d",
-      "from": {
-        "connector": "46796cf7-d8a4-4ab1-8cc7-d3857627efa6",
-        "item": "b470a990-4cc3-4396-8ac4-52a45e39ec35"
-      },
-      "to": {
-        "connector": "8311db90-a83d-4c2c-bdfc-ea1da723ce72",
-        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
-      "id": "d8f5120f-1811-46c2-aa82-4f95651ca905",
-      "from": {
-        "connector": "46796cf7-d8a4-4ab1-8cc7-d3857627efa6",
-        "item": "b470a990-4cc3-4396-8ac4-52a45e39ec35"
-      },
-      "to": {
-        "connector": "198b42a0-e105-4926-89e9-c2eaa7ee53d4",
-        "item": "b3d90567-fb41-411c-94db-5eafa5e4f8e9"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
-      "id": "f9340393-c8e9-4b59-9e0a-40d089ad7905",
-      "from": {
-        "connector": "18f799ba-1703-4f6e-aa13-b4d78bb44578",
-        "item": "e0717f26-e4a2-4971-9d98-c7ae33a31c6f"
-      },
-      "to": {
-        "connector": "ff8b53de-8538-438a-a03a-668d4b49322f",
-        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
       "id": "c080a3dd-925c-4131-b911-5507f238d303",
       "from": {
         "connector": "cc858340-deea-4864-a943-6c9256401c76",
@@ -857,10 +1002,75 @@
     {
       "elementClass": "Connection",
       "url": "./connection.js",
-      "id": "a3dba4e1-e0a9-4605-9f70-c940c0800a56",
+      "id": "9699c0f6-ca55-412b-837b-d194aaef06a6",
       "from": {
-        "connector": "603c0f3d-98d1-454c-88f7-14648a6b1cab",
-        "item": "98a83977-04d3-4a4c-a18a-213d20b2fe77"
+        "connector": "18f799ba-1703-4f6e-aa13-b4d78bb44578",
+        "item": "e0717f26-e4a2-4971-9d98-c7ae33a31c6f"
+      },
+      "to": {
+        "connector": "7a010d47-bd5b-4472-8ee3-786e1a2fff79",
+        "item": "ff3566a0-caba-4dfa-9d0a-e0ed11350361"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "37646142-1516-4b1e-949d-70bcf0ae6d9a",
+      "from": {
+        "connector": "490f3d07-fca5-4189-b902-1fe56cfd555f",
+        "item": "ac657088-d7d2-4706-ba25-92796f31925f"
+      },
+      "to": {
+        "connector": "ff8b53de-8538-438a-a03a-668d4b49322f",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "6e482aef-7906-41d5-947d-abc6fa0b103e",
+      "from": {
+        "connector": "88737ca7-9445-4f62-9237-916767ee9a06",
+        "item": "75362cd0-ac01-4cff-ae3b-d9bb370510b4"
+      },
+      "to": {
+        "connector": "2270a799-eab5-481d-91b7-c4eb0e159a75",
+        "item": "758f4c0c-705d-4bf7-a76d-d9d95e95ab4f"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "9b0546ed-5ad7-4000-819d-1dd475de1579",
+      "from": {
+        "connector": "6a2549fe-0af0-44d7-8230-58ee1595ae0c",
+        "item": "b9315fd4-f554-48c2-8c2d-78d33469df83"
+      },
+      "to": {
+        "connector": "940638ec-32d9-412c-ad4d-a2a58b4ab539",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "f013acc5-ca8f-43ad-92b1-7316dbd6c77e",
+      "from": {
+        "connector": "bc62880c-61a5-464d-8fb8-cef5500bb500",
+        "item": "c9aa7e99-f1a6-4da4-a19e-e87999ed4257"
+      },
+      "to": {
+        "connector": "850e6da4-1d25-4ea8-9016-f264c4043432",
+        "item": "b3d90567-fb41-411c-94db-5eafa5e4f8e9"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "596323f8-1aa9-4fe3-9698-54f01bdd7146",
+      "from": {
+        "connector": "6699c973-30bb-446b-8777-e92c9045a829",
+        "item": "47aaf4a7-7c26-41cd-9a1a-73e44553caf7"
       },
       "to": {
         "connector": "198b42a0-e105-4926-89e9-c2eaa7ee53d4",
@@ -870,14 +1080,40 @@
     {
       "elementClass": "Connection",
       "url": "./connection.js",
-      "id": "88bb51ec-4a89-4182-a585-ad02dbcb749c",
+      "id": "e8e7b827-2d36-494d-b632-d1f64e92eada",
       "from": {
-        "connector": "603c0f3d-98d1-454c-88f7-14648a6b1cab",
-        "item": "98a83977-04d3-4a4c-a18a-213d20b2fe77"
+        "connector": "64c2f4fc-86f7-47c1-9110-daff1b74420d",
+        "item": "cf666975-339e-4417-9c3e-25880e934eca"
       },
       "to": {
         "connector": "8311db90-a83d-4c2c-bdfc-ea1da723ce72",
         "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "aa8b9e6b-31f7-4985-89bd-4b08f1905631",
+      "from": {
+        "connector": "47e097bd-0879-449f-b49d-94d13010816d",
+        "item": "08664414-0ab5-4f06-aaab-5466e5b0d47b"
+      },
+      "to": {
+        "connector": "51754cb6-81d9-4d9d-93b7-ca506e5dc4ec",
+        "item": "98a83977-04d3-4a4c-a18a-213d20b2fe77"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "c38e9b40-725d-4738-bb5e-32c863a0e90a",
+      "from": {
+        "connector": "a0578c6c-b39d-42f9-aa9d-0ab5c92814c1",
+        "item": "fd24eb9e-0e30-41b5-a644-e0aaed19dbec"
+      },
+      "to": {
+        "connector": "995a7c0e-47d3-40b7-95db-8c283a85a5b7",
+        "item": "e0717f26-e4a2-4971-9d98-c7ae33a31c6f"
       }
     }
   ]
