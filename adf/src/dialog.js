@@ -296,6 +296,12 @@ export default class Dialog {
     )
       return;
 
+    if (this.onClick
+      && this.onClick(evt)
+      && evt.defaultPrevented
+    )
+      return;
+
     const target = evt.target;
     if (target.closest('.ok')) {
       this.okHandler(evt);

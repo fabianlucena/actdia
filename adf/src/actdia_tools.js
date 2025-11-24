@@ -188,7 +188,7 @@ export default class ActDiaTools {
       selectable: false,
       draggable: false,
       exportable: false,
-      onMouseClick: () => this.downloadJson({ selected: true}),
+      onMouseClick: () => this.downloadJsonHandler(),
     }),
 
     new Item({
@@ -292,7 +292,7 @@ export default class ActDiaTools {
       selectable: false,
       draggable: false,
       exportable: false,
-      onMouseClick: () => this.downloadSvg({ selected: true}),
+      onMouseClick: () => this.downloadSvgHandler(),
     }),
 
     new Item({
@@ -451,6 +451,31 @@ export default class ActDiaTools {
     pushNotification(_('SVG image copied to the clipboard.'), 'success');
  }
 
+  downloadJsonHandler() {
+    if (!this.getExportableItems({ onlySelected: true }).length) {
+      this.downloadJson({ selected: false});
+      return;
+    }
+
+    const dialog  = new Dialog({
+      container: this.container,
+      header: _('Export dialog'),
+      content: `<p>${_('Do you want to export the entire diagram or only the selected items?')}</p>
+        <button id="export-all" class="button">${_('Export all')}</button>
+        <button id="export-selected" class="button">${_('Export selected')}</button>`,
+
+      onMouseClick: evt => {
+        if (evt.target.closest('#export-all')) {
+          this.downloadJson({ selected: false});
+          dialog.close();
+        } else if (evt.target.closest('#export-selected')) {
+          this.downloadJson({ selected: true});
+          dialog.close();
+        }
+      }
+    });
+  }
+
   downloadJson(options) {
     const exportable = this.getExportableItems(options);
     const jsonText = JSON.stringify(this.getData(exportable), null, 2);
@@ -498,6 +523,31 @@ export default class ActDiaTools {
     navigator.clipboard.writeText(url.toString())
       .then(() => pushNotification(_('URL copied to clipboard.'), 'success'))
       .catch(err => pushNotification(_('Error to copy: %s', err), 'error'));
+  }
+
+  downloadSvgHandler(options) {
+    if (!this.getExportableItems({ onlySelected: true }).length) {
+      this.downloadSvg({ selected: false});
+      return;
+    }
+
+    const dialog  = new Dialog({
+      container: this.container,
+      header: _('Export dialog'),
+      content: `<p>${_('Do you want to export the entire diagram or only the selected items?')}</p>
+        <button id="export-all" class="button">${_('Export all')}</button>
+        <button id="export-selected" class="button">${_('Export selected')}</button>`,
+
+      onMouseClick: evt => {
+        if (evt.target.closest('#export-all')) {
+          this.downloadSvg({ selected: false});
+          dialog.close();
+        } else if (evt.target.closest('#export-selected')) {
+          this.downloadSvg({ selected: true});
+          dialog.close();
+        }
+      }
+    });
   }
   
   async downloadSvg(options) {

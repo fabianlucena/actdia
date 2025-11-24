@@ -385,17 +385,17 @@ export default class ActDia {
     return data;
   }
 
-  getExportableItems({ selected, items } = {}) {
+  getExportableItems({ selected, items, onlySelected } = {}) {
     if (items?.length)
       return items;
 
     const exportable = this.#items.filter(i => i.exportable !== false);
-    if (selected) {
+    if (selected || onlySelected) {
       const selected = exportable.filter(i => i.selected
         || isConnection(i) && (i.from.item?.selected && i.to?.item?.selected)
       );
 
-      if (selected.length)
+      if (onlySelected || selected.length)
         return selected;
     }
 

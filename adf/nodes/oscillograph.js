@@ -40,7 +40,7 @@ export default function create({ Node }) {
       { name: 'i0', type: 'in', x: 0, y: 2, direction: 'left' },
     ];
 
-    static skipMatrix = ['matrix'];
+    static skipExport = ['matrix'];
 
     matrix = [];
     #height = 6;
