@@ -31,8 +31,8 @@ export default function create({ Node }) {
     #delay = 300;
 
     connectors = [
-      { name: 'o',  label: true, type: 'out', x: 3, y: 1, direction: 'right', extends: 'tiny' },
-      { name: '!o', label: true, type: 'out', x: 3, y: 3, direction: 'right', extends: 'tiny' },
+      { name: 'q',  label: true, type: 'out', x: 3, y: 1, direction: 'right', extends: 'tiny' },
+      { name: '!q', label: true, type: 'out', x: 3, y: 3, direction: 'right', extends: 'tiny' },
     ];
 
     init() {
@@ -44,8 +44,8 @@ export default function create({ Node }) {
 
     propagate() {
       const status = this.status >= 0.5 ? 1 : 0;
-      this.connectors.find(c => c.name === 'o').setStatus(status);
-      this.connectors.find(c => c.name === '!o').setStatus(1 - status);
+      this.connectors.find(c => c.name === 'q').setStatus(status);
+      this.connectors.find(c => c.name === '!q').setStatus(1 - status);
     }
  };
 }

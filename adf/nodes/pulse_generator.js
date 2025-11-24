@@ -2,8 +2,8 @@ export default function create({ Node }) {
   return class PulseGenerator extends Node {
     static label = 'Pulse generator';
 
-    rotationX = 1.5;
-    rotationY = 1.5;
+    rotationX = 2;
+    rotationY = 2;
 
     shape = {
       shapes: [
@@ -11,8 +11,8 @@ export default function create({ Node }) {
           shape: 'rect',
           x: 0,
           y: 0,
-          width: 3,
-          height: 3,
+          width: 4,
+          height: 4,
         },
         {
           shape: 'path',
@@ -22,7 +22,7 @@ export default function create({ Node }) {
           name: 'start',
           shape: 'path',
           x: 0.6,
-          y: 2,
+          y: 2.5,
           width: .5,
           height: .5,
           d: 'M 0 0 L 0.5 .4 L 0 0.8 Z',
@@ -32,16 +32,15 @@ export default function create({ Node }) {
           name: 'stop',
           shape: 'rect',
           x: 1.6,
-          y: 2,
+          y: 2.5,
           width: .8,
           height: .8,
           stroke: false,
         },
         {
-          name: 'stop',
           shape: 'path',
           x: 1.6,
-          y: 2,
+          y: 2.5,
           width: .5,
           height: .5,
           shape: 'path',
@@ -55,12 +54,13 @@ export default function create({ Node }) {
     box = {
       x: 0,
       y: 0,
-      width: 3,
-      height: 3,
+      width: 4,
+      height: 4,
     };
 
     connectors = [
-      { name: 'o0', type: 'out', x: 3, y: 1, direction: 'right', extends: 'tiny' },
+      { name: 'q',  label: true, type: 'out', x: 4, y: 1, direction: 'right', extends: 'tiny' },
+      { name: '!q', label: true, type: 'out', x: 4, y: 3, direction: 'right', extends: 'tiny' },
     ];
 
     rate = 0.3;
