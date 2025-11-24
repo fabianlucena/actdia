@@ -65,46 +65,65 @@ export default function create({ Node }) {
       { name: 'x',  label: true, type: 'in',  x: 1, y: 4, direction: 'bottom', extends: 'tiny' },
     ];
 
-    rate = 1;
-    #interval = null;
+    #rate = 1;
     #factor = 1;
+    #active = false;
+    #interval = null;
 
-    constructor(...args) {
-      super(...args);
-      this.active = false;
+    get rate() {
+      return this.#rate;
+    }
+
+    set rate(value) {
+      if (this.#rate !== value) {
+        this.#rate = value;
+        this.updateInterval();
+      }
+    }
+
+    get factor() {
+      return this.#factor;
+    }
+
+    set factor(value) {
+      if (this.#factor !== value) {
+        this.#factor = value;
+        this.updateInterval();
+      }
+    }
+
+    get active() {
+      return this.#active;
+    }
+
+    set active(value) {
+      if (this.#active !== value) {
+        this.#active = value;
+        this.updateInterval();
+      }
     }
 
     init() {
       super.init(...arguments);
-      if (this.shape && this.actdia) {
-        this.updateButtons();
-      }
+      this.updateInterval();
     }
 
     updateButtons() {
-      if (this.active && this.rate && this.#factor) {
+      if (this.#interval) {
         this.shape.shapes[2].fill = '#40FF40FF';
         this.shape.shapes[4].fill = '#80808001';
-
-        if (!this.#interval) {
-          this.updateInterval();
-        }
       } else {
-        if (this.shape.shapes[2])
-          this.shape.shapes[2].fill = '#80808001';
-
-        if (this.shape.shapes[3])
-          this.shape.shapes[4].fill = '#800000FF';
-
-        this.clearInterval(this.#interval);
+        this.shape.shapes[2].fill = '#80808001';
+        this.shape.shapes[4].fill = '#800000FF';
       }
 
-      this.actdia.tryUpdateShape(this, this.svgShape?.children?.[2], this.shape.shapes[2]);
-      this.actdia.tryUpdateShape(this, this.svgShape?.children?.[4], this.shape.shapes[4]);
+      if (this.actdia) {
+        this.actdia.tryUpdateShape(this, this.svgShape?.children?.[2], this.shape.shapes[2]);
+        this.actdia.tryUpdateShape(this, this.svgShape?.children?.[4], this.shape.shapes[4]);
+      }
     }
 
     onMouseClick({ evt, item, shape }) {
-      console.log(shape);
       if (!item.actdia
         || evt.button !== 0
         || evt.ctrlKey
@@ -139,12 +158,16 @@ export default function create({ Node }) {
         clearInterval(this.#interval);
       }
 
-      const rate = this.rate * 2 * this.#factor;
-      if (rate > 0) {
-        this.#interval = setInterval(() => {
-          this.setStatus(!this.status);
-        }, 1000 / rate);
+      if (this.active) {
+        const rate = this.rate * 2 * this.factor;
+        if (rate > 0) {
+          this.#interval = setInterval(() => {
+            this.setStatus(!this.status);
+          }, 1000 / rate);
+        }
       }
+
+      this.updateButtons();
     }
 
     updateStatus() {
