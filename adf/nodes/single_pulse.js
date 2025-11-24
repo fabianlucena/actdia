@@ -47,7 +47,7 @@ export default function create({ Node }) {
     };
 
     #delay = 200;
-    #pulseWidth = 100;
+    #pulseWidth = 250;
     #pulsed = false;
     #timeout = null;
 
