@@ -223,12 +223,18 @@ export default function create({ Node, _ }) {
         return;
       }
 
+      const pos = isNaN(shape.x)? 0 : (shape.x ?? 0);
+
+      const ux = Math.cos(this.rotation / 180 * Math.PI);
+      const uy = Math.sin(this.rotation / 180 * Math.PI);
+
       evt.preventDefault();
       this.#draggingKnob = true;
       this.#draggingFrom = {
-        x: mouse.x - (isNaN(shape.x)? 0 : (shape.x ?? 0)),
-        y: mouse.y - (isNaN(shape.y)? 0 : (shape.y ?? 0)),
+        x: mouse.x - pos * ux,
+        y: mouse.y - pos * uy,
       };
+      
       this.updateKnob();
     }
 
@@ -274,6 +280,7 @@ export default function create({ Node, _ }) {
         newStatus = this.max;
       
       this.setStatus(newStatus);
+      this.actdia.showLabelForItem(this);
     }
   };
 }

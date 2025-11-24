@@ -34,6 +34,7 @@
       "elementClass": "BCDCounter",
       "url": "../nodes/electronic/bcd/bcd_counter.js",
       "id": "18b98f4f-559b-4267-83d2-ca9e18a286cc",
+      "previousClockStatus": 1,
       "x": 14,
       "y": 15,
       "fqcn": "../nodes/electronic/bcd/bcd_counter.js/BCDCounter",
@@ -607,7 +608,6 @@
       "elementClass": "Slider",
       "url": "../nodes/slider.js",
       "id": "fd24eb9e-0e30-41b5-a644-e0aaed19dbec",
-      "min": 0.1,
       "max": 50,
       "fqcn": "../nodes/slider.js/Slider",
       "x": 3,
@@ -626,9 +626,10 @@
           "id": "a0578c6c-b39d-42f9-aa9d-0ab5c92814c1"
         }
       ],
-      "status": 3.5930000000000044,
+      "status": 0.1,
       "function": "linear",
-      "size": 6
+      "size": 6,
+      "min": 0
     }
   ],
   "connections": [

@@ -1890,14 +1890,18 @@ export default class ActDia {
         }
       }
 
-      if (!item)
-        return;
-
-      this.showLabel(
-        (item.description || item.id || item.constructor.name)
-        + '<br>' + _(`Status: %s`, item.getStatusText()),
-      );
+      this.showLabelForItem(item);
     }
+  }
+
+  showLabelForItem(item) {
+    if (!item)
+      return;
+
+    this.showLabel(
+      (item.description || item.id || item.constructor.name)
+      + '<br>' + _(`Status: %s`, item.getStatusText()),
+    );
   }
 
   mouseOutHandler(evt) {
