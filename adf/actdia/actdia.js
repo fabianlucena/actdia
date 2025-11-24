@@ -209,6 +209,10 @@ export default class ActDia {
   selectedConnections = [];
   onPushNotification = null;
 
+  get items() {
+    return this.#items;
+  }
+
   constructor(options) {
     this.create(...arguments);
 

@@ -1,4 +1,17 @@
-export default function create({ Node }) {
+export default function create({ Node, actdia }) {
+  actdia.globalData ??= {};
+  actdia.globalData.labeledStatus ??= {};
+  actdia.globalData.labeledStatusUpdated ??= name => {
+    const outputs = actdia.items
+      .filter(i => i.elementClass === 'LabelOutput' && i.name === name);
+
+    
+    const status = actdia.globalData.labeledStatus[name];
+    outputs.forEach(item => {
+      item.updateStatus(status);
+    });
+  };
+
   return class LabelOutput extends Node {
     static label = 'Label output';
 
@@ -15,12 +28,12 @@ export default function create({ Node }) {
           x: 0,
           width: 4.5,
           height: 1,
-          text: 'No name name',
+          text: 'No name',
         }
       ],
     };
 
-    name = 'No name 1';
+    name = 'No name';
 
     box = {
       x: 0,
@@ -29,13 +42,22 @@ export default function create({ Node }) {
       height: 1,
     };
 
+    connectors = [
+      { name: 'o', type: 'out', x: 5, y: 0, direction: 'right', extends: 'tiny' },
+    ];
+
+    construct() {
+      super.construct();
+      window.labeledStatus[this.name] = null;
+    }
+
     update() {
       this.shape.shapes[1].text = this.name;
       this.actdia.tryUpdateShape(this, this.svgShape?.children?.[1], this.shape.shapes[1]);
     }
 
-    connectors = [
-      { name: 'o', type: 'out', x: 5, y: 0, direction: 'right', extends: 'tiny' },
-    ];
+    updateStatus(newStatus, options = {}) {
+      this.setStatus(newStatus, options);
+    }
  };
 }
