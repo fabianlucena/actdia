@@ -313,9 +313,9 @@ export default class ActDia {
     document.body.addEventListener('mousemove', evt => this.mouseMoveHandler(evt), true);
     this.svg.addEventListener('mouseover', evt => this.mouseOverHandler(evt));
     this.svg.addEventListener('mouseout', evt => this.mouseOutHandler(evt));
-    this.svg.addEventListener('click', evt => this.mouseClickHandler(evt));
+    this.svg.addEventListener('click', evt => this.clickHandler(evt));
     this.svg.addEventListener('contextmenu', evt => this.contextMenuHandler(evt));
-    this.svg.addEventListener('dblclick', evt => this.mouseDblClickHandler(evt));
+    this.svg.addEventListener('dblclick', evt => this.dblClickHandler(evt));
     this.svg.addEventListener('mousedown', evt => this.mouseDownHandler(evt));
     this.svg.addEventListener('mouseup', evt => this.mouseUpHandler(evt));
     window.addEventListener('beforeprint', () => this.container.classList.add('print'));
@@ -1949,7 +1949,7 @@ export default class ActDia {
     this.hideLabel();
   }
 
-  mouseClickHandler(evt) {
+  clickHandler(evt) {
     if (!this.editable)
       return;
 
@@ -1969,8 +1969,8 @@ export default class ActDia {
       return;
     }
 
-    if (item.onMouseClick) {
-      if (item.onMouseClick({ evt, item, shape }) === false)
+    if (item.onClick) {
+      if (item.onClick({ evt, item, shape }) === false)
         evt.preventDefault();
 
       if (evt.defaultPrevented)
@@ -2060,7 +2060,7 @@ export default class ActDia {
     return false;
   }
 
-  mouseDblClickHandler(evt) {
+  dblClickHandler(evt) {
     const { item } = this.getEventItem(evt);
     if (item) {
       const event = new CustomEvent(

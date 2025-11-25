@@ -197,7 +197,6 @@ export default class Dialog {
 
     this.updatePosition();
 
-    this.onMouseClick = this.onMouseClick;
     this.element.focus();
   }
 
@@ -296,12 +295,6 @@ export default class Dialog {
   }
 
   clickHandler(evt) {
-    if (this.onMouseClick
-      && this.onMouseClick(evt)
-      && evt.defaultPrevented
-    )
-      return;
-
     if (this.onClick
       && this.onClick(evt)
       && evt.defaultPrevented

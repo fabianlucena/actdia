@@ -46,7 +46,7 @@ export default class ActDiaTools {
       selectable: false,
       draggable: false,
       exportable: false,
-      onMouseClick: () => {
+      onClick: () => {
         this.tools
           .filter(i => i.type === 'tool' && i.name !== 'Menu')
           .forEach(i => i.visible = !i.visible);
@@ -75,7 +75,7 @@ export default class ActDiaTools {
       selectable: false,
       draggable: false,
       exportable: false,
-      onMouseClick: () => this.save(),
+      onClick: () => this.save(),
     }),
 
     new Item({
@@ -120,7 +120,7 @@ export default class ActDiaTools {
       selectable: false,
       draggable: false,
       exportable: false,
-      onMouseClick: () => this.copyJSONToClipboard(),
+      onClick: () => this.copyJSONToClipboard(),
     }),
 
     new Item({
@@ -165,7 +165,7 @@ export default class ActDiaTools {
       selectable: false,
       draggable: false,
       exportable: false,
-      onMouseClick: () => this.copySVGToClipboard(),
+      onClick: () => this.copySVGToClipboard(),
     }),
 
     new Item({
@@ -189,7 +189,7 @@ export default class ActDiaTools {
       selectable: false,
       draggable: false,
       exportable: false,
-      onMouseClick: () => this.downloadJsonHandler(),
+      onClick: () => this.downloadJsonHandler(),
     }),
 
     new Item({
@@ -213,7 +213,7 @@ export default class ActDiaTools {
       selectable: false,
       draggable: false,
       exportable: false,
-      onMouseClick: () => this.uploadJson(),
+      onClick: () => this.uploadJson(),
     }),
 
     new Item({
@@ -252,7 +252,7 @@ export default class ActDiaTools {
       selectable: false,
       draggable: false,
       exportable: false,
-      onMouseClick: () => this.share(),
+      onClick: () => this.share(),
     }),
 
     new Item({
@@ -293,7 +293,7 @@ export default class ActDiaTools {
       selectable: false,
       draggable: false,
       exportable: false,
-      onMouseClick: () => this.downloadSvgHandler(),
+      onClick: () => this.downloadSvgHandler(),
     }),
 
     new Item({
@@ -320,7 +320,7 @@ export default class ActDiaTools {
       },
       draggable: false,
       exportable: false,
-      onMouseClick: () => this.view({ selected: true}),
+      onClick: () => this.view({ selected: true}),
     }),
 
     new Item({
@@ -357,7 +357,7 @@ export default class ActDiaTools {
       selectable: false,
       draggable: false,
       exportable: false,
-      onMouseClick: () => this.viewInConsole({ selected: true}),
+      onClick: () => this.viewInConsole({ selected: true}),
     }),
   ];
 
@@ -408,9 +408,9 @@ export default class ActDiaTools {
       if (!tool)
         return;
 
-      const onMouseClick = tool?.onMouseClick;
-      if (onMouseClick) {
-        onMouseClick();
+      const onClick = tool?.onClick;
+      if (onClick) {
+        onClick();
         this.updateTools();
       }
     });
@@ -465,7 +465,7 @@ export default class ActDiaTools {
         <button id="export-all" class="button">${_('Export all')}</button>
         <button id="export-selected" class="button">${_('Export selected')}</button>`,
 
-      onMouseClick: evt => {
+      onClick: evt => {
         if (evt.target.closest('#export-all')) {
           this.downloadJson({ selected: false});
           dialog.close();
@@ -539,7 +539,7 @@ export default class ActDiaTools {
         <button id="export-all" class="button">${_('Export all')}</button>
         <button id="export-selected" class="button">${_('Export selected')}</button>`,
 
-      onMouseClick: evt => {
+      onClick: evt => {
         if (evt.target.closest('#export-all')) {
           this.downloadSvg({ selected: false});
           dialog.close();

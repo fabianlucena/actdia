@@ -125,7 +125,7 @@ export default function create({ Node }) {
       this.actdia.tryUpdateShape(this, this.svgShape?.children?.[2], this.shape.shapes[2]);
     }
 
-    onMouseClick({ evt, item, shape }) {
+    onClick({ evt, item, shape }) {
       if (!item.actdia
         || evt.buttons !== 0
         || evt.ctrlKey
