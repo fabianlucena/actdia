@@ -40,11 +40,40 @@ export default function create({ Node }) {
       { name: 'i0', type: 'in', x: 0, y: 2, direction: 'left' },
     ];
 
-    static skipExport = ['matrix'];
-
-    matrix = [];
     #height = 6;
     #width = 20;
+    #scaleX = .2;
+    #matrix = [];
+    #min = [];
+    #max = [];
+    #range = [];
+
+    get height() {
+      return this.#height;
+    }
+
+    set height(value) {
+      this.#height = value;
+      this.update();
+    }
+
+    get width() {
+      return this.#width;
+    }
+
+    set width(value) {
+      this.#width = value;
+      this.update();
+    }
+
+    get scaleX() {
+      return this.#scaleX;
+    }
+
+    set scaleX(value) {
+      this.#scaleX = value;
+      this.updateStatus();
+    }
 
     constructor(params) {
       super(params);
@@ -80,8 +109,20 @@ export default function create({ Node }) {
       const sy = (this.#height - 1) / status.length;
       const ssy = sy * .9;
       for (let i = 0; i < status.length; i++) {
-        this.matrix[i] ??= [];
-        this.matrix[i].push(status[i]);
+        let value = status[i];
+        if (value === true)
+          value = 1;
+        else if (value === false)
+          value = 0;
+        else if (isNaN(value))
+          value = 0;
+
+        this.#matrix[i] ??= [];
+        this.#matrix[i].push(value);
+        
+        this.#min[i] = Math.min(this.#min[i] ?? value, value);
+        this.#max[i] = Math.max(this.#max[i] ?? value, value);
+        this.#range[i] = this.#max[i] - this.#min[i];
 
         let shape = this.shape.shapes[2].shapes[i];
         if (!shape) {
@@ -96,17 +137,12 @@ export default function create({ Node }) {
         shape.y = i * sy + .1;
 
         shape.d = '';
-        for (let k = 0; k < this.matrix[i].length; k++) {
-          let value = this.matrix[i][k];
-          if (value === true)
-            value = 1;
-          else if (value === false)
-            value = 0;
-
-          const x = k * 0.5;
-          const y = value * ssy;
+        for (let k = 0; k < this.#matrix[i].length; k++) {
+          let value = this.#matrix[i][k];
+          const x = k * this.scaleX;
+          const y = (1 - (value - this.#min[i]) / (this.#range[i] || 1 )) * ssy;
           if (x > this.#width - 1) {
-            this.matrix[i].shift();
+            this.#matrix[i].shift();
             break;
           }
 
@@ -117,10 +153,10 @@ export default function create({ Node }) {
           }
         }
 
-        if (this.svgShape?.children?.[1].children?.[i]) {
+        if (svgElement?.children?.[i]) {
           this.actdia.tryUpdateShape(
             this,
-            svgElement?.children?.[1].children?.[i],
+            svgElement?.children?.[i],
             shape
           );
         } else {
