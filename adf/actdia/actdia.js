@@ -2137,12 +2137,18 @@ export default class ActDia {
       mouse: this.getUntransformedPosition(this.mouse, { snap: false }),
     });
 
-    if (evt.defaultPrevented)
-      return false;
+    if (evt.defaultPrevented) {
+      return;
+    }
+
+    if (evt.button !== 0) {
+      this.endDrag();
+      return;
+    }
     
     if (evt.ctrlKey) {
       this.startDrag(...this.#items.filter(i => i.selected && i.draggable !== false));
-    } else if (evt.button === 0) {
+    } else {
       if (item.draggable !== false) {
         if (item.selected) {
           this.startDrag(...this.#items.filter(i => i.selected && i.draggable !== false));
@@ -2150,11 +2156,10 @@ export default class ActDia {
           this.startDrag(item);
         }
       }
-    } else {
-      this.endDrag();
     }
-  
-    return false;
+
+    evt.preventDefault();
+    evt.stopPropagation();
   }
 
   mouseUpHandler(evt) {
@@ -2172,6 +2177,8 @@ export default class ActDia {
     if (this.dragging) {
       this.mouse.down = null;
       this.endDrag();
+
+      evt.stopPropagation();
       evt.preventDefault();
     }
   }
