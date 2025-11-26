@@ -194,7 +194,7 @@ export default class Connection extends Item {
 
   setBackStatus(backStatus, options) {
     let to;
-    if (options.from === this.from.connector)
+    if (options.from === this.from?.connector)
       to = this.to;
     else if (options.from === this.to?.connector)
       to = this.from;
@@ -204,6 +204,7 @@ export default class Connection extends Item {
       && to.connector.type === 'out'
       && !options.connectors.has(to.connector)
     ) {
+      options = { ...options, connectors: new Set([...options.connectors]) };
       to.connector.setBackStatus(backStatus, options);
     }
   }
