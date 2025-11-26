@@ -196,7 +196,7 @@ export default class Connection extends Item {
     let to;
     if (options.from === this.from.connector)
       to = this.to;
-    else if (options.from === this.to.connector)
+    else if (options.from === this.to?.connector)
       to = this.from;
 
     if (to
