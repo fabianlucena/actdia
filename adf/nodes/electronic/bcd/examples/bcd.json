@@ -3,12 +3,14 @@
     "version": "0.1.0"
   },
   "imports": [
+    "../nodes/bus.js",
     "../nodes/electronic/bcd/bcd_counter.js",
     "../nodes/electronic/bcd/bcd_to_7_segments.js",
     "../nodes/electronic/bcd/seven-segment_display.js",
     "../nodes/electronic/led.js",
     "../nodes/label_input.js",
     "../nodes/label_output.js",
+    "../nodes/oscillograph.js",
     "../nodes/pulse_generator.js",
     "../nodes/single_pulse.js",
     "../nodes/slider.js",
@@ -38,6 +40,7 @@
       "x": 14,
       "y": 15,
       "fqcn": "../nodes/electronic/bcd/bcd_counter.js/BCDCounter",
+      "name": "Contador BCD - 8b98f",
       "coords": [
         14,
         15
@@ -76,6 +79,7 @@
       "x": 28,
       "y": 10,
       "fqcn": "../nodes/electronic/led.js/Led",
+      "name": "Led - ef637",
       "coords": [
         28,
         10
@@ -93,6 +97,7 @@
       "x": 27,
       "y": 10,
       "fqcn": "../nodes/electronic/led.js/Led",
+      "name": "Led - beb06",
       "coords": [
         27,
         10
@@ -110,6 +115,7 @@
       "x": 26,
       "y": 10,
       "fqcn": "../nodes/electronic/led.js/Led",
+      "name": "Led - 2da17",
       "coords": [
         26,
         10
@@ -127,6 +133,7 @@
       "x": 25,
       "y": 10,
       "fqcn": "../nodes/electronic/led.js/Led",
+      "name": "Led - 70310",
       "coords": [
         25,
         10
@@ -145,6 +152,7 @@
       "y": 3,
       "fqcn": "../nodes/switch.js/Switch",
       "class": "Switch",
+      "name": "Switch - 5362c",
       "coords": [
         7.5,
         3
@@ -160,11 +168,13 @@
       "elementClass": "PulseGenerator",
       "url": "../nodes/pulse_generator.js",
       "id": "e0717f26-e4a2-4971-9d98-c7ae33a31c6f",
-      "active": true,
       "interval": 11,
       "x": 4,
       "y": 10,
       "fqcn": "../nodes/pulse_generator.js/PulseGenerator",
+      "name": "Generador de pulsos - 0717f",
+      "factor": 1.975000000000008,
+      "active": true,
       "coords": [
         4,
         10
@@ -189,6 +199,7 @@
       "x": 49,
       "y": 21,
       "fqcn": "../nodes/electronic/bcd/seven-segment_display.js/SevenSegmentDisplay",
+      "name": "Seven Segment Display - 6585a",
       "coords": [
         49,
         21
@@ -227,6 +238,7 @@
       "x": 29,
       "y": 14,
       "fqcn": "../nodes/electronic/bcd/bcd_to_7_segments.js/BCTo7Segments",
+      "name": "BCD to 7 Segments - 8b410",
       "coords": [
         29,
         14
@@ -274,6 +286,7 @@
       "x": 43,
       "y": 21,
       "fqcn": "../nodes/electronic/bcd/seven-segment_display.js/SevenSegmentDisplay",
+      "name": "Seven Segment Display - 39794",
       "coords": [
         43,
         21
@@ -312,6 +325,7 @@
       "x": 21,
       "y": 26,
       "fqcn": "../nodes/electronic/bcd/bcd_counter.js/BCDCounter",
+      "name": "Contador BCD - 3d905",
       "coords": [
         21,
         26
@@ -350,6 +364,7 @@
       "x": 29,
       "y": 25,
       "fqcn": "../nodes/electronic/bcd/bcd_to_7_segments.js/BCTo7Segments",
+      "name": "BCD to 7 Segments - 7e2a6",
       "coords": [
         29,
         25
@@ -397,6 +412,7 @@
       "fqcn": "../nodes/single_pulse.js/SinglePulse",
       "x": 5,
       "y": 5,
+      "name": "Pulso único - 8a839",
       "coords": [
         5,
         5
@@ -418,6 +434,7 @@
       "fqcn": "../nodes/electronic/led.js/Led",
       "x": 0,
       "y": 0,
+      "name": "Led - 53383",
       "coords": [
         0,
         0
@@ -432,6 +449,7 @@
       "elementClass": "LabelInput",
       "url": "../nodes/label_input.js",
       "id": "ff3566a0-caba-4dfa-9d0a-e0ed11350361",
+      "label": "clock",
       "name": "clk",
       "fqcn": "../nodes/label_input.js/LabelInput",
       "x": 9,
@@ -454,6 +472,7 @@
       "elementClass": "LabelOutput",
       "url": "../nodes/label_output.js",
       "id": "ac657088-d7d2-4706-ba25-92796f31925f",
+      "label": "clock",
       "name": "clk",
       "fqcn": "../nodes/label_output.js/LabelOutput",
       "x": 7,
@@ -476,6 +495,7 @@
       "elementClass": "LabelInput",
       "url": "../nodes/label_input.js",
       "id": "758f4c0c-705d-4bf7-a76d-d9d95e95ab4f",
+      "label": "enable",
       "name": "enable",
       "fqcn": "../nodes/label_input.js/LabelInput",
       "x": 9,
@@ -498,6 +518,7 @@
       "elementClass": "LabelOutput",
       "url": "../nodes/label_output.js",
       "id": "b9315fd4-f554-48c2-8c2d-78d33469df83",
+      "label": "enable",
       "name": "enable",
       "fqcn": "../nodes/label_output.js/LabelOutput",
       "x": 7,
@@ -520,6 +541,7 @@
       "elementClass": "LabelOutput",
       "url": "../nodes/label_output.js",
       "id": "c9aa7e99-f1a6-4da4-a19e-e87999ed4257",
+      "label": "enable",
       "name": "enable",
       "fqcn": "../nodes/label_output.js/LabelOutput",
       "x": 13,
@@ -542,6 +564,7 @@
       "elementClass": "LabelInput",
       "url": "../nodes/label_input.js",
       "id": "08664414-0ab5-4f06-aaab-5466e5b0d47b",
+      "label": "reset",
       "name": "reset",
       "fqcn": "../nodes/label_input.js/LabelInput",
       "x": 9,
@@ -564,6 +587,7 @@
       "elementClass": "LabelOutput",
       "url": "../nodes/label_output.js",
       "id": "cf666975-339e-4417-9c3e-25880e934eca",
+      "label": "reset",
       "name": "reset",
       "fqcn": "../nodes/label_output.js/LabelOutput",
       "x": 7,
@@ -586,6 +610,7 @@
       "elementClass": "LabelOutput",
       "url": "../nodes/label_output.js",
       "id": "47aaf4a7-7c26-41cd-9a1a-73e44553caf7",
+      "label": "reset",
       "name": "reset",
       "fqcn": "../nodes/label_output.js/LabelOutput",
       "x": 13,
@@ -612,7 +637,7 @@
       "fqcn": "../nodes/slider.js/Slider",
       "x": 3,
       "y": 23,
-      "name": "",
+      "name": "Slider - d24eb",
       "description": "",
       "sx": 1,
       "sy": 1,
@@ -626,10 +651,76 @@
           "id": "a0578c6c-b39d-42f9-aa9d-0ab5c92814c1"
         }
       ],
-      "status": 0.1,
+      "status": 1.975000000000008,
       "function": "linear",
       "size": 6,
       "min": 0
+    },
+    {
+      "elementClass": "Oscillograph",
+      "url": "../nodes/oscillograph.js",
+      "id": "62891554-d944-4063-a548-342c8c42658a",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 20,
+        "height": 6
+      },
+      "fqcn": "../nodes/oscillograph.js/Oscillograph",
+      "x": 43,
+      "y": 5,
+      "name": "Oscillograph - 28915",
+      "coords": [
+        43,
+        5
+      ],
+      "connectors": [
+        {
+          "id": "da059496-4a60-4544-a06c-5ce44278d9d7"
+        }
+      ]
+    },
+    {
+      "elementClass": "Bus",
+      "url": "../nodes/bus.js",
+      "id": "53a53c9a-94ed-44ae-bbc1-964cdbc560d0",
+      "box": {
+        "x": 0,
+        "y": 0.5,
+        "width": 1,
+        "height": 4
+      },
+      "fqcn": "../nodes/bus.js/Bus",
+      "x": 35,
+      "y": 6,
+      "name": "Canal - 3a53c",
+      "description": "",
+      "sx": 1,
+      "sy": 1,
+      "length": 4,
+      "channelWidth": 4,
+      "coords": [
+        35,
+        6
+      ],
+      "rotation": "0",
+      "connectors": [
+        {
+          "id": "ce82da5b-96a7-4021-9b41-af9a501292f7"
+        },
+        {
+          "id": "0821289b-9e4b-47ef-89ab-f1632399850a"
+        },
+        {
+          "id": "e04c8365-8a63-4ae2-92f1-8b3538d9b62a"
+        },
+        {
+          "id": "796fcc68-9be5-4c99-b13a-35b94100fb95"
+        },
+        {
+          "id": "9c2df81d-89d4-4bd0-afef-d939ecb4cd2d"
+        }
+      ]
     }
   ],
   "connections": [
@@ -1099,6 +1190,71 @@
       "to": {
         "connector": "995a7c0e-47d3-40b7-95db-8c283a85a5b7",
         "item": "e0717f26-e4a2-4971-9d98-c7ae33a31c6f"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "ff830aed-6d02-4e48-89b0-1189af34328c",
+      "from": {
+        "connector": "ce82da5b-96a7-4021-9b41-af9a501292f7",
+        "item": "53a53c9a-94ed-44ae-bbc1-964cdbc560d0"
+      },
+      "to": {
+        "connector": "da059496-4a60-4544-a06c-5ce44278d9d7",
+        "item": "62891554-d944-4063-a548-342c8c42658a"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "3a83b07c-f381-43ff-8217-77b3f9d489e6",
+      "from": {
+        "connector": "890d4023-d070-44c1-832e-3b324c0a4950",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      },
+      "to": {
+        "connector": "0821289b-9e4b-47ef-89ab-f1632399850a",
+        "item": "53a53c9a-94ed-44ae-bbc1-964cdbc560d0"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "1ff38b2c-d445-499f-9efe-541ef8b618be",
+      "from": {
+        "connector": "d0b7f5a2-f637-463e-b09e-00eb3749f329",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      },
+      "to": {
+        "connector": "e04c8365-8a63-4ae2-92f1-8b3538d9b62a",
+        "item": "53a53c9a-94ed-44ae-bbc1-964cdbc560d0"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "039c79f0-7ca1-4233-b2dd-7548d0cf18b0",
+      "from": {
+        "connector": "a06e2529-cd32-4c37-9aae-608db5e2da04",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      },
+      "to": {
+        "connector": "796fcc68-9be5-4c99-b13a-35b94100fb95",
+        "item": "53a53c9a-94ed-44ae-bbc1-964cdbc560d0"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "ec370c36-25c6-4f43-bc36-f0698ca09502",
+      "from": {
+        "connector": "52087603-0811-43b5-be88-f7d3accd36eb",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      },
+      "to": {
+        "connector": "9c2df81d-89d4-4bd0-afef-d939ecb4cd2d",
+        "item": "53a53c9a-94ed-44ae-bbc1-964cdbc560d0"
       }
     }
   ]
