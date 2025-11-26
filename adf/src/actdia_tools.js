@@ -629,7 +629,7 @@ export default class ActDiaTools {
     const exportable = this.getExportableItems(options);
     const data = this.getData({ items: exportable });
     const url = new URL(window.location.href);
-    url.hash = '#' + encodeURIComponent(JSON.stringify(data));
+    url.hash = '#diagram-' + encodeURIComponent(JSON.stringify(data));
     navigator.clipboard.writeText(url.toString())
       .then(() => pushNotification(_('URL copied to clipboard.'), 'success'))
       .catch(err => pushNotification(_('Error to copy: %s', err), 'error'));

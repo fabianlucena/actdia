@@ -12,7 +12,8 @@ let container = null,
   nodeSelector = null,
   mouseSelectOn,
   actdiaTools = null,
-  lastSavedStatus = null;
+  lastSavedStatus = null,
+  history = [];
 
 window.addEventListener('beforeprint', () => notificationContainer.style.display = 'none');
 window.addEventListener('afterprint', () => notificationContainer.style.display = '');
@@ -39,16 +40,43 @@ window.addEventListener('DOMContentLoaded', async () => {
   actdia.addEventListener('keyup', keyUpHandler);
 
   actdia.pushNotification(_('Welcome to ActDia!'), 'info');
-  if (window.location.hash) {
-    const data = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
+  if (window.location.hash && window.location.hash.startsWith('#diagram-')) {
+    const data = JSON.parse(decodeURIComponent(window.location.hash.substring(9)));
     await actdia.load(data);
   } else if (localStorage.getItem('actdia')) {
     await actdia.load(JSON.parse(localStorage.getItem('actdia')));
   }
 
   lastSavedStatus = JSON.stringify(actdia.getData({ noSelectedProperty: true }));
+  saveToHistory();
   actdiaTools.setChanged(false);
+
+  window.addEventListener('hashchange', () => {
+    if (window.location.hash.startsWith('#history-')) {
+      const id = window.location.hash.substring(9);
+      loadFromHistory(id);
+    }
+  });
 });
+
+function saveToHistory() {
+  let id;
+  do {
+    id = crypto.randomUUID();
+  } while (history.find(h => h.id === id));
+
+  const status = JSON.stringify(actdia.getData());
+  history.push({ id, status });
+  window.history.pushState({ id }, '', `#history-${id}`);
+}
+
+function loadFromHistory(id) {
+  const entry = history.find(h => h.id === id);
+  if (entry) {
+    actdia.load(JSON.parse(entry.status));
+    checkForChanges();
+  }
+}
 
 function dblClickHandler(evt) {
   if (!actdia.editable)
@@ -140,7 +168,11 @@ async function copyJSONToClipboard(options) {
 }
 
 function diagramChanged() {
-  const status = JSON.stringify(actdia.getData({ noSelectedProperty: true }));
+  saveToHistory();
+  checkForChanges();
+}
 
+function checkForChanges() {
+  const status = JSON.stringify(actdia.getData({ noSelectedProperty: true }));
   actdiaTools.setChanged(status !== lastSavedStatus);
 }
