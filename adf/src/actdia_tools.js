@@ -81,6 +81,30 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
+      name: _('Clear'),
+      description: _('Clears the diagram.'),
+      position: 'fixed',
+      shape: {
+        shapes: [
+          {
+            shape: 'rect',
+            x: 0.1,
+            y: 0.1,
+            width: 0.8,
+            height: 0.8,
+          },
+        ],
+      },
+      box: null,
+      selectable: false,
+      draggable: false,
+      exportable: false,
+      onClick: () => this.clear(),
+    }),
+
+    new Item({
+      type: 'tool',
+      visible: false,
       name: _('Copy JSON to clipboard'),
       description: _('Copies the diagram data to the clipboard in JSON format.'),
       position: 'fixed',
@@ -434,6 +458,27 @@ export default class ActDiaTools {
     const data = this.getData();
     localStorage.setItem('actdia', JSON.stringify(data));
     pushNotification(_('Diagram saved.'), 'success');
+  }
+
+  clear() {
+    if (this.actdia.modified === false) {
+      this.forceClear();
+      return;
+    }
+    
+    new Dialog({
+      container: this.container,
+      header: _('Confirm clear'),
+      content: _('Do you want to clear all items of the diagram?'),
+      onYes: evt => this.forceClear(),
+      noButton: true,
+      cancelButton: true,
+    });
+  }
+
+  forceClear() {
+    this.actdia.clear();
+    pushNotification(_('Diagram cleared.'), 'success');
   }
 
   async copyJSONToClipboard(options) {

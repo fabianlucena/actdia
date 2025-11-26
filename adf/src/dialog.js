@@ -143,7 +143,7 @@ export default class Dialog {
       this.headerCloseButtonElement.style.display = 'none';
     }
 
-    if (this.okButton) {
+    if (this.okButton || this.onOk) {
       this.okButtonElement.style.display = '';
       this.okButtonElement.innerHTML = 
         typeof this.okButton === 'string' ? this.okButton : _('OK');
@@ -151,7 +151,7 @@ export default class Dialog {
       this.okButtonElement.style.display = 'none';      
     }
 
-    if (this.cancelButton) {
+    if (this.cancelButton || this.onCancel) {
       this.cancelButtonElement.style.display = '';
       this.cancelButtonElement.innerHTML = 
         typeof this.cancelButton === 'string' ? this.cancelButton : _('Cancel');
@@ -159,7 +159,7 @@ export default class Dialog {
       this.cancelButtonElement.style.display = 'none';
     }
 
-    if (this.yesButton) {
+    if (this.yesButton || this.onYes) {
       this.yesButtonElement.style.display = '';
       this.yesButtonElement.innerHTML =
         typeof this.yesButton === 'string' ? this.yesButton : _('Yes');
@@ -167,7 +167,7 @@ export default class Dialog {
       this.yesButtonElement.style.display = 'none';
     }
 
-    if (this.noButton) {
+    if (this.noButton || this.onNo) {
       this.noButtonElement.style.display = '';
       this.noButtonElement.innerHTML =
         typeof this.noButton === 'string' ? this.noButton : _('No');

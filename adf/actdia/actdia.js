@@ -401,14 +401,18 @@ export default class ActDia {
     return exportable;
   }
 
-  async load(data, options = {}) {
-    await loadLocales(data.locales);
-    await this.importElements(...data.imports.filter(u => u));
-
+  clear() {
     this.#items = [];
     this.nodesLayerSVG.innerHTML = '';
     this.connectionsLayerSVG.innerHTML = '';
     this.othersLayerSVG.innerHTML = '';
+  }
+
+  async load(data, options = {}) {
+    this.clear();
+    
+    await loadLocales(data.locales);
+    await this.importElements(...data.imports.filter(u => u));
 
     await this.addItem(...data.nodes);
     await this.addOptionsItem({ elementClass: 'Connection' }, ...data.connections);
