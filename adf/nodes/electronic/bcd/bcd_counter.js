@@ -86,9 +86,9 @@ export default function create({ Node }) {
 
       const
         q0 = this.status % 2,
-        q1 = (this.status % 4) >= 2,
-        q2 = (this.status % 8) >= 4,
-        q3 = this.status >= 8;
+        q1 = (this.status % 4) >= 2 ? 1: 0,
+        q2 = (this.status % 8) >= 4 ? 1: 0,
+        q3 = this.status >= 8 ? 1: 0;
 
       if (q0 !== outs[0].status) outs[0].setStatus(q0, options);
       if (q1 !== outs[1].status) outs[1].setStatus(q1, options);
