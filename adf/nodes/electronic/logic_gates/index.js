@@ -20,6 +20,13 @@ export default {
     'ieee-not.js',
     'ieee-nand.js',
     'ieee-nor.js',
-    //'ieee-xnor.js',
+    'ieee-xnor.js',
+  ],
+  examples: [
+    {
+      _label: 'Logic gates',
+      url: './examples/logic_gates.json',
+      image: './examples/logic_gates.svg',
+    },
   ],
 };
