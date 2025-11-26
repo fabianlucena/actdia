@@ -33,6 +33,9 @@
     ],
     "../nodes/electronic": [
       "es"
+    ],
+    "../nodes/electronic/logic_gates": [
+      "es"
     ]
   },
   "nodes": [
@@ -43,10 +46,9 @@
       "box": {
         "x": 0,
         "y": 0,
-        "width": 1.4273437559604645,
-        "height": 1.0693359375
+        "width": 8.115624904632568,
+        "height": 2.109375
       },
-      "_autoSize": "true",
       "x": 24.27777777777778,
       "y": 1.833333333333334,
       "description": "",
