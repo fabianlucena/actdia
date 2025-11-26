@@ -91,7 +91,7 @@ export default class Element {
     let classRef = registry[fqcn]?.classRef;
     if (!classRef) {
       if (allData.url) {
-        await this.importAsync(creationData, allData.url);
+        await this.importAsync(allData, allData.url);
       }
     }
 

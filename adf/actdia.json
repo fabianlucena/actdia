@@ -825,6 +825,8 @@
   ],
   "connections": [
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "40c101eb-59f6-4cd2-ac35-b90ff676ee7a",
       "from": {
         "connector": "5359b835-f826-4d56-bb11-bb93c4bd949b",
@@ -836,6 +838,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "94cac2ee-b31e-48ce-8718-633c735d5704",
       "from": {
         "connector": "74d601cf-1ad0-4df9-814b-ed96c4a0e9a7",
@@ -847,6 +851,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "ccb336e4-483b-443b-94d2-96ce232fdcd4",
       "from": {
         "connector": "934bb9d6-809c-42f5-bd54-f059e689d129",
@@ -858,6 +864,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "051bbcff-5983-47a3-8344-897e6191919c",
       "from": {
         "connector": "7ff22bd8-dd34-4407-8c36-fc69735d8007",
@@ -869,6 +877,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "a3cdf1c6-a6b5-47c0-9ca2-fe7b8affb80b",
       "from": {
         "connector": "c64b7e58-3124-4cf6-ad6e-cc7c29f81d76",
@@ -880,6 +890,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "197423d2-e9f6-4177-a719-61f3f08a9788",
       "from": {
         "connector": "3851e2e7-c18d-4b04-834c-b029aee6601e",
@@ -891,6 +903,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "ac54d99f-62e8-46ab-bd25-a4421893438a",
       "from": {
         "connector": "819cf3f8-0a91-4ca6-b85c-1e9602a673bb",
@@ -902,6 +916,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "45517666-a43f-4790-97fe-dc6d1e05232c",
       "from": {
         "connector": "fdfa93c7-5639-4caf-ad8c-0e62baf3f99f",
@@ -913,6 +929,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "cabdda18-dcbf-4a3a-83fe-da974b865dab",
       "from": {
         "connector": "c18edfef-6935-4951-b803-481441c9997b",
@@ -924,6 +942,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "2df255ab-f7c5-4baa-944e-dd372d8c861a",
       "from": {
         "connector": "ec045ef0-59db-49f2-9e8c-86ba59083c9a",
@@ -935,6 +955,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "51d0adfb-2dc8-45a7-b080-252543c60fce",
       "from": {
         "connector": "904192d5-44bf-4c91-889a-eb72e8bb8757",
@@ -946,6 +968,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "9c07d6f7-4567-493b-990b-c84357438c5d",
       "from": {
         "connector": "867099b7-2ae6-4fbb-a1d2-cc10eb2bbb59",
@@ -957,6 +981,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "99332d77-4e18-4f98-aea4-7be3d0f154ca",
       "from": {
         "connector": "bad2f573-7474-47b3-8d82-148cf43ebcb7",
@@ -968,6 +994,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "295b437a-9b8b-4130-b6d2-e513ba2ad49c",
       "from": {
         "connector": "22e15935-b00a-4c62-8c53-3be381557171",
@@ -979,6 +1007,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "9402cf44-0145-485f-bb9d-2e05a51afe78",
       "from": {
         "connector": "7299a957-938d-45f6-b97e-3a0b4fc7518f",
@@ -990,6 +1020,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "4c2dcd10-27e7-4f29-9be3-a55cd54d7b43",
       "from": {
         "connector": "78444581-8727-4ba2-a3be-e8d345062f70",
@@ -1001,6 +1033,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "106839cd-cf17-496b-a8f6-3bab489cad8a",
       "from": {
         "connector": "247a6767-f038-4158-b943-08e2d0cccfda",
@@ -1012,6 +1046,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "783dd487-3965-4717-bb79-2de03e2e1c17",
       "from": {
         "connector": "6bd95366-2bec-4350-9322-108a0eccc7bd",
@@ -1023,6 +1059,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "789219f1-8a27-4c14-987a-32c18c0355b4",
       "from": {
         "connector": "720e1016-7826-49ae-bdc0-8a0a13753662",
@@ -1034,6 +1072,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "0d53dc44-e252-4cb1-affd-04d6c5744048",
       "from": {
         "connector": "aa7e9e47-84ac-4636-9fe8-018929082d02",
@@ -1045,6 +1085,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "39198cdd-2d9d-40e5-b076-0bf50e66e52f",
       "from": {
         "connector": "2ca264c3-5081-4256-8b91-73ba4055bb81",
@@ -1056,6 +1098,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "69b26092-d2f1-419e-934d-93a1b2c15cbc",
       "from": {
         "connector": "59e4220f-b80a-41eb-ac12-63466e89cb88",
@@ -1067,6 +1111,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "505eedb5-1aa3-4436-9dde-9b32f33214ad",
       "from": {
         "connector": "bc72b49b-f00b-4729-a6c4-c44b96ebd3ca",
@@ -1078,6 +1124,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "7340cb71-b024-4d5b-86df-3aad17f1397e",
       "from": {
         "connector": "d5fc92a2-50d0-4553-9cfa-de186f2f5cbc",
@@ -1089,6 +1137,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "1ad6d8d5-e6d3-4ecc-b593-e4ecadc4c781",
       "from": {
         "connector": "26d3d1ee-dd35-40f2-8841-363aedacb4e5",
@@ -1100,6 +1150,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "e9027482-66fa-4ec6-a5c3-8f36960692ec",
       "from": {
         "connector": "8d3c4c78-0985-4708-9dab-1a32bd681d41",
@@ -1111,6 +1163,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "640ba841-610e-4b95-afc3-7367d1f49dc4",
       "from": {
         "connector": "d240bbb3-99fb-46e7-b44c-f929320b40a4",
@@ -1122,6 +1176,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "096665dd-16c9-4aa3-8b97-2e35e6f95524",
       "from": {
         "connector": "0720c35d-75a8-4c18-9d78-64832348d5f8",
@@ -1133,6 +1189,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "961a419f-b221-48d4-b0c4-e69ee541b7b9",
       "from": {
         "connector": "40135914-1058-4e68-936f-1fdf73a35c96",
@@ -1144,6 +1202,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "99873a0d-758f-439b-a6f5-5218fcaa666e",
       "from": {
         "connector": "1c7f374a-48ac-4956-98e6-d02d6b55f208",
@@ -1155,6 +1215,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "f4870829-9149-4a45-9bc3-9ca8ef754bb6",
       "from": {
         "connector": "d4c5282a-9da8-4880-ac37-ca69780d1c7f",
@@ -1166,6 +1228,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "49322e93-7d05-4591-9d4b-6788a0d7e9bc",
       "from": {
         "connector": "e447a588-3a2b-444d-9c52-d7ffd30c222d",
@@ -1177,6 +1241,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "affe732f-c953-497e-ba22-f390ed828b6f",
       "from": {
         "connector": "78c98162-ea03-42b0-a128-731a0959452a",
@@ -1188,6 +1254,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "8387649f-49e2-44fc-8e30-f8fb2d2b79cf",
       "from": {
         "connector": "223474d3-635b-4ad3-905a-bf806765e003",
@@ -1199,6 +1267,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "5fcbc942-ff8b-4e82-898f-f03cb3dc7999",
       "from": {
         "connector": "7e4fe90c-7496-4d25-9b16-9e49dc8b8aea",
@@ -1210,6 +1280,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "bc02074a-cea5-40b3-ac92-cc45e43ba492",
       "from": {
         "connector": "bc3c15df-4042-4e01-9159-a077669a3c18",
@@ -1221,6 +1293,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "c0e033a0-bf2d-44a3-bd4b-7553c58b319b",
       "from": {
         "connector": "1666e972-6932-4583-90cd-a3a54162d326",
@@ -1232,6 +1306,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "c8350041-7592-451a-995e-c0a3447f5c89",
       "from": {
         "connector": "9b87214c-abf9-4670-a78f-a9820712153d",
@@ -1243,6 +1319,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "f5bd52af-82d0-439d-b1da-650333f40f13",
       "from": {
         "connector": "1c08f009-6858-40d4-82d2-777dd7a68953",
@@ -1254,6 +1332,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "33f1003a-6fdd-47a4-8836-6b4d9a37cdfa",
       "from": {
         "connector": "3b6fd127-77f8-4ab6-8e60-397ceea8ac8d",
@@ -1265,6 +1345,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "21ec9c5f-e71a-49c3-b25e-c07b8ffa528e",
       "from": {
         "connector": "3c76417d-c179-481a-8a8d-b8b0a33670ff",
@@ -1276,6 +1358,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "aa5ce0f8-9fed-49ae-b086-802f36945225",
       "from": {
         "connector": "d010fb39-7371-44f8-b7fa-24537b801c92",
@@ -1287,6 +1371,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "84652d63-346f-4403-9661-7363b7a32e13",
       "from": {
         "connector": "9f916fb9-1d57-4fe7-ad3c-1dcbe72ab3b4",
@@ -1298,6 +1384,8 @@
       }
     },
     {
+      "elementClass": "Connection",
+      "url": "./connection.js",
       "id": "0a5f709e-dded-4eac-ae64-22027b155a0d",
       "from": {
         "connector": "28620cc4-2dd8-4d5e-ba2f-e5b6564491e1",

@@ -220,7 +220,6 @@ export default class ActDia {
       .then(() => this.importElements(
         './node.js',
         './connection.js',
-        './text.js',
         './connector-in.js',
         './connector-out.js'
       ))
@@ -357,7 +356,7 @@ export default class ActDia {
 
     const imports = [...new Set([
         ...nodes.map(item => item.url),
-        ...nodes.map(item => item.connectors.map(connector => connector.url)).flat(),
+        ...nodes.map(item => item.connectors?.map(connector => connector.url)).flat(),
         ...connections.map(item => item.url),
       ].filter(u => u))]
       .sort();
