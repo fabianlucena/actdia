@@ -1,5 +1,7 @@
 export default function create({ Node }) {
   return class UseCase extends Node {
+    static _label = 'Use case';
+
     shape = {
       shape: 'ellipse',
       x: 5,

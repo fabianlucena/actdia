@@ -1,5 +1,7 @@
 export default function create({ Node }) {
   return class Actor extends Node {
+    static _label = 'Actor';
+
     shape = {
       shapes: [
         {
