@@ -48,32 +48,34 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 
   lastSavedStatus = JSON.stringify(actdia.getData({ noSelectedProperty: true }));
-  saveToHistory();
+  pushState();
   actdiaTools.setChanged(false);
 
-  window.addEventListener('hashchange', () => {
-    if (window.location.hash.startsWith('#history-')) {
-      const id = window.location.hash.substring(9);
-      loadFromHistory(id);
+  window.addEventListener('hashchange', async () => {
+    if (window.location.hash.startsWith('#state-')) {
+      const id = window.location.hash.substring(7);
+      await loadFromHistory(id);
     }
   });
 });
 
-function saveToHistory() {
-  let id;
-  do {
-    id = crypto.randomUUID();
-  } while (history.find(h => h.id === id));
-
+function pushState() {
   const status = JSON.stringify(actdia.getData());
-  history.push({ id, status });
-  window.history.pushState({ id }, '', `#history-${id}`);
+  if (status !== (history.length ? history[history.length - 1].status : null)) {
+    let id;
+    do {
+      id = crypto.randomUUID().replaceAll('-', '');
+    } while (history.find(h => h.id === id));
+
+    history.push({ id, status });
+    window.history.pushState({ id }, '', `#state-${id}`);
+  }
 }
 
-function loadFromHistory(id) {
+async function loadFromHistory(id) {
   const entry = history.find(h => h.id === id);
   if (entry) {
-    actdia.load(JSON.parse(entry.status));
+    await actdia.load(JSON.parse(entry.status));
     checkForChanges();
   }
 }
@@ -168,7 +170,7 @@ async function copyJSONToClipboard(options) {
 }
 
 function diagramChanged() {
-  saveToHistory();
+  pushState();
   checkForChanges();
 }
 
