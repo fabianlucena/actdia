@@ -32,6 +32,10 @@ window.addEventListener('DOMContentLoaded', async () => {
   actdia.onPushNotification = pushNotification;
 
   actdiaTools = new ActDiaTools({ container, actdia });
+  actdiaTools.onSave =  () => {
+    lastSavedStatus = JSON.stringify(actdia.getData({ noSelectedProperty: true }));
+    actdiaTools.setChanged(false);
+  };
 
   actdia.addEventListener('diagramchanged', diagramChanged);
   actdia.addEventListener('dblclick', dblClickHandler);

@@ -455,6 +455,8 @@ export default class ActDiaTools {
     }),
   ];
 
+  onSave = null;
+
   constructor({ container, actdia }) {
     this.container = container;
     this.actdia = actdia;
@@ -537,6 +539,7 @@ export default class ActDiaTools {
     const data = this.getData();
     localStorage.setItem('actdia', JSON.stringify(data));
     pushNotification(_('Diagram saved.'), 'success');
+    this.onSave?.();
   }
 
   clear() {
