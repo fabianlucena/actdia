@@ -74,8 +74,8 @@ export default function create({ Node }) {
       },
     ];
 
-    _autoSize = true;
-    _padding = {
+    #autoSize = true;
+    #padding = {
       top: 0.5,
       right: 0.5,
       bottom: 0.5,
@@ -83,12 +83,12 @@ export default function create({ Node }) {
     };
 
     get autoSize() {
-      return this._autoSize;
+      return this.#autoSize;
     }
     
     set autoSize(value) {
-      if (this._autoSize !== value) {
-        this._autoSize = value
+      if (this.#autoSize !== value) {
+        this.#autoSize = value
         this.update();
       }
     }
@@ -105,26 +105,26 @@ export default function create({ Node }) {
     }
 
     get padding() {
-      return this._padding;
+      return this.#padding;
     }
 
     set padding(value) {
-      if (this._padding !== value) {
-        this._padding = value;
+      if (this.#padding !== value) {
+        this.#padding = value;
         this.update();
       }
     }
 
     update() {
-      super.update();
-
       if (this.autoSize && this.svgShape) {
         const bbox = this.svgShape.children[1].getBBox();
-        this.box.width = bbox.width / this.actdia.style.sx + this.padding.right + this.padding.left;
-        this.box.height = bbox.height / this.actdia.style.sy + this.padding.top + this.padding.bottom;
+        this.box.width = bbox.width + this.padding.right + this.padding.left;
+        this.box.height = bbox.height + this.padding.top + this.padding.bottom;
         this.shape.shapes[0].width = this.box.width;
         this.shape.shapes[0].height = this.box.height;
       }
+      
+      super.update();
     }
   };
 }
