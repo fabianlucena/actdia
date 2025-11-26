@@ -9,7 +9,8 @@ export default class ActDiaTools {
   tools = [
     new Item({
       type: 'tool',
-      name: _('Menu'),
+      name: 'menu',
+      label: _('Menu'),
       position: 'fixed',
       classList: ['full-filled'],
       shape: {
@@ -46,9 +47,10 @@ export default class ActDiaTools {
       selectable: false,
       draggable: false,
       exportable: false,
+      hideable: false,
       onClick: () => {
         this.tools
-          .filter(i => i.type === 'tool' && i.name !== 'Menu')
+          .filter(i => i.type === 'tool' && i.hideable !== false)
           .forEach(i => i.visible = !i.visible);
       },
     }),
@@ -56,7 +58,33 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: _('Save'),
+      name: 'modified',
+      label: _('Modified'),
+      description: _('The diagram was modified.'),
+      position: 'fixed',
+      shape: {
+        shapes: [
+          {
+            shape: 'path',
+            d: `M 0.5 0.1 L 0.5 0.9
+              M 0.1 0.5 L 0.9 0.5
+              M 0.2 0.2 L 0.8 0.8
+              M 0.8 0.2 L 0.2 0.8`,
+          },
+        ],
+      },
+      box: null,
+      selectable: false,
+      draggable: false,
+      exportable: false,
+      hideable: false,
+    }),
+
+    new Item({
+      type: 'tool',
+      visible: false,
+      name: 'save',
+      label: _('Save'),
       description: _('Saves the diagram.'),
       position: 'fixed',
       shape: {
@@ -81,7 +109,8 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: _('Clear'),
+      name: 'new',
+      label: _('New'),
       description: _('Clears the diagram.'),
       position: 'fixed',
       shape: {
@@ -89,9 +118,27 @@ export default class ActDiaTools {
           {
             shape: 'rect',
             x: 0.1,
-            y: 0.1,
+            y: 0.3,
             width: 0.8,
-            height: 0.8,
+            height: 0.7,
+          },
+          {
+            shape: 'path',
+            x: 1,
+            sx: .5,
+            sy: .5,
+            className: 'bright',
+            d: `M 0.5 0
+              L 0.612256 0.345492
+              L 0.975528 0.345492
+              L 0.681636 0.559016
+              L 0.793893 0.904508
+              L 0.5 0.690983
+              L 0.206107 0.904508
+              L 0.318364 0.559016
+              L 0.024472 0.345492
+              L 0.387744 0.345492
+              Z`,
           },
         ],
       },
@@ -105,7 +152,8 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: _('Copy JSON to clipboard'),
+      name: 'copy_json',
+      label: _('Copy JSON to clipboard'),
       description: _('Copies the diagram data to the clipboard in JSON format.'),
       position: 'fixed',
       shape: {
@@ -150,7 +198,8 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: _('Copy SVG to clipboard'),
+      name: 'copy_svg',
+      label: _('Copy SVG to clipboard'),
       description: _('Copies the diagram image to the clipboard in SVG format.'),
       position: 'fixed',
       shape: {
@@ -195,7 +244,8 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: _('Download JSON'),
+      name: 'download_json',
+      label: _('Download JSON'),
       description: _('Download the diagram as a JSON file.'),
       position: 'fixed',
       shape: {
@@ -219,7 +269,8 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: _('Upload'),
+      name: 'upload',
+      label: _('Upload'),
       description: _('Upload a diagram as a JSON file.'),
       position: 'fixed',
       shape: {
@@ -243,7 +294,8 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: _('Share'),
+      name: 'share',
+      label: _('Share'),
       description: _('Share the diagram as a URL.'),
       position: 'fixed',
       shape: {
@@ -282,7 +334,8 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: _('Download SVG'),
+      name: 'download_svg',
+      label: _('Download SVG'),
       description: _('Download the diagram as a SVG image.'),
       position: 'fixed',
       shape: {
@@ -323,7 +376,8 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: _('View'),
+      name: 'view',
+      label: _('View'),
       description: _('View the diagram as a JSON data.'),
       position: 'fixed',
       shape: {
@@ -350,7 +404,8 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: _('View in console'),
+      name: 'view_in_console',
+      label: _('View in console'),
       description: _('View the diagram in the browser\'s console.'),
       position: 'fixed',
       shape: {
@@ -402,7 +457,8 @@ export default class ActDiaTools {
         + ` id="${escapeHTML(tool.id)}"`
         + ' class="button actdia-tool-button"'
         + ` data-id="${escapeHTML(tool.id)}"`
-        + ` title="${tool.description ? tool.name + ':\n' + tool.description : tool.name}"`
+        + ` data-name="${escapeHTML(tool.name)}"`
+        + ` title="${tool.description ? (tool.label ?? tool.name) + ':\n' + tool.description : (tool.label ?? tool.name)}"`
       + '>'
         + '<svg xmlns="http://www.w3.org/2000/svg"'
           + ' width="100%"'
@@ -444,6 +500,13 @@ export default class ActDiaTools {
     this.tools.forEach(tool => {
       tool.divElement.style.display = tool.visible === false ? 'none' : 'block';
     });
+  }
+
+  setModified(modified) {
+    const modifiedTool = this.tools.find(i => i.type === 'tool' && i.name === 'modified');
+    if (modifiedTool) {
+      modifiedTool.visible = modified;
+    }
   }
 
   getExportableItems(options) {

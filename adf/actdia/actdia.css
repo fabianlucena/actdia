@@ -110,3 +110,7 @@
 .actdia-item .updated {
   fill: #282860;
 }
+
+.actdia-item .bright {
+  fill: #e0e0e0;
+}
