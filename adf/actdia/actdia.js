@@ -906,6 +906,11 @@ export default class ActDia {
     (style.opacity || style.opacity === 0) && (attributes.opacity = style.opacity);
     (options.style?.display) && (attributes.style = { ...attributes.style, display: options.style.display });
 
+    if (style.visible || style.visible === false) {
+      attributes.style ??= {};
+      attributes.style.display = style.visible ? 'block' : 'none';
+    }
+
     let transform = '';
 
     if (!isNaN(style.sx) || !isNaN(style.sy)) transform += ` scale(${style.sx ?? 1}, ${style.sy ?? 1})`;
