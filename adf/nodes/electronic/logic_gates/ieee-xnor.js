@@ -8,7 +8,7 @@ export default async function create({ actdia, baseUrl }) {
         {
           shape: 'rect',
           x: 0,
-          width: 3.2, 
+          width: 3.5, 
           height: 4,
         },
         {
