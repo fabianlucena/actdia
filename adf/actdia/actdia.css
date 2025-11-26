@@ -9,6 +9,12 @@
   stroke: #525252;
 }
 
+.actdia .selection-box {
+  fill: #60606022;
+  stroke: #909090aa;
+  stroke-dasharray: .2 .2;
+}
+
 .actdia-item {
   fill: #313131;
   stroke: #d6d6d6;

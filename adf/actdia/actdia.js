@@ -1769,6 +1769,66 @@ export default class ActDia {
     }
   }
 
+  startSelectionBox() {
+    this.endSelectionBox();
+
+    const pos = this.getUntransformedPosition(this.mouse);
+    this.selectionBox ??= {
+      from: { ...pos },
+      to: { ...pos },
+      start: { x: this.mouse.x, y: this.mouse.y },
+      end: { x: this.mouse.x, y: this.mouse.y },
+      type: 'rect',
+      previousSelectedItems: this.#items.filter(i => i.selected),
+    };
+
+    this.selectionBox.svg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    this.selectionBox.svg.classList.add('selection-box');
+    this.othersLayerSVG.appendChild(this.selectionBox.svg);
+
+    this.selectionBox.svg.setAttribute('x', pos.x);
+    this.selectionBox.svg.setAttribute('y', pos.y);
+    this.selectionBox.svg.setAttribute('width', 0);
+    this.selectionBox.svg.setAttribute('height', 0);
+  }
+
+  endSelectionBox() {
+    if (this.selectionBox?.svg) {
+      this.selectionBox.svg.remove();
+      this.selectionBox = null;
+    }
+  }
+
+  updateSelectionBox() {
+    if (!this.selectionBox) {
+      return;
+    }
+
+    const pos = this.getUntransformedPosition(this.mouse, { snap: false });
+    this.selectionBox.end = { x: this.mouse.x, y: this.mouse.y };
+    this.selectionBox.to = { ...pos };
+    this.selectionBox.x = Math.min(this.selectionBox.from.x, this.selectionBox.to.x);
+    this.selectionBox.y = Math.min(this.selectionBox.from.y, this.selectionBox.to.y);
+    this.selectionBox.u = Math.max(this.selectionBox.from.x, this.selectionBox.to.x);
+    this.selectionBox.v = Math.max(this.selectionBox.from.y, this.selectionBox.to.y);
+    this.selectionBox.width = this.selectionBox.u - this.selectionBox.x;
+    this.selectionBox.height = this.selectionBox.v - this.selectionBox.y;
+
+    this.selectionBox.svg.setAttribute('x', this.selectionBox.x);
+    this.selectionBox.svg.setAttribute('y', this.selectionBox.y);
+    this.selectionBox.svg.setAttribute('width', this.selectionBox.width);
+    this.selectionBox.svg.setAttribute('height', this.selectionBox.height);
+
+    this.#items.forEach(item => {
+      item.selected =
+        this.selectionBox.previousSelectedItems.includes(item)
+        || item.x + item.box.width >= this.selectionBox.x
+        && item.x <= this.selectionBox.u
+        && item.y + item.box.height >= this.selectionBox.y
+        && item.y <= this.selectionBox.v;
+    });
+  }
+
   getShapeByKeyValue(shapes, key, value) {
     for (let i = 0; i < shapes.length; i++) {
       const shape = shapes[i];
@@ -1919,6 +1979,8 @@ export default class ActDia {
 
     if (evt.defaultPrevented)
       return false;
+
+    this.updateSelectionBox();
   }
 
   mouseOverHandler(evt) {
@@ -1955,7 +2017,6 @@ export default class ActDia {
 
     const { item, shape, connector } = this.getEventItemConnector(evt);
     if (!item) {
-      this.#items.forEach(i => i.select(false));
       return;
     }
 
@@ -1993,8 +2054,6 @@ export default class ActDia {
         this.#items.forEach(i => i.select(i === item));
       }
     }
-
-    return true;
   }
 
   connectorClickHandler({ evt, item, connector }) {
@@ -2119,10 +2178,14 @@ export default class ActDia {
 
     const { item, shape } = this.getEventItem(evt);
     if (item) {
-      if (this.itemMouseDownHandler(evt, item, shape) === false) {
-        return false;
+      this.itemMouseDownHandler(evt, item, shape);
+      if (evt.defaultPrevented) {
+        return;
       }
     }
+      this.#items.forEach(i => i.select(false));
+
+    this.startSelectionBox();
   }
 
   itemMouseDownHandler(evt, item, shape) {
@@ -2163,6 +2226,8 @@ export default class ActDia {
   }
 
   mouseUpHandler(evt) {
+    this.endSelectionBox();
+
     const { item, shape } = this.getEventItem(evt);
     item?.onMouseUp?.({
       evt,
