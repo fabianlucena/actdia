@@ -41,10 +41,6 @@
       "x": 9,
       "y": 9,
       "name": "SR Flip-Flop (Latch) - 890de",
-      "coords": [
-        9,
-        9
-      ],
       "connectors": [
         {
           "id": "6a8a0270-407c-4778-a548-4056479f3c7f"
@@ -71,10 +67,6 @@
       "x": 9,
       "y": 2,
       "name": "SR Flip-Flop - 20e4d",
-      "coords": [
-        9,
-        2
-      ],
       "connectors": [
         {
           "id": "689601ca-31ad-4700-a72d-4335646cb0a7"
@@ -98,10 +90,6 @@
       "x": 9,
       "y": 16,
       "name": "SR Flip-Flop (Edge Triggered) - c4c15",
-      "coords": [
-        9,
-        16
-      ],
       "connectors": [
         {
           "id": "b2b3f135-b4ad-4c28-be4f-82fcfde27326"
@@ -128,10 +116,6 @@
       "x": 42,
       "y": 2,
       "name": "D Flip-Flop - fb46e",
-      "coords": [
-        42,
-        2
-      ],
       "connectors": [
         {
           "id": "455cfb72-09a9-4183-ad63-645b939f614d"
@@ -152,10 +136,6 @@
       "x": 42,
       "y": 9,
       "name": "D Flip-Flop (Latch) - 2f36b",
-      "coords": [
-        42,
-        9
-      ],
       "connectors": [
         {
           "id": "2438e48f-43d1-4590-9d53-3409cd83b542"
@@ -179,10 +159,6 @@
       "x": 42,
       "y": 16,
       "name": "D Flip-Flop (Edge-Triggered) - 45ffb",
-      "coords": [
-        42,
-        16
-      ],
       "connectors": [
         {
           "id": "e4dd032c-4943-4cc7-a283-4d68d08f9d43"
@@ -206,10 +182,6 @@
       "x": 42,
       "y": 27,
       "name": "T Flip-Flop - 46c7d",
-      "coords": [
-        42,
-        27
-      ],
       "connectors": [
         {
           "id": "ec851519-57c0-4e74-a728-9550d151e505"
@@ -230,10 +202,6 @@
       "x": 9,
       "y": 27,
       "name": "JK Flip-Flop - 118f2",
-      "coords": [
-        9,
-        27
-      ],
       "connectors": [
         {
           "id": "41354dca-0768-45db-8c98-686a1df1a51a"
@@ -257,10 +225,6 @@
       "x": 9,
       "y": 34,
       "name": "JK Flip-Flop (latch) - beca4",
-      "coords": [
-        9,
-        34
-      ],
       "connectors": [
         {
           "id": "e9ee2d0f-17dd-459e-a62c-288e7e0c9134"
@@ -287,10 +251,6 @@
       "x": 9,
       "y": 41,
       "name": "JK Flip-Flop (edge triggered) - 7ae99",
-      "coords": [
-        9,
-        41
-      ],
       "connectors": [
         {
           "id": "563f8c3f-a054-489e-9bed-081130a5aa00"
@@ -317,10 +277,6 @@
       "x": 42,
       "y": 34,
       "name": "T Flip-Flop (latch) - f2992",
-      "coords": [
-        42,
-        34
-      ],
       "connectors": [
         {
           "id": "252666c7-94ba-4a8b-8609-fe91c5288a29"
@@ -344,10 +300,6 @@
       "x": 42,
       "y": 41,
       "name": "T Flip-Flop (edge triggered) - b6fb1",
-      "coords": [
-        42,
-        41
-      ],
       "connectors": [
         {
           "id": "feaadbab-ae15-4989-ae41-e814fdf770ad"
@@ -372,10 +324,6 @@
       "y": 3,
       "name": "Led - 0c479",
       "description": "",
-      "coords": [
-        17,
-        3
-      ],
       "connectors": [
         {
           "id": "f65142a1-f5c5-4d2d-8380-bfb50175ca1a"
@@ -390,10 +338,6 @@
       "y": 10,
       "name": "Led - f4382",
       "description": "",
-      "coords": [
-        17,
-        10
-      ],
       "connectors": [
         {
           "id": "7ad304ba-8294-4dec-bda4-749275b12a70"
@@ -408,10 +352,6 @@
       "y": 17,
       "name": "Led - 98323",
       "description": "",
-      "coords": [
-        17,
-        17
-      ],
       "connectors": [
         {
           "id": "f5f4a946-bdf5-44cd-9386-32120d2bf43f"
@@ -425,10 +365,6 @@
       "x": 17,
       "y": 7,
       "name": "Led - 9b9ae",
-      "coords": [
-        17,
-        7
-      ],
       "connectors": [
         {
           "id": "228abae1-5fda-40cc-afa6-a72c07e852cc"
@@ -442,10 +378,6 @@
       "x": 17,
       "y": 14,
       "name": "Led - 93e06",
-      "coords": [
-        17,
-        14
-      ],
       "connectors": [
         {
           "id": "adee7ae5-802c-49ed-a5dc-71b253cfee3a"
@@ -459,10 +391,6 @@
       "x": 17,
       "y": 21,
       "name": "Led - cdd8f",
-      "coords": [
-        17,
-        21
-      ],
       "connectors": [
         {
           "id": "a2bdd743-d2bd-41a1-a7b7-c6d3a33fade5"
@@ -477,10 +405,6 @@
       "y": 3,
       "name": "Switch - 08ec9",
       "variant": "horizontal",
-      "coords": [
-        6,
-        3
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -499,10 +423,6 @@
       "y": 7,
       "name": "Switch - 4072f",
       "variant": "horizontal",
-      "coords": [
-        6,
-        7
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -521,10 +441,6 @@
       "y": 10,
       "name": "Switch - 95130",
       "variant": "horizontal",
-      "coords": [
-        6,
-        10
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -543,10 +459,6 @@
       "y": 12,
       "name": "Switch - 6085a",
       "variant": "horizontal",
-      "coords": [
-        6,
-        12
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -565,10 +477,6 @@
       "y": 14,
       "name": "Switch - c1da0",
       "variant": "horizontal",
-      "coords": [
-        6,
-        14
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -587,10 +495,6 @@
       "y": 17,
       "name": "Switch - e395b",
       "variant": "horizontal",
-      "coords": [
-        6,
-        17
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -609,10 +513,6 @@
       "y": 19,
       "name": "Switch - adad1",
       "variant": "horizontal",
-      "coords": [
-        6,
-        19
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -631,10 +531,6 @@
       "y": 21,
       "name": "Switch - 62db3",
       "variant": "horizontal",
-      "coords": [
-        6,
-        21
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -653,10 +549,6 @@
       "y": 3,
       "name": "Switch - cb89d",
       "variant": "horizontal",
-      "coords": [
-        39,
-        3
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -675,10 +567,6 @@
       "y": 3,
       "name": "Led - d3f99",
       "description": "",
-      "coords": [
-        50,
-        3
-      ],
       "connectors": [
         {
           "id": "30bde989-6c31-49e0-b014-7cf5f5be8d29"
@@ -692,10 +580,6 @@
       "x": 50,
       "y": 7,
       "name": "Led - fd249",
-      "coords": [
-        50,
-        7
-      ],
       "connectors": [
         {
           "id": "3070d9de-ba56-4afe-af3d-92d4613f85a1"
@@ -710,10 +594,6 @@
       "y": 10,
       "name": "Led - 65d44",
       "description": "",
-      "coords": [
-        50,
-        10
-      ],
       "connectors": [
         {
           "id": "11edd666-ec0d-450e-bc9c-31c3d3bd7024"
@@ -727,10 +607,6 @@
       "x": 50,
       "y": 14,
       "name": "Led - 1ae80",
-      "coords": [
-        50,
-        14
-      ],
       "connectors": [
         {
           "id": "47ff9fc2-23b7-46ca-b9af-aefe28a809fb"
@@ -745,10 +621,6 @@
       "y": 10,
       "name": "Switch - db7c7",
       "variant": "horizontal",
-      "coords": [
-        39,
-        10
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -767,10 +639,6 @@
       "y": 14,
       "name": "Switch - 5a992",
       "variant": "horizontal",
-      "coords": [
-        39,
-        14
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -789,10 +657,6 @@
       "y": 17,
       "name": "Switch - 53002",
       "variant": "horizontal",
-      "coords": [
-        39,
-        17
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -811,10 +675,6 @@
       "y": 21,
       "name": "Switch - 6e47f",
       "variant": "horizontal",
-      "coords": [
-        39,
-        21
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -833,10 +693,6 @@
       "y": 17,
       "name": "Led - 31661",
       "description": "",
-      "coords": [
-        50,
-        17
-      ],
       "connectors": [
         {
           "id": "be5e0414-7819-4ca7-88e7-261cf9228627"
@@ -850,10 +706,6 @@
       "x": 50,
       "y": 21,
       "name": "Led - a14a5",
-      "coords": [
-        50,
-        21
-      ],
       "connectors": [
         {
           "id": "9d38f725-40de-4f53-a8d5-7f38c63c0d9e"
@@ -868,10 +720,6 @@
       "y": 28,
       "name": "Led - 69039",
       "description": "",
-      "coords": [
-        17,
-        28
-      ],
       "connectors": [
         {
           "id": "d645224b-d51b-49b9-b0ab-1af3945dd64f"
@@ -885,10 +733,6 @@
       "x": 17,
       "y": 32,
       "name": "Led - 65dc7",
-      "coords": [
-        17,
-        32
-      ],
       "connectors": [
         {
           "id": "d5c454f8-2928-4fbb-8f53-a5bc5f3e822a"
@@ -903,10 +747,6 @@
       "y": 28,
       "name": "Switch - 35798",
       "variant": "horizontal",
-      "coords": [
-        6,
-        28
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -925,10 +765,6 @@
       "y": 32,
       "name": "Switch - 4e861",
       "variant": "horizontal",
-      "coords": [
-        6,
-        32
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -947,10 +783,6 @@
       "y": 35,
       "name": "Led - 20087",
       "description": "",
-      "coords": [
-        17,
-        35
-      ],
       "connectors": [
         {
           "id": "11b31aa8-8854-45fd-a9a4-7841df364ae6"
@@ -964,10 +796,6 @@
       "x": 17,
       "y": 39,
       "name": "Led - 0c476",
-      "coords": [
-        17,
-        39
-      ],
       "connectors": [
         {
           "id": "f29de1ae-f27a-4b01-a46c-e99408e0c2fc"
@@ -982,10 +810,6 @@
       "y": 35,
       "name": "Switch - b2d51",
       "variant": "horizontal",
-      "coords": [
-        6,
-        35
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -1004,10 +828,6 @@
       "y": 37,
       "name": "Switch - bed66",
       "variant": "horizontal",
-      "coords": [
-        6,
-        37
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -1026,10 +846,6 @@
       "y": 39,
       "name": "Switch - 3ad32",
       "variant": "horizontal",
-      "coords": [
-        6,
-        39
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -1048,10 +864,6 @@
       "y": 42,
       "name": "Led - ad199",
       "description": "",
-      "coords": [
-        17,
-        42
-      ],
       "connectors": [
         {
           "id": "b1deda53-c903-4a9a-b213-86f3ac8278f8"
@@ -1065,10 +877,6 @@
       "x": 17,
       "y": 46,
       "name": "Led - 7d493",
-      "coords": [
-        17,
-        46
-      ],
       "connectors": [
         {
           "id": "2effb4db-0cf4-463b-90cb-ea6c6ddb77ed"
@@ -1083,10 +891,6 @@
       "y": 42,
       "name": "Switch - 3a6b1",
       "variant": "horizontal",
-      "coords": [
-        6,
-        42
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -1105,10 +909,6 @@
       "y": 44,
       "name": "Switch - 95138",
       "variant": "horizontal",
-      "coords": [
-        6,
-        44
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -1127,10 +927,6 @@
       "y": 46,
       "name": "Switch - d3280",
       "variant": "horizontal",
-      "coords": [
-        6,
-        46
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -1149,10 +945,6 @@
       "y": 28,
       "name": "Led - a8319",
       "description": "",
-      "coords": [
-        50,
-        28
-      ],
       "connectors": [
         {
           "id": "2b9d8108-d009-405a-a010-50c4cf964cee"
@@ -1166,10 +958,6 @@
       "x": 50,
       "y": 32,
       "name": "Led - 8779f",
-      "coords": [
-        50,
-        32
-      ],
       "connectors": [
         {
           "id": "34e6513d-bb84-4653-9420-856be789412b"
@@ -1184,10 +972,6 @@
       "y": 28,
       "name": "Switch - 5e833",
       "variant": "horizontal",
-      "coords": [
-        39,
-        28
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -1206,10 +990,6 @@
       "y": 35,
       "name": "Led - 02204",
       "description": "",
-      "coords": [
-        50,
-        35
-      ],
       "connectors": [
         {
           "id": "a73ea015-7aef-4819-850d-67c816f4eb41"
@@ -1223,10 +1003,6 @@
       "x": 50,
       "y": 39,
       "name": "Led - 89b99",
-      "coords": [
-        50,
-        39
-      ],
       "connectors": [
         {
           "id": "3008852e-e843-4fe8-b475-070d8091cc16"
@@ -1241,10 +1017,6 @@
       "y": 35,
       "name": "Switch - 629fa",
       "variant": "horizontal",
-      "coords": [
-        39,
-        35
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -1263,10 +1035,6 @@
       "y": 39,
       "name": "Switch - 35c69",
       "variant": "horizontal",
-      "coords": [
-        39,
-        39
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -1285,10 +1053,6 @@
       "y": 42,
       "name": "Switch - b41ae",
       "variant": "horizontal",
-      "coords": [
-        39,
-        42
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -1307,10 +1071,6 @@
       "y": 46,
       "name": "Switch - 7d3f1",
       "variant": "horizontal",
-      "coords": [
-        39,
-        46
-      ],
       "rotation": -90,
       "connectors": [
         {
@@ -1329,10 +1089,6 @@
       "y": 42,
       "name": "Led - 8dfdd",
       "description": "",
-      "coords": [
-        50,
-        42
-      ],
       "connectors": [
         {
           "id": "002a7a13-037c-4e49-8a06-dc16b87da386"
@@ -1346,10 +1102,6 @@
       "x": 50,
       "y": 46,
       "name": "Led - 0ed28",
-      "coords": [
-        50,
-        46
-      ],
       "connectors": [
         {
           "id": "8e76bd21-7834-4f5a-97ac-66a6007cc2cf"

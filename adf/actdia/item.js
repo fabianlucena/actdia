@@ -42,26 +42,28 @@ export default class Item extends Element {
     return skip;
   }
 
-  get coords() {
+  getCoords() {
     return [this.x, this.y];
   }
 
-  set coords(coords) {
-    if (typeof coords === 'string') {
-      coords = coords.replace(/\[|\]|\s/g, '').split(',').map(s => parseFloat(s));
+  setCoords(value) {
+    if (typeof value === 'string') {
+      value = value.replace(/\[|\]|\s/g, '').split(',').map(s => parseFloat(s));
     }
     
-    if (Array.isArray(coords) && coords.length === 2) {
-      const [x, y] = coords;
+    if (Array.isArray(value) && value.length === 2) {
+      const [x, y] = value;
       if (!isNaN(x)) this.x = x;
       if (!isNaN(y)) this.y = y;
       this.updateTransform();
+      return;
     }
 
-    if (coords instanceof Object) {
-      if (!isNaN(coords.x)) this.x = coords.x;
-      if (!isNaN(coords.y)) this.y = coords.y;
+    if (value instanceof Object) {
+      if (!isNaN(value.x)) this.x = value.x;
+      if (!isNaN(value.y)) this.y = value.y;
       this.updateTransform();
+      return;
     }
   }
 

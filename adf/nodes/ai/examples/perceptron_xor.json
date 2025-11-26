@@ -72,9 +72,6 @@
       "y": 13,
       "name": "n1",
       "description": "",
-      "_rotate": "0",
-      "sx": 1,
-      "sy": 1,
       "bias": 105.79370345131112,
       "connectors": [
         {
@@ -114,9 +111,6 @@
       "y": 3,
       "name": "",
       "description": "",
-      "_rotate": "0",
-      "sx": 1,
-      "sy": 1,
       "connectors": [
         {
           "id": "a28e5969-d8af-43b3-a6fe-c3b1c66727b0"
@@ -151,9 +145,6 @@
       "y": 14,
       "name": "",
       "description": "",
-      "_rotate": "0",
-      "sx": 1,
-      "sy": 1,
       "connectors": [
         {
           "id": "36afe39c-5613-4e50-a277-09e47db44ca6"
@@ -255,9 +246,6 @@
       "y": 17,
       "name": "n2",
       "description": "",
-      "_rotate": "0",
-      "sx": 1,
-      "sy": 1,
       "bias": 0,
       "connectors": [
         {
@@ -290,9 +278,6 @@
       "y": 15,
       "name": "n3",
       "description": "",
-      "_rotate": "0",
-      "sx": 1,
-      "sy": 1,
       "bias": 107.79999999999815,
       "connectors": [
         {

@@ -43,6 +43,8 @@ export default class NodeForm extends Form {
         name: 'coords',
         _label: 'Coordinates',
         type: 'text',
+        get: () => this.node.getCoords(),
+        set: (value) => this.node.setCoords(value),
       },
       {
         name: 'rotation',

@@ -41,10 +41,6 @@
       "y": 15,
       "fqcn": "../nodes/electronic/bcd/bcd_counter.js/BCDCounter",
       "name": "Contador BCD - 8b98f",
-      "coords": [
-        14,
-        15
-      ],
       "connectors": [
         {
           "id": "ff8b53de-8538-438a-a03a-668d4b49322f"
@@ -80,10 +76,6 @@
       "y": 10,
       "fqcn": "../nodes/electronic/led.js/Led",
       "name": "Led - ef637",
-      "coords": [
-        28,
-        10
-      ],
       "connectors": [
         {
           "id": "86af0cc6-9266-406c-bd15-c91145833582"
@@ -98,10 +90,6 @@
       "y": 10,
       "fqcn": "../nodes/electronic/led.js/Led",
       "name": "Led - beb06",
-      "coords": [
-        27,
-        10
-      ],
       "connectors": [
         {
           "id": "94fd4385-ac30-4b40-9451-1f07b3f6dcfc"
@@ -116,10 +104,6 @@
       "y": 10,
       "fqcn": "../nodes/electronic/led.js/Led",
       "name": "Led - 2da17",
-      "coords": [
-        26,
-        10
-      ],
       "connectors": [
         {
           "id": "ab29f4d9-e76b-4c4f-9f54-754c61da8e80"
@@ -134,10 +118,6 @@
       "y": 10,
       "fqcn": "../nodes/electronic/led.js/Led",
       "name": "Led - 70310",
-      "coords": [
-        25,
-        10
-      ],
       "connectors": [
         {
           "id": "98e43889-b8b5-4f8b-a4f4-7a1f43e52be4"
@@ -153,10 +133,6 @@
       "fqcn": "../nodes/switch.js/Switch",
       "class": "Switch",
       "name": "Switch - 5362c",
-      "coords": [
-        7.5,
-        3
-      ],
       "status": true,
       "connectors": [
         {
@@ -175,10 +151,6 @@
       "name": "Generador de pulsos - 0717f",
       "factor": 1.975000000000008,
       "active": true,
-      "coords": [
-        4,
-        10
-      ],
       "connectors": [
         {
           "id": "18f799ba-1703-4f6e-aa13-b4d78bb44578"
@@ -200,10 +172,6 @@
       "y": 21,
       "fqcn": "../nodes/electronic/bcd/seven-segment_display.js/SevenSegmentDisplay",
       "name": "Seven Segment Display - 6585a",
-      "coords": [
-        49,
-        21
-      ],
       "connectors": [
         {
           "id": "ee51c731-d493-4675-b7df-41d40b3800d6"
@@ -239,10 +207,6 @@
       "y": 14,
       "fqcn": "../nodes/electronic/bcd/bcd_to_7_segments.js/BCTo7Segments",
       "name": "BCD to 7 Segments - 8b410",
-      "coords": [
-        29,
-        14
-      ],
       "connectors": [
         {
           "id": "13fc1803-7381-4332-8746-ff62c31124b9"
@@ -287,10 +251,6 @@
       "y": 21,
       "fqcn": "../nodes/electronic/bcd/seven-segment_display.js/SevenSegmentDisplay",
       "name": "Seven Segment Display - 39794",
-      "coords": [
-        43,
-        21
-      ],
       "connectors": [
         {
           "id": "83bc9bae-b2b9-43a4-a764-c667bc79bd28"
@@ -326,10 +286,6 @@
       "y": 26,
       "fqcn": "../nodes/electronic/bcd/bcd_counter.js/BCDCounter",
       "name": "Contador BCD - 3d905",
-      "coords": [
-        21,
-        26
-      ],
       "connectors": [
         {
           "id": "cb01e83c-5e06-4f59-b920-ad662a068d51"
@@ -365,10 +321,6 @@
       "y": 25,
       "fqcn": "../nodes/electronic/bcd/bcd_to_7_segments.js/BCTo7Segments",
       "name": "BCD to 7 Segments - 7e2a6",
-      "coords": [
-        29,
-        25
-      ],
       "connectors": [
         {
           "id": "27844e71-8379-49ac-a3c6-305f618dd283"
@@ -413,10 +365,6 @@
       "x": 5,
       "y": 5,
       "name": "Pulso único - 8a839",
-      "coords": [
-        5,
-        5
-      ],
       "connectors": [
         {
           "id": "51754cb6-81d9-4d9d-93b7-ca506e5dc4ec"
@@ -435,10 +383,6 @@
       "x": 0,
       "y": 0,
       "name": "Led - 53383",
-      "coords": [
-        0,
-        0
-      ],
       "connectors": [
         {
           "id": "ed74b0b1-8f57-4aaf-92f5-ead0c5396f8c"
@@ -455,13 +399,6 @@
       "x": 9,
       "y": 11,
       "description": "",
-      "sx": 1,
-      "sy": 1,
-      "coords": [
-        9,
-        11
-      ],
-      "rotation": "0",
       "connectors": [
         {
           "id": "7a010d47-bd5b-4472-8ee3-786e1a2fff79"
@@ -478,13 +415,6 @@
       "x": 7,
       "y": 19,
       "description": "",
-      "sx": 1,
-      "sy": 1,
-      "coords": [
-        7,
-        19
-      ],
-      "rotation": "0",
       "connectors": [
         {
           "id": "490f3d07-fca5-4189-b902-1fe56cfd555f"
@@ -501,13 +431,6 @@
       "x": 9,
       "y": 3,
       "description": "",
-      "sx": 1,
-      "sy": 1,
-      "coords": [
-        9,
-        3
-      ],
-      "rotation": "0",
       "connectors": [
         {
           "id": "2270a799-eab5-481d-91b7-c4eb0e159a75"
@@ -524,13 +447,6 @@
       "x": 7,
       "y": 20,
       "description": "",
-      "sx": 1,
-      "sy": 1,
-      "coords": [
-        7,
-        20
-      ],
-      "rotation": "0",
       "connectors": [
         {
           "id": "6a2549fe-0af0-44d7-8230-58ee1595ae0c"
@@ -547,13 +463,6 @@
       "x": 13,
       "y": 31,
       "description": "",
-      "sx": 1,
-      "sy": 1,
-      "coords": [
-        13,
-        31
-      ],
-      "rotation": "0",
       "connectors": [
         {
           "id": "bc62880c-61a5-464d-8fb8-cef5500bb500"
@@ -570,13 +479,6 @@
       "x": 9,
       "y": 6,
       "description": "",
-      "sx": 1,
-      "sy": 1,
-      "coords": [
-        9,
-        6
-      ],
-      "rotation": "0",
       "connectors": [
         {
           "id": "47e097bd-0879-449f-b49d-94d13010816d"
@@ -593,13 +495,6 @@
       "x": 7,
       "y": 21,
       "description": "",
-      "sx": 1,
-      "sy": 1,
-      "coords": [
-        7,
-        21
-      ],
-      "rotation": "0",
       "connectors": [
         {
           "id": "64c2f4fc-86f7-47c1-9110-daff1b74420d"
@@ -616,13 +511,6 @@
       "x": 13,
       "y": 32,
       "description": "",
-      "sx": 1,
-      "sy": 1,
-      "coords": [
-        13,
-        32
-      ],
-      "rotation": "0",
       "connectors": [
         {
           "id": "6699c973-30bb-446b-8777-e92c9045a829"
@@ -639,12 +527,6 @@
       "y": 23,
       "name": "Slider - d24eb",
       "description": "",
-      "sx": 1,
-      "sy": 1,
-      "coords": [
-        3,
-        23
-      ],
       "rotation": "270",
       "connectors": [
         {
@@ -670,10 +552,6 @@
       "x": 43,
       "y": 5,
       "name": "Oscillograph - 28915",
-      "coords": [
-        43,
-        5
-      ],
       "connectors": [
         {
           "id": "da059496-4a60-4544-a06c-5ce44278d9d7"
@@ -695,15 +573,7 @@
       "y": 6,
       "name": "Canal - 3a53c",
       "description": "",
-      "sx": 1,
-      "sy": 1,
-      "length": 4,
       "channelWidth": 4,
-      "coords": [
-        35,
-        6
-      ],
-      "rotation": "0",
       "connectors": [
         {
           "id": "ce82da5b-96a7-4021-9b41-af9a501292f7"
