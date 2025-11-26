@@ -583,7 +583,7 @@ export default class ActDia {
     const
       baseOptions = { ...options, prefix: options.prefix + options.tab },
       layersOptions = { ...options, prefix: baseOptions.prefix + baseOptions.tab },
-      itemsOptions = { ...options, prefix: layersOptions.prefix + options.tab };
+      itemsOptions = { escapeHTML: true, ...options, prefix: layersOptions.prefix + options.tab };
 
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${this.svg.clientWidth}" height="${this.svg.clientHeight}">`
         + (options.includeStyles && this.getSVGStyles(layersOptions) || '')
