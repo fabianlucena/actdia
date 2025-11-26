@@ -10,7 +10,9 @@ import ActDiaTools from './actdia_tools.js';
 let container = null,
   actdia = null,
   nodeSelector = null,
-  mouseSelectOn;
+  mouseSelectOn,
+  actdiaTools = null,
+  lastSavedStatus = null;
 
 window.addEventListener('beforeprint', () => notificationContainer.style.display = 'none');
 window.addEventListener('afterprint', () => notificationContainer.style.display = '');
@@ -28,8 +30,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   actdia.onPushNotification = pushNotification;
 
-  new ActDiaTools({ container, actdia });
+  actdiaTools = new ActDiaTools({ container, actdia });
 
+  actdia.addEventListener('diagramchanged', diagramChanged);
   actdia.addEventListener('dblclick', dblClickHandler);
   actdia.addEventListener('item:dblclick', itemDblClickHandler);
   actdia.addEventListener('keydown', keyDownHandler, true);
@@ -38,10 +41,13 @@ window.addEventListener('DOMContentLoaded', async () => {
   actdia.pushNotification(_('Welcome to ActDia!'), 'info');
   if (window.location.hash) {
     const data = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
-    actdia.load(data);
+    await actdia.load(data);
   } else if (localStorage.getItem('actdia')) {
-    actdia.load(JSON.parse(localStorage.getItem('actdia')));
+    await actdia.load(JSON.parse(localStorage.getItem('actdia')));
   }
+
+  lastSavedStatus = JSON.stringify(actdia.getData({ noSelectedProperty: true }));
+  actdiaTools.setChanged(false);
 });
 
 function dblClickHandler(evt) {
@@ -127,8 +133,14 @@ function keyUpHandler(evt) {
 
 async function copyJSONToClipboard(options) {
   const exportable = actdia.getExportableItems({ selected: true, ...options });
-  const jsonText = JSON.stringify(actdia.getData(exportable), null, 2);
+  const jsonText = JSON.stringify(actdia.getData({ items: exportable }), null, 2);
   const json = new ClipboardItem({ 'text/plain': new Blob([jsonText], { type: 'application/json' })});
   await navigator.clipboard.write([json]);
   pushNotification(_('JSON data copied to the clipboard.'), 'success');
+}
+
+function diagramChanged() {
+  const status = JSON.stringify(actdia.getData({ noSelectedProperty: true }));
+
+  actdiaTools.setChanged(status !== lastSavedStatus);
 }

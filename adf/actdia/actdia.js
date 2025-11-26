@@ -336,12 +336,18 @@ export default class ActDia {
     return elements;
   }
 
-  getData(items) {
-    items ??= this.#items;
+  getData(options = {}) {
+    let items = options.items ?? this.#items;
 
     const nodes = items
       .filter(node => isNode(node))
-      .map(node => node.getData());
+      .map(node => {
+        const data = node.getData();
+        if (options.noSelectedProperty) {
+          delete data.selected;
+        }
+        return data;
+      });
 
     const connections = items
       .filter(isConnection)  
@@ -1749,7 +1755,14 @@ export default class ActDia {
   }
 
   endDrag() {
-    this.dragging = null;
+    if (this.dragging) {
+        if (this.dragging.items?.length) {
+          this.fireEvent('items:moved', { items: this.dragging.items });
+          this.fireEvent('diagramchanged');
+        }
+
+      this.dragging = null;
+    }
   }
 
   cancelCaptureItem() {
@@ -1913,6 +1926,22 @@ export default class ActDia {
     }
 
     return { x, y };
+  }
+
+  fireEvent(type, detail = {}) {
+    const event = new CustomEvent(
+      type,
+      {
+        detail: {
+          actdia: this,
+          ...detail,
+        },
+        bubbles: true,
+        cancelable: true,
+      }
+    );
+    
+    this.svg.dispatchEvent(event);
   }
 
   mouseMoveHandler(evt) {

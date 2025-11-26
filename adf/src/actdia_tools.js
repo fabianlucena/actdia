@@ -58,9 +58,9 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
-      name: 'modified',
-      label: _('Modified'),
-      description: _('The diagram was modified.'),
+      name: 'changed',
+      label: _('Changed'),
+      description: _('The diagram was changed.'),
       position: 'fixed',
       shape: {
         shapes: [
@@ -502,10 +502,11 @@ export default class ActDiaTools {
     });
   }
 
-  setModified(modified) {
-    const modifiedTool = this.tools.find(i => i.type === 'tool' && i.name === 'modified');
-    if (modifiedTool) {
-      modifiedTool.visible = modified;
+  setChanged(changed) {
+    const changedTool = this.tools.find(i => i.type === 'tool' && i.name === 'changed');
+    if (changedTool) {
+      changedTool.visible = !!changed;
+      this.updateTools();
     }
   }
 
@@ -546,7 +547,7 @@ export default class ActDiaTools {
 
   async copyJSONToClipboard(options) {
     const exportable = this.getExportableItems(options);
-    const jsonText = JSON.stringify(this.getData(exportable), null, 2);
+    const jsonText = JSON.stringify(this.getData({ items: exportable }), null, 2);
     const json = new ClipboardItem({ 'text/plain': new Blob([jsonText], { type: 'application/json' })});
     await navigator.clipboard.write([json]);
     pushNotification(_('JSON data copied to the clipboard.'), 'success');
@@ -587,7 +588,7 @@ export default class ActDiaTools {
 
   downloadJson(options) {
     const exportable = this.getExportableItems(options);
-    const jsonText = JSON.stringify(this.getData(exportable), null, 2);
+    const jsonText = JSON.stringify(this.getData({ items: exportable }), null, 2);
     const blob = new Blob([jsonText], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -626,7 +627,7 @@ export default class ActDiaTools {
 
   share(options) {
     const exportable = this.getExportableItems(options);
-    const data = this.getData(exportable);
+    const data = this.getData({ items: exportable });
     const url = new URL(window.location.href);
     url.hash = '#' + encodeURIComponent(JSON.stringify(data));
     navigator.clipboard.writeText(url.toString())
@@ -672,13 +673,13 @@ export default class ActDiaTools {
 
   viewInConsole(options) {
     const exportable = this.getExportableItems(options);
-    const data = this.getData(exportable);
+    const data = this.getData({ items: exportable });
     console.log(data);
   }
 
   view(options) {
     const exportable = this.getExportableItems(options);
-    const data = this.getData(exportable);
+    const data = this.getData({ items: exportable });
     new Dialog({
       container: this.container,
       content: '<pre>' + JSON.stringify(data, '', 2) + '</pre>',
