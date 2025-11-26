@@ -18,4 +18,11 @@ export default {
     'tff_l.js',
     'tff_e.js',
   ],
+  examples: [
+    {
+      _label: 'Flip-Flops',
+      url: './examples/flip-flops.json',
+      image: './examples/flip-flops.svg',
+    },
+  ],
 };
