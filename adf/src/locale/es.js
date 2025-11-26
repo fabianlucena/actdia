@@ -19,6 +19,7 @@ export default {
   'Description': 'Descripción',
   'Diagram cleared.': 'Diagrama limpiado.',
   'Diagram loaded from JSON file.': 'Diagrama cargado desde archivo JSON.',
+  'Diagram modified (unsaved changes).': 'Diagrama modificado (cambios no guardados).',
   'Diagram saved.': 'Diagrama guardado.',
   'Do you want to clear all items of the diagram?': '¿Desea limpiar todos los elementos del diagrama?',
   'Do you want to export the entire diagram or only the selected items?': '¿Desea exportar todo el diagrama o solo los elementos seleccionados?',

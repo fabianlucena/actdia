@@ -17,17 +17,18 @@ export default class ActDiaTools {
         shapes: [
           {
             shape: 'rect',
+            y: .2,
             width: 1,
-            height: .2,
+            height: .18,
             rx: .1,
             ry: .1,
             stroke: false,
           },
           {
             shape: 'rect',
-            y: .4,
+            y: .5,
             width: 1,
-            height: .2,
+            height: .18,
             rx: .1,
             ry: .1,
             stroke: false,
@@ -36,37 +37,20 @@ export default class ActDiaTools {
             shape: 'rect',
             y: .8,
             width: 1,
-            height: .2,
+            height: .18,
             rx: .1,
             ry: .1,
             stroke: false,
           },
-        ],
-      },
-      box: null,
-      selectable: false,
-      draggable: false,
-      exportable: false,
-      hideable: false,
-      onClick: () => {
-        this.tools
-          .filter(i => i.type === 'tool' && i.hideable !== false)
-          .forEach(i => i.visible = !i.visible);
-      },
-    }),
-
-    new Item({
-      type: 'tool',
-      visible: false,
-      name: 'changed',
-      label: _('Changed'),
-      description: _('The diagram was changed.'),
-      position: 'fixed',
-      shape: {
-        shapes: [
           {
+            name: 'changed',
             shape: 'path',
             rotation: [ 10, .5, .5 ],
+            sx: .66,
+            sy: .66,
+            x: .66,
+            className: 'bright',
+            visible: false,
             d: `
               M 0.50,0.00
               L 0.5765,0.3152
@@ -93,6 +77,11 @@ export default class ActDiaTools {
       draggable: false,
       exportable: false,
       hideable: false,
+      onClick: () => {
+        this.tools
+          .filter(i => i.type === 'tool' && i.hideable !== false)
+          .forEach(i => i.visible = !i.visible);
+      },
     }),
 
     new Item({
@@ -490,9 +479,9 @@ export default class ActDiaTools {
     this.toolsElement.innerHTML = svgList.join('');
 
     this.tools.forEach(tool => {
-      const toolSVG = this.toolsElement.querySelector(`#${CSS.escape(tool.id)}`);
+      const toolSVG = this.toolsElement.querySelector(`#${CSS.escape(tool.id)} svg`);
       tool.svgElement = toolSVG;
-      tool.divElement = toolSVG.closest('.button');
+      tool.divElement = toolSVG.closest('div');
     });
     this.updateTools();
 
@@ -520,10 +509,22 @@ export default class ActDiaTools {
   }
 
   setChanged(changed) {
-    const changedTool = this.tools.find(i => i.type === 'tool' && i.name === 'changed');
-    if (changedTool) {
-      changedTool.visible = !!changed;
-      this.updateTools();
+    const menuTool = this.tools.find(i => i.type === 'tool' && i.name === 'menu');
+    if (!menuTool) {
+      return;
+    }
+
+    const changedShape = menuTool.shape?.shapes.find(s => s.name === 'changed');
+    if (changedShape) {
+      changedShape.visible = !!changed;
+      const path = menuTool.svgElement.querySelector('path[name="changed"]');
+      if (changedShape.visible) {
+        path.style.display = '';
+        menuTool.divElement.title = _('Menu') + ':\n' + _('Diagram modified (unsaved changes).');
+      } else {
+        path.style.display = 'none';
+        menuTool.divElement.title = _('Menu');
+      }
     }
   }
 
