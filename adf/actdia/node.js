@@ -218,6 +218,6 @@ export default class Node extends Item {
   backpropagate(options = {}) {
     this.connectors
       .filter(c => c.type === 'in')
-      .forEach(connector => connector.setBackStatus(this.status, options));
+      .forEach(connector => connector?.setBackStatus(this.backStatus, options));
   }
 }
