@@ -21,6 +21,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   container = document.querySelector('#actdia');
   actdia = new ActDia({ container, editable: true });
+  await actdia.init();
 
   nodeSelector = new NodeSelector({ actdia, container });
   nodeSelector.onSelectNode = onSelectNode;
@@ -34,6 +35,14 @@ window.addEventListener('DOMContentLoaded', async () => {
   actdia.addEventListener('item:dblclick', itemDblClickHandler);
   actdia.addEventListener('keydown', keyDownHandler, true);
   actdia.addEventListener('keyup', keyUpHandler);
+
+  actdia.pushNotification(_('Welcome to ActDia!'), 'info');
+  if (window.location.hash) {
+    const data = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
+    actdia.load(data);
+  } else if (localStorage.getItem('actdia')) {
+    actdia.load(JSON.parse(localStorage.getItem('actdia')));
+  }
 });
 
 function dblClickHandler(evt) {

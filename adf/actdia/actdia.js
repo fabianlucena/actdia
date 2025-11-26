@@ -215,23 +215,16 @@ export default class ActDia {
 
   constructor(options) {
     this.create(...arguments);
+  }
 
-    loadLocale('.', 'es')
-      .then(() => this.importElements(
-        './node.js',
-        './connection.js',
-        './connector-in.js',
-        './connector-out.js'
-      ))
-      .then(() => {
-        this.pushNotification(_('Welcome to ActDia!'), 'info');
-        if (window.location.hash) {
-          const data = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
-          this.load(data);
-        } else if (localStorage.getItem('actdia')) {
-          this.load(JSON.parse(localStorage.getItem('actdia')));
-        }
-      });
+  async init() {
+    await loadLocale('.', 'es');
+    await this.importElements(
+      './node.js',
+      './connection.js',
+      './connector-in.js',
+      './connector-out.js'
+    );
   }
 
   pushNotification(message, options = {}) {
@@ -431,6 +424,10 @@ export default class ActDia {
   }
 
   async addOptionsItem(options, ...items) {
+    if (!items.length) {
+      return null;
+    }
+
     const result = [];
     for (let item of items) {
       if (!(item instanceof Element)) {
