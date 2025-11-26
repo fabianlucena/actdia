@@ -24,7 +24,7 @@ export default {
   ],
   examples: [
     {
-      _label: 'Logic gates',
+      _label: 'Logic Gates',
       url: './examples/logic_gates.json',
       image: './examples/logic_gates.svg',
     },
