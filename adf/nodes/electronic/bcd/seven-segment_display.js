@@ -71,7 +71,7 @@ export default function create({ Node }) {
       x: 0,
       y: 0,
       width: 6,
-      height: 9,
+      height: 10,
     };
 
     connectors = [
