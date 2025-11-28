@@ -68,6 +68,7 @@ export default function create({ Node }) {
     getNewConnector(connector) {
       connector ??= {};
       connector.index ??= this.channelWidth;
+      connector.type ??= 'out';
       const newConnector = super.getNewConnector(connector);
       newConnector.y ??= newConnector.index + 1;
       newConnector.name ??= `o${newConnector.index}`;

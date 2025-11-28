@@ -59,6 +59,7 @@ export default function create({ Node }) {
     }
 
     update() {
+      console.log('updating bus', this.channelWidth);
       const height = Math.max(this.channelWidth, 1);
       this.box.height = height;
       this.shape.height = height;
@@ -68,6 +69,7 @@ export default function create({ Node }) {
     getNewConnector(connector) {
       connector ??= {};
       connector.index ??= this.channelWidth;
+      connector.type ??= 'in';
       const newConnector = super.getNewConnector(connector);
       newConnector.y ??= newConnector.index + 1;
       newConnector.name ??= `i${newConnector.index}`;

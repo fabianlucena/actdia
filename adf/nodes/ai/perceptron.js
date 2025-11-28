@@ -202,7 +202,13 @@ export default function create({ Node, _ }) {
     }
 
     getNewConnector(connector) {
-      return super.getNewConnector({ index: this.inputsCount }, ...arguments);
+      return super.getNewConnector(
+        {
+          index: this.inputsCount,
+          type: 'in',
+        },
+        ...arguments,
+      );
     }
 
     update() {
