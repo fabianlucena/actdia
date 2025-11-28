@@ -75,12 +75,21 @@ export default class Node extends Item {
 
   getNewConnector(connector) {
     const index = connector?.index ?? this.connectors.length;
+    const root = (connector?.type || 'con') + '-';
+    let counter = 0;
+    let id = root + counter.toString().padStart(2, '0');
+    while (this.connectors.find(c => c.id === id)) {
+      counter++;
+      id = root + counter.toString().padStart(2, '0');
+    }
+
     const newConnector = Connector.create(
       this.defaultConnector,
       {
         index,
         item: this,
         actdia: this.actdia,
+        id,
       },
       ...arguments,
     );
