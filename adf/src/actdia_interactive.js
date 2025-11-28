@@ -169,6 +169,11 @@ function keyUpHandler(evt) {
     case 'v': if (evt.ctrlKey || evt.metaKey)
       pasteJSONFromClipboard();
     break;
+
+    case 'x': if (evt.ctrlKey || evt.metaKey)
+      copyJSONToClipboard(evt);
+      actdia.deleteSelected();
+    break;
   }
 }
 
