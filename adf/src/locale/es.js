@@ -18,6 +18,7 @@ export default {
   'Dash': 'Guión',
   'Description': 'Descripción',
   'Diagram cleared.': 'Diagrama limpiado.',
+  'Diagram loaded': 'Diagrama cargado',
   'Diagram loaded from JSON file.': 'Diagrama cargado desde archivo JSON.',
   'Diagram modified (unsaved changes).': 'Diagrama modificado (cambios no guardados).',
   'Diagram saved.': 'Diagrama guardado.',

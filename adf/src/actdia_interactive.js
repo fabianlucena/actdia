@@ -47,8 +47,10 @@ window.addEventListener('DOMContentLoaded', async () => {
   if (window.location.hash && window.location.hash.startsWith('#diagram-')) {
     const data = JSON.parse(decodeURIComponent(window.location.hash.substring(9)));
     await actdia.load(data);
+    pushNotification(_('Diagram loaded'), 'success');
   } else if (localStorage.getItem('actdia')) {
     await actdia.load(JSON.parse(localStorage.getItem('actdia')));
+    pushNotification(_('Diagram loaded'), 'success');
   }
 
   lastSavedStatus = JSON.stringify(actdia.getData({ noSelectedProperty: true }));
@@ -162,15 +164,42 @@ function keyUpHandler(evt) {
   switch (evt.key) {
     case 'c': if (evt.ctrlKey || evt.metaKey)
       copyJSONToClipboard(evt);
+    break;
+
+    case 'v': if (evt.ctrlKey || evt.metaKey)
+      pasteJSONFromClipboard();
+    break;
   }
 }
 
+let incrementalPosition = 0;
 async function copyJSONToClipboard(options) {
+  incrementalPosition = 1;
   const exportable = actdia.getExportableItems({ selected: true, ...options });
   const jsonText = JSON.stringify(actdia.getData({ items: exportable }), null, 2);
   const json = new ClipboardItem({ 'text/plain': new Blob([jsonText], { type: 'application/json' })});
   await navigator.clipboard.write([json]);
   pushNotification(_('JSON data copied to the clipboard.'), 'success');
+}
+
+async function pasteJSONFromClipboard() {
+  const clipboardItems = await navigator.clipboard.read();
+  for (const clipboardItem of clipboardItems) {
+    if (clipboardItem.types.includes('text/plain')) {
+      const blob = await clipboardItem.getType('text/plain');
+      const text = await blob.text();
+      const data = JSON.parse(text);
+      await actdia.load(
+        data,
+        {
+          clear: false,
+          incrementalPosition,
+          clearSelection: incrementalPosition === 1,
+          autoselect: true,
+        });
+      incrementalPosition++;
+    }
+  }
 }
 
 function diagramChanged() {

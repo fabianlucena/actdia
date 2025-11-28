@@ -5,7 +5,6 @@ export default {
   'Check this out...': '¡Mira esto...!',
   'Circular propagation detected, stopping.': 'Detección de propagación circular, deteniendo.',
   'Connector: %s<br>Status: %s<br>Click to connect': 'Conector: %s<br>Estado: %s<br>Haga clic para conectar',
-  'Diagram loaded.': 'Diagrama cargado.',
   'false': 'falso',
   'No Connector class registered for type: %s.': 'No hay clase de Conector registrada para el tipo: %s.',
   'No container element to setup ActDia.': 'No hay elemento contenedor para configurar ActDia.',
