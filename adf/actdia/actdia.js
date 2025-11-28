@@ -408,15 +408,46 @@ export default class ActDia {
   }
 
   async load(data, options = {}) {
-    this.clear();
+    if (options.clear !== false) {
+      this.clear();
+    }
+
+    if (options.clearSelection) {
+      this.#items.forEach(item => item.selected = false);
+    }
     
     await loadLocales(data.locales);
     await this.importElements(...data.imports.filter(u => u));
 
-    await this.addItem(...data.nodes);
-    await this.addOptionsItem({ elementClass: 'Connection' }, ...data.connections);
-    if (options.skipNotification !== true)
-      this.pushNotification(_('Diagram loaded.'), 'success');
+    const newNodes = await this.addOptionsItem(
+      {
+        incrementalPosition: options.incrementalPosition,
+        autoselect: options.autoselect,
+      },
+      ...data.nodes
+    );
+    
+    const oldIds = data.nodes.map(i => i.id);
+    const newIds = newNodes.map(i => i.id);
+    const mapIds = Object.fromEntries(oldIds.map((k, i) => [k, newIds[i]]));
+
+    data.connections.forEach(connectionData => {
+      if (connectionData.from?.item && mapIds[connectionData.from.item]) {
+        connectionData.from.item = mapIds[connectionData.from.item];
+      }
+
+      if (connectionData.to?.item && mapIds[connectionData.to.item]) {
+        connectionData.to.item = mapIds[connectionData.to.item];
+      }
+    });
+
+    await this.addOptionsItem(
+      {
+        elementClass: 'Connection',
+        autoselect: options.autoselect,
+      },
+      ...data.connections
+    );
 
     this.#items.forEach(item => {
       if (isNode(item) && item.autoPropagate) {
@@ -432,6 +463,14 @@ export default class ActDia {
   async addOptionsItem(options, ...items) {
     if (!items.length) {
       return null;
+    }
+
+    let inc = 0;
+    if (options.incrementalPosition) {
+      inc = options.incrementalPosition;
+      if (isNaN(inc)) {
+        inc = 1;
+      }
     }
 
     const result = [];
@@ -454,6 +493,10 @@ export default class ActDia {
       }
 
       this.autoNameForItem(item);
+
+      item.x += inc;
+      item.y += inc;
+      item.selected = options.autoselect ? true : item.selected;
 
       item.update({ skipNotification: true });
       
