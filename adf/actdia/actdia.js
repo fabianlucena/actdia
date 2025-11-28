@@ -1880,13 +1880,20 @@ export default class ActDia {
     this.selectionBox.svg.setAttribute('width', this.selectionBox.width);
     this.selectionBox.svg.setAttribute('height', this.selectionBox.height);
 
+    const inSelectionBox = this.#items.filter(item =>
+        item.x + item.box.width >= this.selectionBox.x &&
+        item.x <= this.selectionBox.u &&
+        item.y + item.box.height >= this.selectionBox.y &&
+        item.y <= this.selectionBox.v
+    );
+
     this.#items.forEach(item => {
       item.selected =
         this.selectionBox.previousSelectedItems.includes(item)
-        || item.x + item.box.width >= this.selectionBox.x
-        && item.x <= this.selectionBox.u
-        && item.y + item.box.height >= this.selectionBox.y
-        && item.y <= this.selectionBox.v;
+        || inSelectionBox.includes(item)
+        || isConnection(item)
+          && inSelectionBox.includes(item.from.item)
+          && inSelectionBox.includes(item.to.item);
     });
   }
 
