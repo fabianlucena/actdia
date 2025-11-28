@@ -457,12 +457,17 @@ export default class ActDia {
   }
 
   async addItem(...items) {
-    return this.addOptionsItem({}, ...items);
+    const result = await this.addOptionsItem({}, ...items);
+    if (!result.length) {
+      return null;
+    }
+
+    return result.length === 1 ? result[0] : result;
   }
 
   async addOptionsItem(options, ...items) {
     if (!items.length) {
-      return null;
+      return [];
     }
 
     let inc = 0;
@@ -529,7 +534,7 @@ export default class ActDia {
       item.update();
     });
 
-    return result.length === 1 ? result[0] : result;
+    return result;
   }
 
   autoNameForItem(item) {
